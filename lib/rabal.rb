@@ -27,6 +27,15 @@ DESC
                     end
                 end
             end
+
+            def validate_template_dirs(ary)
+                ary.each do |d| 
+                    check = File.expand_path(d)
+                    raise Main::Parameter::InValid, "Template directory '#{d}' does not exist" if not File.exists?(check)
+                end
+                true
+            end
+
         end
     end
 end

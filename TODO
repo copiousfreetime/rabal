@@ -4,3 +4,6 @@
 - Add in support for initial license declaration
 - Check an existing project, see what it is missing ?
 - Add in support for using Hoe
+- make the directories have name spaces so others can hook into it
+- allow additional libraries/modules to be loaded from other gems.
+  as GemPlugin's ?

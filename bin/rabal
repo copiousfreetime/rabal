@@ -17,7 +17,31 @@ Main {
 
     argument 'project'
 
-    option('license=LICENSE') {
+    option("template-dirs=DIR") {
+        validate { |e| Rabal::Application.validate_template_dirs(e.split(':')) }
+        description "Colon separated list of additional directories to look for project tree templates"
+    }
+    
+    option('directory=DIR') {
+        description "parent directory of the project tree, Default : #{Dir.pwd}"
+        default  Dir.pwd
+    }
+    
+    option('rubyforge-project=PROJECT') {
+        description "RubyForge project with which this project should be associated."
+    }
+
+    option('darcs-init') {
+
+        description <<-DARCS_DESC
+Initialize this project in darcs, create an appropriate .boring file,
+add the project skeleton to the repository.
+        DARCS_DESC
+    } 
+
+
+
+    option('with-license=LICENSE') {
         description "What license will this project use."
     }
 
@@ -41,25 +65,14 @@ For example, --extension="libfoo/mkrf_conf.rb"
         description "Pick the testing framework, testunit or rspec.  Default : testunit"
     }   
 
-    option('directory=DIR') {
-        description "parent directory of the project tree, Default : #{Dir.pwd}"
-        default  Dir.pwd
-    }
-
-    option('rubyforge-project=PROJECT') {
-        description "RubyForge project with which this project should be associated."
-    }
-
-    option('darcs-init') {
-
-        description <<-DARCS_DESC
-Initialize this project in darcs, create an appropriate .boring file,
-add the project skeleton to the repository.
-        DARCS_DESC
-    } 
-
     option("with-hoe") {
         description "Base the Rakefile on Hoe"
+    }
+
+
+    environment("RABAL_TEMPLATE_DIRS=dir1:dir2") {
+        validate { |e| Rabal::Application.validate_template_dirs(e.split(':')) }
+        description "Colon separated list of additional directories to look for project tree templates"
     }
 
     environment("RABAL_ENV=test") {
@@ -72,4 +85,3 @@ add the project skeleton to the repository.
         Rabal::Application.run(self)
     end 
 }   
-
