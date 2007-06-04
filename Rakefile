@@ -54,8 +54,7 @@ task :gemspec do
     puts SPEC.to_ruby
 end
 
-rspec = Spec::Rake::SpecTask.new(:rspec) do |r|
-    r.warning   = true
+rspec = Spec::Rake::SpecTask.new do |r|
     r.libs      = SPEC.require_paths
-    r.spec_opts = %w(-f s)
+    r.spec_opts = %w(--format specdoc)
 end

@@ -1,5 +1,5 @@
 require 'rabal/version'
-require 'rabal/skeleton'
+require 'rabal/tree'
 
 module Rabal
     AUTHOR          = "Jeremy Hinegardner".freeze
@@ -23,9 +23,8 @@ DESC
                     puts "#{p.name} #{p.value} #{p.given? ? "given" : "not given"}"
                     md = %r{\Awith-(.*)\Z}.match(p.name)
                     if md and p.given? then
-                        project_tree << ComponentTree.new(md.captures.first,p.value)
+                        project_tree << Tree.of_kind(md.captures.first).new(p.value)
                     end
-                end
                 end
             end
         end
