@@ -1,7 +1,7 @@
+require 'rabal/version'
 require 'rabal/skeleton'
 
 module Rabal
-    VERSION         = [0,0,1].freeze
     AUTHOR          = "Jeremy Hinegardner".freeze
     AUTHOR_EMAIL    = "jeremy@hinegadner.org".freeze
     HOMEPAGE        = "http://copiousfreetime.rubyforge.org/rabal/"
@@ -18,12 +18,14 @@ DESC
     class Application
         class << self
             def run(main)
-                skeleton = Skeleton.new(main.param.project)
-                skeleton.attach(TestingSkeleton.new(main.prama["test-using"]))
-                skeleton.attach(ExtensionSkeleton.new(main.param["extension"])) if main.param["extension"].given?
-                puts "main.class => #{main.author}"
+                project_tree = ProjectTree.new(main.param.project)
                 main.params.each do |p|
-                    puts "#{p.name} #{p.value}"
+                    puts "#{p.name} #{p.value} #{p.given? ? "given" : "not given"}"
+                    md = %r{\Awith-(.*)\Z}.match(p.name)
+                    if md and p.given? then
+                        project_tree << ComponentTree.new(md.captures.first,p.value)
+                    end
+                end
                 end
             end
         end

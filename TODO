@@ -1,3 +1,6 @@
 - Add in support for Darcs (initialization, .boring, addition)
 - Add in support for CVS (initialization, .cvsignore, addition)
 - Add in support for SVN (initialization, svn:ignore, addition)
+- Add in support for initial license declaration
+- Check an existing project, see what it is missing ?
+- Add in support for using Hoe

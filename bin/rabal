@@ -17,7 +17,11 @@ Main {
 
     argument 'project'
 
-    option('extension=EXT') {
+    option('license=LICENSE') {
+        description "What license will this project use."
+    }
+
+    option('with-extension=EXT') {
         validate { |e| e =~ /(extconf.rb|mkrf_conf.rb)$/ }
         description <<-EDESC
 Location of the extconf.rb/mkrf_conf.rb in the extension directory. 
@@ -25,13 +29,13 @@ For example, --extension="libfoo/mkrf_conf.rb"
         EDESC
     }
 
-    option('has-bin') { 
+    option('with-bin=[bool]') { 
         cast :bool 
         default false
         description "Use if the project has a binaries directory."
     }   
 
-    option('test-using=TEST') { 
+    option('with-test=TEST') { 
         validate { |t| %w(testunit rspec).include?(t) }
         default "testunit"
         description "Pick the testing framework, testunit or rspec.  Default : testunit"
@@ -53,6 +57,10 @@ Initialize this project in darcs, create an appropriate .boring file,
 add the project skeleton to the repository.
         DARCS_DESC
     } 
+
+    option("with-hoe") {
+        description "Base the Rakefile on Hoe"
+    }
 
     environment("RABAL_ENV=test") {
         validate { |e| %w(development test production).include?(e) }
