@@ -7,3 +7,6 @@
 - make the directories have name spaces so others can hook into it
 - allow additional libraries/modules to be loaded from other gems.
   as GemPlugin's ?
+- specification for everything is based upon the Gem::Specification
+- for FileTree and DirectoryTree make sure to set the name and such
+  correctly

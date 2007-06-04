@@ -1,6 +1,3 @@
-require 'rabal/version'
-require 'rabal/tree'
-
 module Rabal
     AUTHOR          = "Jeremy Hinegardner".freeze
     AUTHOR_EMAIL    = "jeremy@hinegadner.org".freeze
@@ -18,12 +15,14 @@ DESC
     class Application
         class << self
             def run(main)
-                project_tree = ProjectTree.new(main.param.project)
+                root = DirectoryTree(main.params["directory"])
+                project = ProjectTree.new(main.param["project"])
+                root << project
                 main.params.each do |p|
                     puts "#{p.name} #{p.value} #{p.given? ? "given" : "not given"}"
                     md = %r{\Awith-(.*)\Z}.match(p.name)
                     if md and p.given? then
-                        project_tree << Tree.of_kind(md.captures.first).new(p.value)
+                        project << Tree.of_kind(md.captures.first).new(p.value)
                     end
                 end
             end
@@ -40,3 +39,9 @@ DESC
     end
 end
 
+Dir.entries(File.join(Rabal::APP_LIB_DIR,"rabal")).each do |rb|
+    if rb =~ /\.rb\Z/ then
+        f = File.basename(rb,".rb")
+        require "rabal/#{f}"
+    end
+end

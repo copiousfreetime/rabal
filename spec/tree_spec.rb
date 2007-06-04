@@ -70,7 +70,19 @@ describe Tree do
         @tree_with_leaves.each_datum do |d|
             data << d
         end
-        data.first.should == "c1-c1"
+        data.last.should == "c2-c2"
+    end
+
+    it "should say how deep an item is in the tree" do
+        @tree_with_leaves.children[1].children.first.depth.should == 2
     end
 
 end
+$: << "lib"
+require 'rabal'
+include Rabal
+root = DirectoryTree.new(Dir.pwd)
+root << ProjectTree.new("lkj")
+root.walk(root,lambda { |x| puts "#{"-" * x.depth} #{x.class} #{x.name}" })
+
+

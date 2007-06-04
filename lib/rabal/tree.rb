@@ -1,4 +1,7 @@
 module Rabal
+    #
+    # A basic Tree structure
+    #
     class Tree
 
         include Enumerable
@@ -24,7 +27,6 @@ module Rabal
             return self
         end
 
-
         #
         # Return true if this Tree has no children.
         #
@@ -48,11 +50,19 @@ module Rabal
         end
 
         #
+        # Return the distance from the root
+        #
+        def depth
+            return 0 if is_root?
+            return (1 + @parent.depth)
+        end
+
+        #
         # Add the given object to the Tree as a child of this node.  If
         # the given object is not a Tree then wrap it with a Tree.
         #
         def <<(obj)
-            if not obj.kind_of?(self.class) then
+            if not obj.kind_of?(Tree) then
                 obj = Tree.new(obj)
             end
             obj.parent = self
@@ -81,13 +91,29 @@ module Rabal
         end
         
         # 
-        # Walk the tree in a depth first manner
+        # Walk the tree in a depth first manner, visiting the Tree
+        # first, then its children
         #
         def walk(tree,method)
+            method.call(tree)
             tree.children.each do |child|
                 walk(child,method) 
             end
-            method.call(tree)
         end
     end
+
+    class ActionTree < Tree
+
+        def before_action
+        end
+
+        def action
+            raise NotImplementedError, "Oops, forgot to implemente action"
+        end
+
+        def after_action 
+        end
+
+    end 
+
 end
