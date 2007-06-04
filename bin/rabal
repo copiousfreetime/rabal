@@ -39,8 +39,6 @@ add the project skeleton to the repository.
         DARCS_DESC
     } 
 
-
-
     option('with-license=LICENSE') {
         description "What license will this project use."
     }
