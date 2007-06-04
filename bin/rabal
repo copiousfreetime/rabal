@@ -12,7 +12,7 @@ end
 
 Main {
     author "#{Rabal::AUTHOR} <#{Rabal::AUTHOR_EMAIL}>"
-    version Rabal::VERSION.join(".")
+    version Rabal::VERSION
     description Rabal::DESCRIPTION
 
     argument 'project'
