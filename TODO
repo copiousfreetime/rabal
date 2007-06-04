@@ -10,3 +10,5 @@
 - specification for everything is based upon the Gem::Specification
 - for FileTree and DirectoryTree make sure to set the name and such
   correctly
+- use a command structure 'rabal new project', which will make it
+  extensible for others who write GemPlugins
