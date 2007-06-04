@@ -1,0 +1,67 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'main'
+
+begin 
+    require 'rabal'
+rescue LoadError => e
+    $: << File.expand_path(File.join(File.dirname(__FILE__),"..","lib"))
+    retry
+end
+
+Main {
+    author "#{Rabal::AUTHOR} <#{Rabal::AUTHOR_EMAIL}>"
+    version Rabal::VERSION.join(".")
+    description Rabal::DESCRIPTION
+
+    argument 'project'
+
+    option('extension=EXT') {
+        validate { |e| e =~ /(extconf.rb|mkrf_conf.rb)$/ }
+        description <<-EDESC
+Location of the extconf.rb/mkrf_conf.rb in the extension directory. 
+For example, --extension="libfoo/mkrf_conf.rb"
+        EDESC
+    }
+
+    option('has-bin') { 
+        cast :bool 
+        default false
+        description "Use if the project has a binaries directory."
+    }   
+
+    option('test-using=TEST') { 
+        validate { |t| %w(testunit rspec).include?(t) }
+        default "testunit"
+        description "Pick the testing framework, testunit or rspec.  Default : testunit"
+    }   
+
+    option('directory=DIR') {
+        description "parent directory of the project tree, Default : #{Dir.pwd}"
+        default  Dir.pwd
+    }
+
+    option('rubyforge-project=PROJECT') {
+        description "RubyForge project with which this project should be associated."
+    }
+
+    option('darcs-init') {
+
+        description <<-DARCS_DESC
+Initialize this project in darcs, create an appropriate .boring file,
+add the project skeleton to the repository.
+        DARCS_DESC
+    } 
+
+    environment("RABAL_ENV=test") {
+        validate { |e| %w(development test production).include?(e) }
+        default "production"
+        description "Used for running unit tests.  Never needed in normal use."
+    }   
+
+    def run 
+        Rabal::Application.run(self)
+    end 
+}   
+
