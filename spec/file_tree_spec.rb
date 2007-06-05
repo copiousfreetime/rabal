@@ -1,9 +1,10 @@
 require File.expand_path(File.join(File.dirname(__FILE__),"spec_helper"))
-describe DirectoryTree do
+describe FileTree do
     before(:each) do 
         dir_template = File.join(Dir.tmpdir,"directory-tree-spec.XXXX")
         @working_dir = MkTemp.mktempdir(dir_template)
         @before      = Dir.pwd
+        @tree        = DirectoryTree.new("spec-test")
         Dir.chdir(@working_dir)
     end
 
@@ -12,18 +13,19 @@ describe DirectoryTree do
         FileUtils.rm_rf @working_dir
     end
     
-    it "should create a directory under the working directory" do
-        dir_tree    = DirectoryTree.new("spec-test")
-        dir_tree.process
-        File.directory?(File.join(@working_dir,"spec-test")).should == true
+    it "should create a file under the under the working directory" do
+        @tree << FileTree.new("testfile.txt")
+        @tree.process
+        f = File.join(@working_dir,"spec-test","testfile.txt")
+        File.file?(f).should == true
     end
 
-    it "should do nothing if the directory already exists" do
-        d = File.join(@working_dir,"spec-test")
-        Dir.mkdir(d)
-        dir_tree = DirectoryTree.new("spec-test")
-        x = File.directory?(d)
-        dir_tree.process
-        File.directory?(d).should == x
+    it "should skip the file if it doesn't exist" do
+        fname = File.join(@working_dir,"testfile.txt")
+        File.open(fname,"w+") { |f| f.write("FileTree spec") }
+        tree = FileTree.new("testfile.txt")
+        tree.process
+        line = IO.read(fname)
+        line.should == "FileTree spec"
     end
 end

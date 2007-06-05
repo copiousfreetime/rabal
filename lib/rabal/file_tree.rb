@@ -12,7 +12,7 @@ module Rabal
     # data to write out to the file by the time +action+ is called all
     # is well.
     #
-    class FileTree < Tree
+    class FileTree < ActionTree
         alias :name :data
 
         # the contents of the file to write
@@ -24,6 +24,7 @@ module Rabal
         # binding for erb if there is one
         #
         def before_action
+            @file_contents = Time.now.to_s
         end
 
 
@@ -33,16 +34,13 @@ module Rabal
         # be created.
         #
         def action
-            if not File.is_file?(name) then
-                info("#{depth_pad} writing file #{name}")
+            if not File.file?(name) then
+                info("writing file #{name}")
                 File.open(name,"w+") do |f|
                     f.write(file_contents)
                 end
             else
                 info("skipping file #{name} - already exists")
-            end
-            File.open(name,"w+") do |f|
-                f.puts "Created on #{Time.now}"
             end
         end
     end
