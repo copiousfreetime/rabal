@@ -2,6 +2,11 @@ h1. Things To Do and Things that are Done
 
 h2. You're Dropping the Ball Here.
 
+* Tree processing
+** enter Tree
+** do node thing
+** process child Tree
+** leave Tree
 * command approach (new, add, ...)
 * rabal should be a GemPluginManager
 * lint command

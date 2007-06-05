@@ -1,3 +1,5 @@
+require 'rabal'
+
 module Rabal
     #
     # A basic Tree structure
@@ -101,19 +103,4 @@ module Rabal
             end
         end
     end
-
-    class ActionTree < Tree
-
-        def before_action
-        end
-
-        def action
-            raise NotImplementedError, "Oops, forgot to implemente action"
-        end
-
-        def after_action 
-        end
-
-    end 
-
 end

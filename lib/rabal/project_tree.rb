@@ -1,3 +1,4 @@
+require 'rabal'
 require 'find'
 
 module Rabal

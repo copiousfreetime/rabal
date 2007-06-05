@@ -26,7 +26,6 @@ SPEC = Gem::Specification.new do |s|
 
     s.rubyforge_project  = "copiousfreetime"
     s.version            = Gem::Version.create("0.0.1")
-    s.add_dependency("rspec")
 end
 
 task :default => :spec
@@ -55,6 +54,8 @@ task :gemspec do
 end
 
 rspec = Spec::Rake::SpecTask.new do |r|
+    r.rcov      = true
+    r.rcov_dir  = "doc/coverage"
     r.libs      = SPEC.require_paths
     r.spec_opts = %w(--format specdoc)
 end

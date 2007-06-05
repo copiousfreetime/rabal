@@ -1,3 +1,5 @@
+require 'rabal/action_tree'
+
 module Rabal
     #
     # A directory in 

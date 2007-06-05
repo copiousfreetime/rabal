@@ -18,8 +18,13 @@ describe Tree do
         @tree_with_leaves.children.last << Tree.new("c2-c1")
         @tree_with_leaves.children.last << Tree.new("c2-c2")
     end
+
     it "should say if it is root" do
         @tree.should be_is_root
+    end
+    
+    it "should say if it is a leaf" do
+        @tree.should be_is_leaf
     end
 
     it "should have 0 children when created" do
