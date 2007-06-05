@@ -28,4 +28,7 @@ describe FileTree do
         line = IO.read(fname)
         line.should == "FileTree spec"
     end
+
+    it "should process a file via ERB" do
+    end
 end
