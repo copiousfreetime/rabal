@@ -5,7 +5,8 @@ rescue LoadError
     require 'rabal'
 end
 require 'rubygems'
-require 'mockfs'
+require 'mktemp'
+require 'fileutils'
 
 include Rabal
 
@@ -20,3 +21,4 @@ class ValidatingActionTree < ActionTree
         @@action_count += 1
     end
 end
+
