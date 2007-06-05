@@ -7,16 +7,21 @@ module Rabal
     # parent of the directory this DirectoryTree represents.
     #
     class DirectoryTree < ActionTree
+        
+        # basename of the directory this Tree represents
+        attr_accessor :dir_name
 
         # the File system directory that is the parent of the directory
         # this DirectoryTree represents.
         attr_accessor :parent_dir
 
-        attr_accessor :dir_name
 
+        # Create a DirectoryTree based up a name, or another directory.
+        # Only the last portion of the directory is used.  That is
+        # +File.basename+ is called upon name.
         def initialize(name)
             super
-            @dir_name = name
+            @dir_name = File.basename(name)
             @parent_dir = nil
         end
 
@@ -37,7 +42,7 @@ module Rabal
         # change into the directory
         #
         def action
-            info("changing directory #{dir_name}")
+            info("entering directory #{dir_name}")
             Dir.chdir(dir_name)
         end
 
@@ -45,7 +50,7 @@ module Rabal
         # change back to the parent directory
         #
         def after_action
-            Rabal::Log.info("change directory up to #{File.basename(parent_dir)}")
+            Rabal::Log.info("leaving directory #{dir_name}")
             Dir.chdir(parent_dir)
         end
     end

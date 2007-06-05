@@ -5,11 +5,20 @@ rescue LoadError
     require 'rabal'
 end
 require 'rubygems'
+require 'tmpdir'
 require 'mktemp'
 require 'fileutils'
 
 include Rabal
 
+# generate a temporary directory and create it
+
+def my_temp_dir
+    MkTemp.mktempdir(File.join(Dir.tmpdir,"rabal-spec.XXXXXXXX"))
+end
+#
+# Tree used to validate that actions are called
+#
 class ValidatingActionTree < ActionTree
     @@action_count = 0
     class << self

@@ -1,14 +1,13 @@
 require File.expand_path(File.join(File.dirname(__FILE__),"spec_helper"))
 describe FileTree do
     before(:each) do 
-        dir_template = File.join(Dir.tmpdir,"directory-tree-spec.XXXX")
         @template_file_name = File.expand_path(File.join(File.dirname(__FILE__),"file_dir_template.txt.erb"))
-        @working_dir = MkTemp.mktempdir(dir_template)
-        @before      = Dir.pwd
+        @working_dir = my_temp_dir
         @tree        = DirectoryTree.new("spec-test")
-        Dir.chdir(@working_dir)
-
         @template = "my name is : <%= file_name %>"
+        
+        @before      = Dir.pwd
+        Dir.chdir(@working_dir)
     end
 
     after(:each) do
@@ -34,7 +33,6 @@ describe FileTree do
     end
 
     it "should process a file via ERB, calling parent methods if necessary" do
-        puts @template_file_name
         @tree << FileTree.from_file(@template_file_name)
         @tree.process
         line = IO.read(File.join(@working_dir,"spec-test","file_dir_template.txt")).chomp

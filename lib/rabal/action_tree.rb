@@ -3,8 +3,8 @@ require 'rabal/tree'
 module Rabal
     class ActionTree < Tree
         
-        def initalize(data)
-            super
+        def initialize(data)
+            super(data)
         end
 
         def before_action

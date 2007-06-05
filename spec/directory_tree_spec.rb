@@ -1,8 +1,7 @@
 require File.expand_path(File.join(File.dirname(__FILE__),"spec_helper"))
 describe DirectoryTree do
     before(:each) do 
-        dir_template = File.join(Dir.tmpdir,"directory-tree-spec.XXXX")
-        @working_dir = MkTemp.mktempdir(dir_template)
+        @working_dir = my_temp_dir
         @before      = Dir.pwd
         Dir.chdir(@working_dir)
     end
