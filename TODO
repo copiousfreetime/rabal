@@ -1,14 +1,23 @@
-- Add in support for Darcs (initialization, .boring, addition)
-- Add in support for CVS (initialization, .cvsignore, addition)
-- Add in support for SVN (initialization, svn:ignore, addition)
-- Add in support for initial license declaration
-- Check an existing project, see what it is missing ?
-- Add in support for using Hoe
-- make the directories have name spaces so others can hook into it
-- allow additional libraries/modules to be loaded from other gems.
-  as GemPlugin's ?
-- specification for everything is based upon the Gem::Specification
-- for FileTree and DirectoryTree make sure to set the name and such
-  correctly
-- use a command structure 'rabal new project', which will make it
-  extensible for others who write GemPlugins
+h1. Things To Do and Things that are Done
+
+h2. You're Dropping the Ball Here.
+
+* command approach (new, add, ...)
+* rabal should be a GemPluginManager
+* lint command
+* Tree namespaces
+* License declaration or addition
+* Hoe support
+* SCM API Support for:
+** Initialization, first setup
+** Adding to and modification of the 'ignore' file (.boring, .cvsignore
+svn:ignore, etc)
+** Adding tree's to the project
+** tagging the project with a release
+** making sure nothing is left out of the project
+
+
+
+h2.  Accomplishments!
+
+
