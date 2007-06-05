@@ -12,18 +12,24 @@ module Rabal
         # this DirectoryTree represents.
         attr_accessor :parent_dir
 
-        alias :name :data
+        attr_accessor :dir_name
+
+        def initialize(name)
+            super
+            @dir_name = name
+            @parent_dir = nil
+        end
 
         #
         # Make the directory if it doesn't exist 
         #
         def before_action
             @parent_dir = Dir.pwd
-            if not File.directory?(name) then
-                info("creating directory #{name}")
-                Dir.mkdir(name)
+            if not File.directory?(dir_name) then
+                info("creating directory #{dir_name}")
+                Dir.mkdir(dir_name)
             else
-                info("skipping directory #{name} - already exists")
+                info("skipping directory #{dir_name} - already exists")
             end
         end
 
@@ -31,15 +37,15 @@ module Rabal
         # change into the directory
         #
         def action
-            info("changing directory #{name}")
-            Dir.chdir(name)
+            info("changing directory #{dir_name}")
+            Dir.chdir(dir_name)
         end
 
         #
         # change back to the parent directory
         #
         def after_action
-            Rabal::Log.info("change directory #{parent_dir}")
+            Rabal::Log.info("change directory up to #{File.basename(parent_dir)}")
             Dir.chdir(parent_dir)
         end
     end

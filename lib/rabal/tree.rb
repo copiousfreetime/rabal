@@ -103,6 +103,20 @@ module Rabal
             end
         end
 
+        # 
+        # Allow for a method call to cascade up the tree looking for a
+        # Tree that responds to the call.
+        #
+        def method_missing(method_id,*params,&block)
+            if not is_root? then
+                @parent.send method_id, *params, &block
+            else
+                raise NoMethodError, "undefined method `#{method_id}' for #{@data.to_s}:Tree"
+            end
+        end
+
+        #
+        # 
         private
 
         #

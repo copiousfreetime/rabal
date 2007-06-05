@@ -14,7 +14,9 @@ module Rabal
     # is well.
     #
     class FileTree < ActionTree
-        alias :name :data
+
+        # the name of the file to create
+        attr_accessor :file_name
 
         # the erb template the file is created from as a String
         attr_accessor :template
@@ -25,15 +27,15 @@ module Rabal
         class << self
 
             #
-            # Create a new FileTree from the path to a file.  The 'name'
+            # Create a new FileTree from the path to a file.  The 'file_name'
             # of the FileTree is basename of the path, minus any
             # extension(.erb by default) .  The contents of the file at
             # path will be loaded into the +template+ member variable.
             #
             def from_file(path,strip_ext = ".erb") 
-                template = IO.read(path) 
-                name     = File.basename(path,strip_ext)
-                FileTree.new(name,template)
+                template  = IO.read(File.expand_path(path))
+                file_name = File.basename(path,strip_ext)
+                FileTree.new(file_name,template)
             end
 
         end
@@ -41,8 +43,9 @@ module Rabal
         #
         # Create a FileTree with a name from a template
         #
-        def initialize(name,template)
-            super(name)
+        def initialize(file_name,template)
+            super(file_name)
+            @file_name = file_name
             @template = template
             @file_contents = nil
         end
@@ -53,7 +56,7 @@ module Rabal
         # binding for erb if there is one
         #
         def before_action
-            info("creating content for #{name}")
+            info("creating content for #{file_name}")
             @file_contents = ERB.new(template).result(binding)
         end
 
@@ -63,13 +66,13 @@ module Rabal
         # be created.
         #
         def action
-            if not File.file?(name) then
-                info("writing file #{name}")
-                File.open(name,"w+") do |f|
+            if not File.file?(file_name) then
+                info("writing file #{file_name}")
+                File.open(file_name,"w+") do |f|
                     f.write(file_contents)
                 end
             else
-                info("skipping file #{name} - already exists")
+                info("skipping file #{file_name} - already exists")
             end
         end
     end

@@ -82,12 +82,7 @@ describe Tree do
         @tree_with_leaves.children[1].children.first.depth.should == 2
     end
 
+    it "should cascade a method call up the tree" do
+
+    end
 end
-$: << "lib"
-require 'rabal'
-include Rabal
-root = DirectoryTree.new(Dir.pwd)
-root << ProjectTree.new("lkj")
-root.walk(root,lambda { |x| puts "#{"-" * x.depth} #{x.class} #{x.name}" })
-
-

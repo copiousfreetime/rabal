@@ -2,6 +2,10 @@ require 'rabal/tree'
 
 module Rabal
     class ActionTree < Tree
+        
+        def initalize(data)
+            super
+        end
 
         def before_action
         end
