@@ -102,5 +102,20 @@ module Rabal
                 walk(child,method) 
             end
         end
+
+        private
+
+        #
+        # Log to the Rabal::Log padding the message with 2 spaces *
+        # depth.
+        #
+        %w(debug info warn error fatal).each do |m|
+            class_eval <<-code
+                def #{ m }(msg)
+                    msg = ("  " * depth) +  msg
+                    Rabal::Log.#{ m }(msg)
+                end
+            code
+        end
     end
 end

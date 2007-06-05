@@ -18,13 +18,12 @@ module Rabal
         # Make the directory if it doesn't exist 
         #
         def before_action
-            Rabal::Log.debug("parent dir = #{Dir.pwd}")
             @parent_dir = Dir.pwd
             if not File.directory?(name) then
-                Rabal::Log.info("make directory #{name}")
+                info("creating directory #{name}")
                 Dir.mkdir(name)
             else
-                Rabal::Log.info("skip directory #{name} - already exists")
+                info("skipping directory #{name} - already exists")
             end
         end
 
@@ -32,7 +31,7 @@ module Rabal
         # change into the directory
         #
         def action
-            Rabal::Log.info("change directory #{name}")
+            info("changing directory #{name}")
             Dir.chdir(name)
         end
 
