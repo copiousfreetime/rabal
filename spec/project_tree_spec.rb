@@ -43,4 +43,11 @@ describe Rabal::ProjectTree do
         find_in('new-spec-proj').sort.should == (@base_tree + d1d2 + spec).sort
     end
 
+    it "should raise an exception if an attempt is made to add to a location that does not exist" do
+        d = DirectoryTree.new("foo")
+        d << DirectoryTree.new("bar")
+        d.children["bar"] <<  DirectoryTree.new("baz")
+        @tree << d
+        lambda { @tree.add_at_path("foo/bar/blah", DirectoryTree.new("lkj")) }.should raise_error(PathNotFoundError)
+    end
 end

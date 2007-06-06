@@ -173,8 +173,8 @@ module Rabal
         # as a '/' separates string.
         #
         def current_path
-            return name if is_root? 
-            return ([name] + parent.current_path).flatten.reverse.join("/")
+            return "*#{name}*" if is_root? 
+            return ([name,parent.current_path]).flatten.reverse.join("/")
         end
 
         #
