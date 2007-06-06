@@ -11,7 +11,7 @@ DESC
     ROOT_DIR        = File.expand_path(File.join(File.dirname(__FILE__),".."))
     LIB_DIR         = File.join(ROOT_DIR,"lib").freeze
     RESOURCE_DIR    = File.join(ROOT_DIR,"resources").freeze
-    TEMPLATE_DIRS   = [ File.join(DATA_DIR,"trees").freeze ]
+    TEMPLATE_DIRS   = [ File.join(RESOURCE_DIR,"trees").freeze ]
     KNOWN_WORDS     = {
         "rabal.project" => lambda { |tree| tree.root.name }
     }

@@ -8,7 +8,7 @@ describe Rabal::ProjectTree do
         @tree        = ProjectTree.new("new-spec-proj","rabal:base")
         @tree.build
 
-        @base_tree   = Set.new(%w(README LICENSE Rakefile CHANGES INSTALL lib lib/new-spec-proj lib/new-spec-proj/version.rb))
+        @base_tree   = Set.new(%w(README Rakefile CHANGES INSTALL lib lib/new-spec-proj lib/new-spec-proj/version.rb))
     
         @before = Dir.pwd
         Dir.chdir(@working_dir)
@@ -21,7 +21,7 @@ describe Rabal::ProjectTree do
 
     it "should create a basic project" do
         @tree.process
-        find_in("new-spec-proj").should == @base_tree
+        find_in("new-spec-proj").sort.should == @base_tree.sort
     end
 
     it "should allow for insertion into the Project Tree" do
