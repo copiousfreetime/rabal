@@ -2,7 +2,7 @@ require 'optparse'
 #require 'active_support'
 
 module Rabal
-    class Plugin
+    class PluginX
 
         class << self
 
@@ -34,7 +34,7 @@ module Rabal
 
     end
 
-    class Deployment < Plugin
+    class Deployment < PluginX
 
         class << self
 
