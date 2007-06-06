@@ -1,11 +1,11 @@
-h1. Things To Do and Things that are Done
+== Things To Do and Things that are Done
+=== You're Dropping the Ball Here.
 
-h2. You're Dropping the Ball Here.
-
+* allow for insertion into project tree at an arbitrary path
+* subclass OptionParser to allow for plugins to hook into options
 * command approach (new, add, ...)
 * rabal should be a GemPluginManager
 * lint command
-* Tree namespaces
 * License declaration or addition
 * Hoe support
 * SCM API Support for:
@@ -18,9 +18,11 @@ svn:ignore, etc)
 
 
 
-h2.  Accomplishments!
+=== Accomplishments!
 
-* cascade data access up the tree
+* switch to Hash for children to allow for path access to data
+* Tree namespaces
+* cascade data access up the tree, method_missing
 * Tree processing
 ** enter Tree
 ** do node thing

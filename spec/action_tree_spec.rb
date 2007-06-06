@@ -20,7 +20,7 @@ describe Rabal::ActionTree do
             tree << ValidatingActionTree.new("child #{i}")
         end
         2.times do |i|
-            tree.children.first << ValidatingActionTree.new("grandchild #{i}")
+            tree.children["child 1"] << ValidatingActionTree.new("grandchild #{i}")
         end
         tree.process
         ValidatingActionTree.action_count.should == 6

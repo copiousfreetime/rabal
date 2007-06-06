@@ -8,15 +8,15 @@ describe Tree do
         @tree_with_leaves << Tree.new("c1")
         @tree_with_leaves << Tree.new("c2")
         
-        @tree_with_leaves.children.first << Tree.new("c1-c1")
+        @tree_with_leaves.children["c1"] << Tree.new("c1-c1")
         subtree = Tree.new("c1-c2")
         subtree << Tree.new("c1-c2-c1")
         subtree << Tree.new("c1-c2-c2")
         subtree << Tree.new("c1-c2-c3")
-        @tree_with_leaves.children.first << subtree
-        @tree_with_leaves.children.first << Tree.new("c1-c3")
-        @tree_with_leaves.children.last << Tree.new("c2-c1")
-        @tree_with_leaves.children.last << Tree.new("c2-c2")
+        @tree_with_leaves.children['c1'] << subtree
+        @tree_with_leaves.children["c1"] << Tree.new("c1-c3")
+        @tree_with_leaves.children["c2"] << Tree.new("c2-c1")
+        @tree_with_leaves.children["c1"] << Tree.new("c2-c2")
     end
 
     it "should say if it is root" do
@@ -37,17 +37,17 @@ describe Tree do
 
     it "should wrap children as Tree" do
         @tree << "child 1"
-        @tree.children.first.should be_kind_of(Tree)
+        @tree.children["child 1"].should be_kind_of(Tree)
     end
     
     it "should wrap children as Tree and data should give access to the original" do
         @tree << "child 1"
-        @tree.children.first.name.should == "child 1"
+        @tree.children["child 1"].name.should == "child 1"
     end
 
     it "should only wrap children as Tree's if they are not already" do
         @tree << Tree.new("child 1")
-        @tree.children.first.name.should_not be_kind_of(Tree)
+        @tree.children["child 1"].name.should_not be_kind_of(Tree)
     end
 
     it "should be able to accept children" do
@@ -71,7 +71,7 @@ describe Tree do
     end
 
     it "should say how deep an item is in the tree" do
-        @tree_with_leaves.children[1].children.first.depth.should == 2
+        @tree_with_leaves.children["c1"].children["c1-c1"].depth.should == 2
     end
 
     it "should cascade a method call up the tree" do

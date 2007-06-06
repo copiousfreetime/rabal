@@ -25,7 +25,7 @@ module Rabal
         def initialize(name)
             @name       = name.to_s
             @parent     = nil
-            @children   = []
+            @children   = {}
             return self
         end
 
@@ -68,7 +68,7 @@ module Rabal
                 obj = Tree.new(obj)
             end
             obj.parent = self
-            @children << obj
+            @children[obj.name] = obj
             return self
         end
 
@@ -92,7 +92,7 @@ module Rabal
         #
         def walk(tree,method)
             method.call(tree)
-            tree.children.each do |child|
+            tree.children.each_pair do |name,child|
                 walk(child,method) 
             end
         end

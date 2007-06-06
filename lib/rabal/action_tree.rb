@@ -32,7 +32,7 @@ module Rabal
 
             action
 
-            children.each do |child|
+            children.each_pair do |name,child|
                 child.process
             end
 
