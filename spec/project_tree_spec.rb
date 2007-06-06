@@ -19,16 +19,12 @@ describe Rabal::ProjectTree do
 
     it "should create a basic project" do
         @tree.process
-        found = []
-
-        Find.find("./new-spec-proj/") do |f|
-            if File.file?(f) or File.directory?(f) then
-                f.gsub!("./new-spec-proj/","")
-                next if f.size == 0
-                found << f 
-            end
-        end
-        found.sort!
+        found = find_in("new-spec-proj")
         found.should == @base_tree 
+    end
+
+    it "should allow for insertion into the Project Tree" do
+        @tree << ProjectTree.new("test","rabal:test")
+        @tree.process
     end
 end

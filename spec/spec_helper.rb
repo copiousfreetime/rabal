@@ -16,6 +16,24 @@ include Rabal
 def my_temp_dir
     MkTemp.mktempdir(File.join(Dir.tmpdir,"rabal-spec.XXXXXXXX"))
 end
+
+# return a list of all the files and directories in a location
+# minus anything leading up to that directory in the path
+def find_in(path)
+    found = []
+    path = path.chomp("/") + "/"
+    path = path.reverse.chomp(".").chomp("/").reverse
+    Find.find(path) do |f|
+        if File.file?(f) or File.directory?(f) then
+            f.gsub!(/\A#{path}/,"")
+            next if f.size == 0
+            found << f 
+        end
+    end
+    found.sort
+end
+
+
 #
 # Tree used to validate that actions are called
 #
