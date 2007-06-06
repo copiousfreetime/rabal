@@ -2,7 +2,10 @@
 === You're Dropping the Ball Here.
 
 * rabal should be a GemPluginManager
-* rabal should use the GemPlugin::Manager for resource management too
+** figure out plugin namespaces '/tree/builtin/base' etc.
+** move tree's to be in directories based on resource matching their namespace
+** bootstrap builtin to be Gem even if not, this really is only for running in-scm
+** use the GemPlugin::Manager for resource management too
 * fix ERB errors, show better error
 * subclass OptionParser to allow for plugins to hook into options
 * command approach (new, add, ...)
