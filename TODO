@@ -2,7 +2,6 @@
 === You're Dropping the Ball Here.
 
 * fix ERB errors, show better error
-* allow for insertion into project tree at an arbitrary path
 * subclass OptionParser to allow for plugins to hook into options
 * command approach (new, add, ...)
 * rabal should be a GemPluginManager
@@ -21,6 +20,7 @@ svn:ignore, etc)
 
 === Accomplishments!
 
+* allow for insertion into project tree at an arbitrary path
 * switch to Hash for children to allow for path access to data
 * Tree namespaces
 * cascade data access up the tree, method_missing
