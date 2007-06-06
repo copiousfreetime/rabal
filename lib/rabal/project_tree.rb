@@ -6,6 +6,11 @@ module Rabal
     # represents the root of a project directory structure
     #
     class ProjectTree < DirectoryTree
+        # the name of the project this tree represents
+        attr_accessor :project_name
+
+        # the name of the template that is used to find src_directory
+        attr_accessor :template_name
 
         # the source directory from which the project is generated 
         attr_accessor :src_directory
@@ -16,7 +21,30 @@ module Rabal
         # used as the +src_directory+.
         def initialize(name,template_name)
             super(name)
-            src_directory = Rabal::Application.find_src_directory(template_name)
+            @project_name  = name
+            @template_name = template_name
+            @src_directory = Rabal::Application.find_src_directory(template_name)
+        end
+
+        #
+        # If the ProjectTree is the top tree, then it must 'build' all
+        # the other items in it.  Call this after initialization.  This
+        # is not done during initialization, as 'sub-project' Tree's
+        # may be added, and require the information in the parent
+        # ProjectTree.
+        #
+        # Sub-project Tree's are populated via the +post_add+ hook.
+        #
+        def build
+            post_add
+        end
+        
+        #
+        # populating the tree needs to take place after the ProjectTree
+        # has been added to the Tree, but before the processing of the
+        # tree takes place
+        # 
+        def post_add
             populate_tree(src_directory)
         end
 
@@ -34,7 +62,7 @@ module Rabal
                     next if pwd == entry
                    
                     if File.file?(entry) then
-                        tree << FileTree.from_file(replace_known_words(entry))
+                        tree << FileTree.from_file(entry,true,replace_known_words(entry))
                     elsif File.directory?(entry) then
                         tree << dir = DirectoryTree.new(replace_known_words(entry))
                         populate_tree(entry,dir)

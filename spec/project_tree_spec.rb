@@ -6,6 +6,8 @@ describe Rabal::ProjectTree do
     before(:each) do 
         @working_dir = my_temp_dir
         @tree        = ProjectTree.new("new-spec-proj","rabal:base")
+        @tree.build
+
         @base_tree   = Set.new(%w(README LICENSE Rakefile CHANGES INSTALL lib lib/new-spec-proj lib/new-spec-proj/version.rb))
     
         @before = Dir.pwd
@@ -25,6 +27,6 @@ describe Rabal::ProjectTree do
     it "should allow for insertion into the Project Tree" do
         @tree << ProjectTree.new("test","rabal:test")
         @tree.process
-        find_in('new-spec-proj').sort.should == (@base_tree +  %w(test test/new_spec_proj.rb test/test_helper.rb)).sort
+        find_in('new-spec-proj').sort.should == (@base_tree +  %w(test test/new_spec_proj_test.rb test/test_helper.rb)).sort
     end
 end

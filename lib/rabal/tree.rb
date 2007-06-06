@@ -69,8 +69,12 @@ module Rabal
             end
             obj.parent = self
             @children[obj.name] = obj
+
+            obj.post_add
+
             return self
         end
+        alias :add :<<
 
         #
         # Allow for Enumerable to be included.  This just wraps walk.
@@ -109,8 +113,14 @@ module Rabal
             end
         end
 
+
         #
-        # 
+        # allow for a hook so newly added Tree objects may do custom
+        # processing after being added to the tree, but before the tree
+        # is walked or processed
+        #
+        def post_add
+        end
         private
 
         #

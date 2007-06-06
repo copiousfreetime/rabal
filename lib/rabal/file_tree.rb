@@ -28,14 +28,19 @@ module Rabal
         class << self
 
             #
-            # Create a new FileTree from the path to a file.  The 'file_name'
-            # of the FileTree is basename of the path, minus any
-            # extension(.erb by default) .  The contents of the file at
-            # path will be loaded into the +template+ member variable.
+            # Create a new FileTree from the path to a file.  The +file_name+
+            # by default of the FileTree is basename of the path, minus any
+            # extension.  This can be altered with the +strip_extension+
+            # and +file_name+ parameters.  Passing +nil+ for the
+            # +file_name+ achieves the default behavior.
             #
-            def from_file(path,strip_ext = ".erb") 
+            # The contents of the file at path will be loaded into the 
+            # +template+ member variable.
+            #
+            def from_file(path,strip_ext = true, non_default_file_name = nil)
                 template  = IO.read(File.expand_path(path))
-                file_name = File.basename(path,strip_ext)
+                file_name = non_default_file_name || File.basename(path)
+                file_name = File.basename(file_name,(strip_ext ? ".*" : "")).underscore
                 FileTree.new(file_name,template)
             end
 
