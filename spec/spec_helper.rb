@@ -20,7 +20,7 @@ end
 # return a list of all the files and directories in a location
 # minus anything leading up to that directory in the path
 def find_in(path)
-    found = []
+    found = Set.new
     path = path.chomp("/") + "/"
     path = path.reverse.chomp(".").chomp("/").reverse
     Find.find(path) do |f|
@@ -30,7 +30,7 @@ def find_in(path)
             found << f 
         end
     end
-    found.sort
+    found
 end
 
 

@@ -2,6 +2,7 @@ require 'rabal/action_tree'
 require 'erb'
 
 module Rabal
+    include Util
     #
     # Represents a file to be created.  Generally a FileTree will use a
     # source .erb file and combine it with the Rabal::Specification to

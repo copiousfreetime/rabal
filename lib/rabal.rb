@@ -12,6 +12,9 @@ DESC
     LIB_DIR         = File.join(ROOT_DIR,"lib").freeze
     DATA_DIR        = File.join(ROOT_DIR,"data").freeze
     TEMPLATE_DIRS   = [ File.join(DATA_DIR,"trees").freeze ]
+    KNOWN_WORDS     = {
+        "project" => lambda { |tree| puts "calling root on #{tree.class}" ; tree.root.name }
+    }
 
     class TemplateNotFoundError < StandardError ; end
 

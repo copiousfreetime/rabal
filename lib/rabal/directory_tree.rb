@@ -1,6 +1,7 @@
 require 'rabal/action_tree'
 
 module Rabal
+    include Util
     #
     # A directory that is to be created or traversed.  When this Tree is
     # invoked it is assumed that the current working directory is the

@@ -32,15 +32,11 @@ module Rabal
                 Dir.entries(".").each do |entry|
                     next if entry[0] == ?.
                     next if pwd == entry
-                    
+                   
                     if File.file?(entry) then
-                        tree << FileTree.from_file(entry)
-                    # substitute the current project name 
-                    elsif "project" == entry then
-                        tree << dir = DirectoryTree.new(root.name.dup)
-                        populate_tree(entry,dir)
+                        tree << FileTree.from_file(replace_known_words(entry))
                     elsif File.directory?(entry) then
-                        tree << dir = DirectoryTree.new(entry)
+                        tree << dir = DirectoryTree.new(replace_known_words(entry))
                         populate_tree(entry,dir)
                     end
                 end
