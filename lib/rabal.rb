@@ -16,6 +16,22 @@ DESC
         "rabal.project" => lambda { |tree| tree.root.name }
     }
 
+    #
+    # Utility method to require all files ending in .rb that lie in the
+    # directory below this file that has the same name as the filename
+    # passed in.
+    #
+    def require_all_libs_relative_to(fname)
+        search_me = File.join(File.dirname(fname),File.basename(fname,".*"))
+        
+        Dir.entries(search_me).each do |rb|
+            if File.extname(rb) == ".rb" then
+                require File.join(search_me,rb)
+            end
+        end
+    end 
+    module_function :require_all_libs_relative_to
+
     class TemplateNotFoundError < StandardError ; end
     class PathNotFoundError < StandardError ; end
 
@@ -58,9 +74,4 @@ DESC
     end
 end
 
-Dir.entries(File.join(Rabal::LIB_DIR,"rabal")).each do |rb|
-    if rb =~ /\.rb\Z/ then
-        f = File.basename(rb,".rb")
-        require "rabal/#{f}"
-    end
-end
+Rabal.require_all_libs_relative_to(__FILE__)

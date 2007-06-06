@@ -5,7 +5,7 @@ require 'set'
 describe Rabal::ProjectTree do
     before(:each) do 
         @working_dir = my_temp_dir
-        @tree        = ProjectTree.new("new-spec-proj","rabal:base")
+        @tree        = ProjectTree.new("new-spec-proj","/builtin/base")
         @tree.build
 
         @base_tree   = Set.new(%w(README Rakefile CHANGES INSTALL lib lib/new-spec-proj lib/new-spec-proj/version.rb))
@@ -25,7 +25,7 @@ describe Rabal::ProjectTree do
     end
 
     it "should allow for insertion into the Project Tree" do
-        @tree << ProjectTree.new("test","rabal:test")
+        @tree << ProjectTree.new("test","/builtin/test")
         @tree.process
         find_in('new-spec-proj').sort.should == (@base_tree +  %w(test test/new_spec_proj_test.rb test/test_helper.rb)).sort
     end
@@ -36,7 +36,7 @@ describe Rabal::ProjectTree do
         @tree << d1
         d1d2 = %w(misc misc/stuff)
 
-        @tree.add_at_path("misc/stuff", ProjectTree.new("spec", "rabal:spec"))
+        @tree.add_at_path("misc/stuff", ProjectTree.new("spec", "/builtin/spec"))
         spec = %w(misc/stuff/spec misc/stuff/spec/spec_helper.rb misc/stuff/spec/new_spec_proj_spec.rb)
         
         @tree.process
