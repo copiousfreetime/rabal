@@ -6,9 +6,18 @@ module Rabal
     # represents the root of a project directory structure
     #
     class ProjectTree < DirectoryTree
-        def initialize(name)
-            super
-            populate_tree(File.join(APP_DATA_DIR,"trees","rabal","base"))
+
+        # the source directory from which the project is generated 
+        attr_accessor :src_directory
+
+        # create a new Project Tree based upon a source directory
+        # template designated by +template_name+.  The known template
+        # directories are searched for a matching location and that is
+        # used as the +src_directory+.
+        def initialize(name,template_name)
+            super(name)
+            src_directory = Rabal::Application.find_src_directory(template_name)
+            populate_tree(src_directory)
         end
 
         private
@@ -18,16 +27,21 @@ module Rabal
         # contents of the directory.  All files will be mapped to
         # FileTree and directories will be mapped to DirectoryTree.
         #
-        def populate_tree(src_directory,root=self)
+        def populate_tree(src_directory,tree=self)
             Dir.chdir(src_directory) do |pwd|
-                Find.find(pwd) do |f|
-                    next if f == pwd
-                    if File.file?(f) then
-                        self << FileTree.from_file(f)
-                    elsif File.directory?(f)
-                        self << dir = DirectoryTree.new(f)
-                        Find.prune
-                        populate_tree(f,dir)
+                Dir.entries(".").each do |entry|
+                    next if entry[0] == ?.
+                    next if pwd == entry
+                    
+                    if File.file?(entry) then
+                        tree << FileTree.from_file(entry)
+                    # substitute the current project name 
+                    elsif "project" == entry then
+                        tree << dir = DirectoryTree.new(root.name.dup)
+                        populate_tree(entry,dir)
+                    elsif File.directory?(entry) then
+                        tree << dir = DirectoryTree.new(entry)
+                        populate_tree(entry,dir)
                     end
                 end
             end

@@ -15,6 +15,7 @@ Main {
     version Rabal::VERSION
     description Rabal::DESCRIPTION
 
+    argument 'command'
     argument 'project'
 
     option("template-dirs=DIR") {

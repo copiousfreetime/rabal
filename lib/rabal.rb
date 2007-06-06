@@ -8,15 +8,19 @@ Rabal is a commandline application for bootstrapping, packaging and
 distributing ruby projects.
 DESC
 
-    APP_ROOT_DIR    = File.expand_path(File.join(File.dirname(__FILE__),".."))
-    APP_LIB_DIR     = File.join(APP_ROOT_DIR,"lib").freeze
-    APP_DATA_DIR    = File.join(APP_ROOT_DIR,"data").freeze
+    ROOT_DIR        = File.expand_path(File.join(File.dirname(__FILE__),".."))
+    LIB_DIR         = File.join(ROOT_DIR,"lib").freeze
+    DATA_DIR        = File.join(ROOT_DIR,"data").freeze
+    TEMPLATE_DIRS   = [ File.join(DATA_DIR,"trees").freeze ]
+
+    class TemplateNotFoundError < StandardError ; end
 
     class Application
         class << self
             def run(main)
+
                 root = DirectoryTree(main.params["directory"])
-                project = ProjectTree.new(main.param["project"])
+                project = ProjectTree.new(main.param["project"],"rabal:base")
                 root << project
                 main.params.each do |p|
                     puts "#{p.name} #{p.value} #{p.given? ? "given" : "not given"}"
@@ -35,11 +39,19 @@ DESC
                 true
             end
 
+            def find_src_directory(template_name)
+                template_path = template_name.split(":").join(File::SEPARATOR)
+                TEMPLATE_DIRS.each do |dir|
+                    src_dir = File.join(dir,template_path)
+                    return src_dir if File.directory?(src_dir)
+                end
+                raise TemplateNotFoundError, "'#{template_name}' was not found in any template directory"
+            end
         end
     end
 end
 
-Dir.entries(File.join(Rabal::APP_LIB_DIR,"rabal")).each do |rb|
+Dir.entries(File.join(Rabal::LIB_DIR,"rabal")).each do |rb|
     if rb =~ /\.rb\Z/ then
         f = File.basename(rb,".rb")
         require "rabal/#{f}"

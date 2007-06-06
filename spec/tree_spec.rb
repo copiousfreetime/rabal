@@ -42,12 +42,12 @@ describe Tree do
     
     it "should wrap children as Tree and data should give access to the original" do
         @tree << "child 1"
-        @tree.children.first.data.should == "child 1"
+        @tree.children.first.name.should == "child 1"
     end
 
     it "should only wrap children as Tree's if they are not already" do
         @tree << Tree.new("child 1")
-        @tree.children.first.data.should_not be_kind_of(Tree)
+        @tree.children.first.name.should_not be_kind_of(Tree)
     end
 
     it "should be able to accept children" do
@@ -67,15 +67,7 @@ describe Tree do
     end
 
     it "should be iteratable" do
-        @tree_with_leaves.collect { |n| n.data }.size.should == 11
-    end
-
-    it "should be iterable over the data items" do
-        data = []
-        @tree_with_leaves.each_datum do |d|
-            data << d
-        end
-        data.last.should == "c2-c2"
+        @tree_with_leaves.collect { |n| n.name }.size.should == 11
     end
 
     it "should say how deep an item is in the tree" do

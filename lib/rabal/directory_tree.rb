@@ -20,7 +20,7 @@ module Rabal
         # Only the last portion of the directory is used.  That is
         # +File.basename+ is called upon name.
         def initialize(name)
-            super
+            super(name)
             @dir_name = File.basename(name)
             @parent_dir = nil
         end

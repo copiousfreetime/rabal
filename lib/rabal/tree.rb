@@ -8,8 +8,8 @@ module Rabal
 
         include Enumerable
 
-        # The data contained within this Tree
-        attr_accessor :data
+        # The name of this Tree
+        attr_accessor :name
 
         # The parent of this node.  If this is nil then this Tree is a
         # root.
@@ -20,10 +20,10 @@ module Rabal
         attr_accessor :children
 
         #
-        # Create a new Tree with the give object as its +data+ payload.
+        # Create a new Tree with the given object.to_s as its +name+.
         #
-        def initialize(obj)
-            @data       = obj
+        def initialize(name)
+            @name       = name.to_s
             @parent     = nil
             @children   = []
             return self
@@ -80,12 +80,6 @@ module Rabal
         end
 
         #
-        # Walk the tree yielding the data items in each node
-        #
-        def each_datum
-            self.walk(self,lambda { |tree| yield tree.data }) 
-        end
-        #
         # Count how many items are in the tree
         #
         def size
@@ -111,7 +105,7 @@ module Rabal
             if not is_root? then
                 @parent.send method_id, *params, &block
             else
-                raise NoMethodError, "undefined method `#{method_id}' for #{@data.to_s}:Tree"
+                raise NoMethodError, "undefined method `#{method_id}' for #{name}:Tree"
             end
         end
 
