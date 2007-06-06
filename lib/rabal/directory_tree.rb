@@ -51,7 +51,7 @@ module Rabal
         # change back to the parent directory
         #
         def after_action
-            Rabal::Log.info("leaving directory #{dir_name}")
+            info("leaving directory #{dir_name}")
             Dir.chdir(parent_dir)
         end
     end

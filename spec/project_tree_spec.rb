@@ -29,4 +29,18 @@ describe Rabal::ProjectTree do
         @tree.process
         find_in('new-spec-proj').sort.should == (@base_tree +  %w(test test/new_spec_proj_test.rb test/test_helper.rb)).sort
     end
+
+    it "should allow for insertion into the Project Tree somewhere other than the root" do
+        d1 = DirectoryTree.new("misc")
+        d1 << DirectoryTree.new("stuff")
+        @tree << d1
+        d1d2 = %w(misc misc/stuff)
+
+        @tree.add_at_path("misc/stuff", ProjectTree.new("spec", "rabal:spec"))
+        spec = %w(misc/stuff/spec misc/stuff/spec/spec_helper.rb misc/stuff/spec/new_spec_proj_spec.rb)
+        
+        @tree.process
+        find_in('new-spec-proj').sort.should == (@base_tree + d1d2 + spec).sort
+    end
+
 end

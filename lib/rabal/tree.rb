@@ -60,20 +60,67 @@ module Rabal
         end
 
         #
+        # Attach the given tree at the indicated path.  The path given
+        # is always assumed to be from the root of the Tree being
+        # attached to.
+        #
+        # The path is given as a string separated by '/'.  Each portion
+        # of the string is matched against the name of the particular
+        # tree.  
+        #
+        # Given :
+        #
+        #   a --- b --- c
+        #    \ 
+        #     d - e --- f
+        #          \
+        #           g - h
+        #
+        # * the path +a/b/c+ will match the path to Tree +c+
+        # * the path +d/e/g+ will _not_ match anything as the path must start at +a+ here
+        # * the path +a/d/e+ will _not_ match anytthin as +e+ is not a child of +d+
+        # * the path +a/d/e/g+ will match node +g+
+        #
+        # Leading and trailing '/' on the path are not necessary and removed.
+        #
+        def add_at_path(path,subtree)
+            parent_tree = tree_at_path(path)
+            parent_tree << subtree
+            return self
+        end
+
+
+        #
+        # Return the Tree that resides at the given path
+        #
+        def tree_at_path(path_str)
+            path_str = path_str.chomp("/").reverse.chomp("/").reverse
+            path     = path_str.split("/")
+
+            # strip of the redundant first match if it is the same as
+            # the current node
+            find_subtree(path)
+        end
+
+        #
         # Add the given object to the Tree as a child of this node.  If
         # the given object is not a Tree then wrap it with a Tree.
         #
-        def <<(obj)
-            if not obj.kind_of?(Tree) then
-                obj = Tree.new(obj)
+        def <<(subtree)
+            # this should not generally be the case, but wrap things
+            # up to be nice.
+            if not subtree.kind_of?(Tree) then
+                subtree = Tree.new(subtree)
             end
-            obj.parent = self
-            @children[obj.name] = obj
 
-            obj.post_add
+            subtree.parent = self
+            children[subtree.name] = subtree
+            
+            subtree.post_add
 
             return self
         end
+
         alias :add :<<
 
         #
@@ -121,6 +168,33 @@ module Rabal
         #
         def post_add
         end
+        #
+        # find the current path of the tree from root to here, return it
+        # as a '/' separates string.
+        #
+        def current_path
+            return name if is_root? 
+            return ([name] + parent.current_path).flatten.reverse.join("/")
+        end
+
+        #
+        # Given the initial path to match as an Array find the Tree that
+        # matches that path.
+        # 
+        def find_subtree(path)
+           
+            if path.empty? then
+                return self
+            else
+                possible_child = path.shift
+                if children.has_key?(possible_child) then
+                    children[possible_child].find_subtree(path)
+                else
+                    raise PathNotFoundError, "`#{possible_child}' does not match anything at the current path in the Tree (#{current_path})"
+                end
+            end
+        end
+
         private
 
         #

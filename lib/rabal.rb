@@ -17,6 +17,7 @@ DESC
     }
 
     class TemplateNotFoundError < StandardError ; end
+    class PathNotFoundError < StandardError ; end
 
     class Application
         class << self
