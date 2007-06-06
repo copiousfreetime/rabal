@@ -3,11 +3,12 @@ require 'find'
 
 module Rabal
     # 
-    # represents the root of a project directory structure
+    # represents the root of a plugin directory structure
     #
-    class ProjectTree < DirectoryTree
-        # the name of the project this tree represents
-        attr_accessor :project_name
+    class PluginTree < DirectoryTree
+
+        # the name of the plugin this tree represents
+        attr_accessor :plugin_name
 
         # the name of the template that is used to find src_directory
         attr_accessor :template_name
@@ -15,23 +16,23 @@ module Rabal
         # the source directory from which the project is generated 
         attr_accessor :src_directory
 
-        # create a new Project Tree based upon a source directory
+        # create a new Plugin Tree based upon a source directory
         # template designated by +template_name+.  The known template
         # directories are searched for a matching location and that is
         # used as the +src_directory+.
         def initialize(name,template_name)
             super(name)
-            @project_name  = name
+            @plugin_name = name
             @template_name = template_name
             @src_directory = Rabal::Application.find_src_directory(template_name)
         end
 
         #
-        # If the ProjectTree is the top tree, then it must 'build' all
+        # If the PluginTree is the top tree, then it must 'build' all
         # the other items in it.  Call this after initialization.  This
         # is not done during initialization, as 'sub-project' Tree's
         # may be added, and require the information in the parent
-        # ProjectTree.
+        # PluginTree.
         #
         # Sub-project Tree's are populated via the +post_add+ hook.
         #
@@ -40,7 +41,7 @@ module Rabal
         end
         
         #
-        # populating the tree needs to take place after the ProjectTree
+        # populating the tree needs to take place after the PluginTree
         # has been added to the Tree, but before the processing of the
         # tree takes place
         # 
@@ -51,7 +52,7 @@ module Rabal
         private
 
         # 
-        # Given a source directory populate a ProjectTree based upon the
+        # Given a source directory populate a PluginTree based upon the
         # contents of the directory.  All files will be mapped to
         # FileTree and directories will be mapped to DirectoryTree.
         #
