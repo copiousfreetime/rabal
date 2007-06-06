@@ -10,7 +10,7 @@ DESC
 
     ROOT_DIR        = File.expand_path(File.join(File.dirname(__FILE__),".."))
     LIB_DIR         = File.join(ROOT_DIR,"lib").freeze
-    DATA_DIR        = File.join(ROOT_DIR,"data").freeze
+    RESOURCE_DIR    = File.join(ROOT_DIR,"resources").freeze
     TEMPLATE_DIRS   = [ File.join(DATA_DIR,"trees").freeze ]
     KNOWN_WORDS     = {
         "rabal.project" => lambda { |tree| tree.root.name }
@@ -22,8 +22,11 @@ DESC
     class Application
         class << self
             def run(main)
+                if GemPlugin::Manager.instance.loaded? "rabal" then
+                    GemPlugin::Manager.instance.gems["rabal"] = ROOT_DIR
+                end
 
-                root = DirectoryTree(main.params["directory"])
+                root = DirectoryTree.new(main.params["directory"])
                 project = ProjectTree.new(main.param["project"],"rabal:base")
                 root << project
                 main.params.each do |p|
