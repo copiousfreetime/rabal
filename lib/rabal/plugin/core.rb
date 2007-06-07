@@ -1,8 +1,7 @@
-require 'rabal'
-
+require 'rabal/plugin/foundation'
 module Rabal
     module Plugin
-        class Core < GemPlugin::Plugin "/builtin/core"
+        class Core < Rabal::Plugin::Base "/builtin/core"
             class << self
                 def option_name
                     "core"

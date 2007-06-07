@@ -1,7 +1,7 @@
-require 'rabal'
+require 'rabal/plugin/foundation'
 module Rabal
     module Plugin
-        class License < GemPlugin::Plugin "/builtin/license"
+        class License < Rabal::Plugin::Base "/builtin/license"
             class << self
                 def option_name 
                     "license"

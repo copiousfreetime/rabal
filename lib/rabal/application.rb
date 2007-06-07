@@ -60,8 +60,8 @@ module Rabal
             plugin_manager.plugins.each_pair do |category,list|
                 list.each_pair do |k,plugin|
                     options.by_plugin[plugin] = OpenStruct.new
-                    option_parser.on("--with-#{plugin.option_name.dashify}=[PARAMS]","Load plugin #{plugin.name}") do |opts|
-                        plugin.extend_options(option_parser,options.by_plugin[plugin])
+                    option_parser.on("--[no-]load-#{plugin.option_name.dashify}","Load plugin #{plugin.name}") do |add_opts|
+                        plugin.extend_options(option_parser,options.by_plugin[plugin]) if add_opts
                     end
                 end
             end
