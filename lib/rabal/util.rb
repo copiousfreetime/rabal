@@ -1,3 +1,4 @@
+require 'ostruct'
 module Rabal
     module Util
         def replace_known_words(str)
@@ -44,5 +45,3 @@ class String
         self.split(split_on).find_all { |c| c.size > 0 }.collect { |c| c.downcase }
     end
 end
-
-
