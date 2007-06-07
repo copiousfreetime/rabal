@@ -21,6 +21,7 @@ module Rabal
             setup_plugins
             begin
                 option_parser.parse!(argv)
+                return 
                 options.keys.each do |k1|
                     print "#{k1.to_s.ljust(40)} : "
                     if options[k1].kind_of?(Hash) then
@@ -33,9 +34,9 @@ module Rabal
                         puts options[k1]
                     end
                 end
-            rescue OptionParser::ParseError => pe
+            rescue ::OptionParser::ParseError => pe
                 puts "ERROR: #{pe}"
-                puts option_parser
+                puts option_parser.to_s
                 exit 1
             end
         end
@@ -60,11 +61,13 @@ module Rabal
             plugin_manager.plugins.each_pair do |category,list|
                 list.each_pair do |k,plugin|
                     options.by_plugin[plugin] = OpenStruct.new
-                    option_parser.on("--[no-]load-#{plugin.option_name.dashify}","Load plugin #{plugin.name}") do |add_opts|
-                        plugin.extend_options(option_parser,options.by_plugin[plugin]) if add_opts
+                    option_parser.for_section(plugin).on("--[no-]load-#{plugin.option_name.dashify}",
+                                                         "Load plugin #{plugin.name}") do |add_plugin_opts|
+                        plugin.extend_options(option_parser.for_section(plugin),options.by_plugin[plugin]) if add_plugin_opts
                     end
                 end
             end
+
         end
 
         def options 
@@ -80,25 +83,31 @@ module Rabal
 
         def option_parser
             if @option_parser.nil? then
-                @option_parser = OptionParser.new do |op|
+                @option_parser = Rabal::OptionParser.new do |op|
                     op.on("-d", "--directory DIR", "parent directory of the project tree", 
                             "\tDefault: #{options.directory}")  { |dir| options.directory = dir }
 
-                    op.on("-o", "--log LOG", "logfile location","\tDefault: standard out") { |logfile| options.log_file = logfile }
+                    op.on("-l", "--log LOG", "logfile location","\tDefault: standard out") { |logfile| options.log_file = logfile }
                     op.on("-v", "--verbosity-level LEVEL", "One of : debug,info,warn,error,fatal",
                             "\tDefault: #{Logger::SEV_LABEL[options.log_level]}") do |level| 
                                 if l = Logger::SEV_LABEL.index(level.upcase) then
                                     options.log_level = l
                                 else
-                                    raise OptionParser::ParseError, "Invalid log level of #{level}"
+                                    raise ::OptionParser::ParseError, "Invalid log level of #{level}"
                                 end
                     end
+
+                    op.on("-h", "--help", "Display this help message") { |help| options.help = help }
+                    op.on("-V", "--version", "Display the version.") { |version| options.version = version }
                 end
             end
             return @option_parser
         end
 
         def run
+            if options.help then
+                puts option_parser
+            end
         end
     end
 end

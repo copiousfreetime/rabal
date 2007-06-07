@@ -7,6 +7,7 @@ module Rabal
                     "license"
                 end
                 def extend_options(parser,options)
+                    parser.on("--license-type LICENSE", "Type of Licese for project")      { |a| options.license = a }
                 end
             end
         end

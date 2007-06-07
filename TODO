@@ -1,12 +1,20 @@
 == Things To Do and Things that are Done
 === You're Dropping the Ball Here.
 
-* rabal should be a GemPluginManager
-** figure out plugin namespaces '/tree/builtin/base' etc.
-** move tree's to be in directories based on resource matching their namespace
-** bootstrap builtin to be Gem even if not, this really is only for running in-scm
 ** use the GemPlugin::Manager for resource management too
 * subclass OptionParser to allow for plugins to hook into options
+** does --help do all help or just up to the previous plugins that have
+   been 
+** --load-all --help ? does that get all the options from all the
+   plugins and then dump the to the screen?
+** break --help up into sections ?  GENERAL  PLUGINS(listing all
+   plugins) and then subsection for each plugin?
+** multipass parsing ?  Parse for global options, then based on those
+   see what happens?
+** hmm don't pass the things an option, pass them a Switch ?  or
+   something to all make_switch on ?
+
+
 * command approach (new, add, ...)
 
 * fix ERB errors, show better error
@@ -26,6 +34,10 @@ svn:ignore, etc)
 
 === Accomplishments!
 
+* rabal should be a GemPluginManager
+** figure out plugin namespaces '/tree/builtin/base' etc.
+** move tree's to be in directories based on resource matching their namespace
+** bootstrap builtin to be Gem even if not, this really is only for running in-scm
 * allow for insertion into project tree at an arbitrary path
 * switch to Hash for children to allow for path access to data
 * Tree namespaces
