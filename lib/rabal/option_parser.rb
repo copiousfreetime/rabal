@@ -26,9 +26,9 @@ module Rabal
         # delegate options to the actual parser
         def on(*opts,&block)
             if @current_section_key != :global then
-                list = make_only_long_switch(*opts,&block)
+                list = make_only_long_switch(opts,block)
             else 
-                list = make_switch(*opts,&block)
+                list = make_switch(opts,block)
             end
             current_section << list
             @option_parser.top.append(*list)
@@ -77,11 +77,11 @@ module Rabal
         end
 
         private
-        def make_switch(*opts,&block)
-            @option_parser.make_switch(*opts,&block)
+        def make_switch(opts,block)
+            @option_parser.make_switch(opts,block)
         end
-        def make_only_long_switch(*opts,&block)
-            list = make_switch(*opts,&block)
+        def make_only_long_switch(opts,block)
+            list = make_switch(opts,block)
             list[0].short.clear
             list[1].clear
             list
