@@ -1,12 +1,12 @@
+require 'ostruct'
 module Rabal
     #
     # The Rabal application 
     #
     class Application
 
-        include Log
-
         attr_accessor :options
+        attr_accessor :option_parser
 
         attr_accessor :stdin
         attr_accessor :stdout
@@ -16,16 +16,25 @@ module Rabal
         attr_accessor :plugin_manager
 
         def initialize(argv)
-            manage_plugins
-            option_parser.parse!
+            setup_plugins
+            setup_default_options
+            setup_option_parser
+
+            begin
+                option_parser.parse!(argv)
+            rescue OptionParser::ParseError => pe
+                puts "ERROR: #{pe}"
+                puts option_parser
+                exit 1
+            end
         end
 
         #
         # Load any and all plugins that are available.  This includes
         # built in plugins and those that are accessible via gems.
         #
-        def manage_plugins
-            info("Loading plugins")
+        def setup_plugins 
+            puts "loading plugins"
             @plugin_manager = GemPlugin::Manager.instance
             plugin_manager.load "rabal" => GemPlugin::INCLUDE
             
@@ -39,27 +48,28 @@ module Rabal
             # dump the available plugins to the log
             plugin_manager.plugins.each_pair do |category,list|
                 m = list.collect { |k, v| "#{k} => #{v.to_s}"}.join(', ');
-                debug("loaded : #{category} - #{m}")
+                puts "loaded : #{category} - #{m}"
             end
         end
 
-        def default_options
+        def setup_default_options
             @options = OpenStruct.new
             @options.directory = Dir.pwd
             @options.log_level = Logger::INFO
             @options.log_file  = STDOUT
+            return @options
         end
 
-        def option_parser
-            OptionParser.new do |op|
+        def setup_option_parser
+            @option_parser = OptionParser.new do |op|
 
                 op.on("-d", "--directory DIR", "parent directory of the project tree", 
-                        "Default: #{options.directory}")  { |dir| options.directory = dir }
+                        "\tDefault: #{options.directory}")  { |dir| options.directory = dir }
 
-                op.on("-o", "--log LOG", "logfile location","Default: standard out") { |logfile| options.log_file = logfile }
+                op.on("-o", "--log LOG", "logfile location","\tDefault: standard out") { |logfile| options.log_file = logfile }
                 op.on("-v", "--verbosity-level LEVEL", "One of : debug,info,warn,error,fatal",
-                        "Default: #{LLogger::SEV_LABEL[options.log_level]}") do |level| 
-                            if l = LLogger::SEV_LABEL.index(level.upcase) then
+                        "\tDefault: #{Logger::SEV_LABEL[options.log_level]}") do |level| 
+                            if l = Logger::SEV_LABEL.index(level.upcase) then
                                 options.log_level = l
                             else
                                 raise OptionParser::ParseError, "Invalid log level of #{level}"

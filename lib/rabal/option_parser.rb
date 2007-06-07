@@ -1,6 +1,6 @@
 require 'optparse'
 module Rabal
-    class OptionParser < ::OptionParser
+    class KOptionParser < ::OptionParser
         def initialize
 
         end
