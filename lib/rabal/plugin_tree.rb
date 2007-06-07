@@ -3,7 +3,9 @@ require 'find'
 
 module Rabal
     # 
-    # represents the root of a plugin directory structure
+    # Represents the root of a plugin directory structure.  This plugin
+    # could also only represent a single FileTree by having the
+    # 'directory' it represents being '.'
     #
     class PluginTree < DirectoryTree
 
@@ -20,26 +22,13 @@ module Rabal
         # template designated by +template_name+.  The known template
         # directories are searched for a matching location and that is
         # used as the +src_directory+.
-        def initialize(name,template_name)
+        def initialize(template_name,name = ".")
             super(name)
             @plugin_name = name
             @template_name = template_name
             @src_directory = Rabal::Application.find_src_directory(template_name)
         end
 
-        #
-        # If the PluginTree is the top tree, then it must 'build' all
-        # the other items in it.  Call this after initialization.  This
-        # is not done during initialization, as 'sub-project' Tree's
-        # may be added, and require the information in the parent
-        # PluginTree.
-        #
-        # Sub-project Tree's are populated via the +post_add+ hook.
-        #
-        def build
-            post_add
-        end
-        
         #
         # populating the tree needs to take place after the PluginTree
         # has been added to the Tree, but before the processing of the
@@ -61,7 +50,7 @@ module Rabal
                 Dir.entries(".").each do |entry|
                     next if entry[0] == ?.
                     next if pwd == entry
-                   
+        
                     if File.file?(entry) then
                         tree << FileTree.from_file(entry,true,replace_known_words(entry))
                     elsif File.directory?(entry) then
