@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require 'main'
 
 begin 
     require 'rabal'
@@ -11,26 +10,3 @@ rescue LoadError => e
 end
 
 Rabal::Application.new(ARGV).run
-__END__
-
-Main {
-    
-    option('rubyforge-project=PROJECT') {
-        description "RubyForge project with which this project should be associated."
-    }
-
-
-    environment("RABAL_TEMPLATE_DIRS=dir1:dir2") {
-        validate { |e| Rabal::Application.validate_template_dirs(e.split(':')) }
-        description "Colon separated list of additional directories to look for project tree templates"
-    }
-
-    environment("RABAL_ENV=test") {
-        validate { |e| %w(development test production).include?(e) }
-        default "production"
-        description "Used for running unit tests.  Never needed in normal use."
-    }   
-
-    def run 
-    end 
-}   

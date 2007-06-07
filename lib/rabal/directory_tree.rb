@@ -1,4 +1,5 @@
 require 'rabal/action_tree'
+require 'rabal/util'
 
 module Rabal
     include Util
