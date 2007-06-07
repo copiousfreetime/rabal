@@ -35,9 +35,9 @@
 (^|/)autom4te\.cache($|/)
 
 # project specific items
-doc/*
-pkg/*
-log/*
+^doc\/*
+^pkg/*
+^log/*
 \.swo$
 \.swp$
 email.txt

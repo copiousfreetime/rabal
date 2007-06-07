@@ -10,62 +10,13 @@ rescue LoadError => e
     retry
 end
 
+Rabal::Application.new(ARGV).run
+__END__
+
 Main {
-    author "#{Rabal::AUTHOR} <#{Rabal::AUTHOR_EMAIL}>"
-    version Rabal::VERSION
-    description Rabal::DESCRIPTION
-
-    argument 'command'
-    argument 'project'
-
-    option("template-dirs=DIR") {
-        validate { |e| Rabal::Application.validate_template_dirs(e.split(':')) }
-        description "Colon separated list of additional directories to look for project tree templates"
-    }
-    
-    option('directory=DIR') {
-        description "parent directory of the project tree, Default : #{Dir.pwd}"
-        default  Dir.pwd
-    }
     
     option('rubyforge-project=PROJECT') {
         description "RubyForge project with which this project should be associated."
-    }
-
-    option('darcs-init') {
-
-        description <<-DARCS_DESC
-Initialize this project in darcs, create an appropriate .boring file,
-add the project skeleton to the repository.
-        DARCS_DESC
-    } 
-
-    option('with-license=LICENSE') {
-        description "What license will this project use."
-    }
-
-    option('with-extension=EXT') {
-        validate { |e| e =~ /(extconf.rb|mkrf_conf.rb)$/ }
-        description <<-EDESC
-Location of the extconf.rb/mkrf_conf.rb in the extension directory. 
-For example, --extension="libfoo/mkrf_conf.rb"
-        EDESC
-    }
-
-    option('with-bin=[bool]') { 
-        cast :bool 
-        default false
-        description "Use if the project has a binaries directory."
-    }   
-
-    option('with-test=TEST') { 
-        validate { |t| %w(testunit rspec).include?(t) }
-        default "testunit"
-        description "Pick the testing framework, testunit or rspec.  Default : testunit"
-    }   
-
-    option("with-hoe") {
-        description "Base the Rakefile on Hoe"
     }
 
 
@@ -81,6 +32,5 @@ For example, --extension="libfoo/mkrf_conf.rb"
     }   
 
     def run 
-        Rabal::Application.run(self)
     end 
 }   

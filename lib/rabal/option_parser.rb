@@ -1,8 +1,9 @@
 require 'optparse'
-#require 'active_support'
-
 module Rabal
-    class PluginX
+    class OptionParser < ::OptionParser
+        def initialize
+
+        end
 
         class << self
 
@@ -33,7 +34,8 @@ module Rabal
         end
 
     end
-
+end
+__END__
     class Deployment < PluginX
 
         class << self
