@@ -3,8 +3,6 @@
 
 ** use the GemPlugin::Manager for resource management too
 
-* using 'main' have 
-** Each plugin should designate its 'parameters and a brief description'
 ** does --help do all help or just up to the previous plugins that have
    been 
 ** --load-all --help ? does that get all the options from all the
@@ -32,6 +30,8 @@ svn:ignore, etc)
 
 === Accomplishments!
 
+* using 'main' have 
+** Each plugin should designate its 'parameters and a brief description'
 * rabal should be a GemPluginManager
 ** figure out plugin namespaces '/tree/builtin/base' etc.
 ** move tree's to be in directories based on resource matching their namespace

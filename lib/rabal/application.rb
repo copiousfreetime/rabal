@@ -8,13 +8,17 @@ module Rabal
 
         attr_accessor :main
         attr_accessor :plugin_manager
+        attr_accessor :plugins_main 
+        attr_accessor :app_argv
 
         def initialize
             @main = nil
             @plugin_manager = GemPlugin::Manager.instance
+            @plugins_main = {}
+            @app_argv = []
             setup_plugins
         end
-
+        
         #
         # Load any and all plugins that are available.  This includes
         # built in plugins and those that are accessible via gems.
@@ -29,19 +33,41 @@ module Rabal
                 plugin_manager.gems["rabal"] == ROOT_DIR
             end
 
-            #plugin_manager.plugins.each_pair do |category,plugins|
-            #    puts category
-            #    plugins.each do |key,plugin|
-            #        puts "\t#{key} : #{plugin}"
-            #    end
-            #end
+            # Each plugin has its own options so iterate over the
+            # available plugins, and create an instance of Main for each
+            # plugin.  The options for the plugin will be merged with
+            # the global options, and depending on the --load-<plugin>
+            # options indicated, they will alter the --help
+           
+            plugin_manager.plugins.each do |category,plugins|
+                plugins.each do |key,plugin|
+                    plugin_load_name = plugin.name.split("::").last.downcase.dashify
+
+                    # add the --load-<plugin> option to the global
+                    # options
+                    main.class.class_eval { option("load-#{plugin_load_name}") { description "Load plugin #{plugin.name}" } }
+
+                    # create an instance of Main for the plugin and save
+                    # it off to the side.
+                    # instance of Main
+                    plugins_main[plugin_load_name] = Main.new { def run; end }
+
+                    # load up the options for the plugin and save them
+                    # in its very own instance of Main.  These will be
+                    # merged into the global options as need be.
+                    plugin.parameters.each do |pname,pconf|
+                        plugins_main[plugin_load_name].class.class_eval { option("#{plugin_load_name}-#{pconf[0]}=[p]") { description pconf[1]} }
+                    end
+                end
+            end
         end
 
         #
         # Use Ara's awesome main gem to deal with command line parsing
         #
-        def setup_parsing(argv)
-            @main = Main.new(argv) {
+        def main
+            @main if @main
+            @main = Main.new(app_argv) {
                 description Rabal::DESCRIPTION
                 author      "#{Rabal::AUTHOR} <#{Rabal::AUTHOR_EMAIL}>"
                 version     Rabal::VERSION
@@ -52,49 +78,39 @@ module Rabal
                 }
 
                 # Global Options   
-                option("verbosity=v","v") {
-                    validate    { |p| Logger::SEV_LABEL.include?(p.upcase) }
-                    description "One of : #{Logger::SEV_LABEL.join(",")}"
-
-                }
-                option("logfile=l","l") {
-                    description "The location of the logfile"
-                    default     STDOUT
-                }
                 option("directory=d","d") {
                     description "The directory in which to create the project directory."
                     validate    { |d| File.directory?(d) }
                 }
 
+                option("load-all","a") { description "Load all available plugins." }
+                option("logfile=l","l") {
+                    description "The location of the logfile"
+                    default     STDOUT
+                }
+
+                option("verbosity=v","v") {
+                    validate    { |p| Logger::SEV_LABEL.include?(p.upcase) }
+                    description "One of : #{Logger::SEV_LABEL.join(",")}"
+
+                }
+
                 def run
+                    p params
                     Rabal.application.rabalize
                 end
             }
-
-            # Each plugin has its own options and section iterate
-            # over the available plugins and have them add their
-            # options to 'main'
-           
-            Rabal.application.plugin_manager.plugins.each do |category,plugins|
-                plugins.each do |key,plugin|
-                    option_name = plugin.name.split("::").last.downcase.dashify
-                    main.class.class_eval { option("load-#{option_name}") { description "Load plugin #{plugin.name}" } }
-                    plugin.parameters.each do |pname,pconf|
-                            main.class.class_eval { option("#{option_name}-#{pconf[0]}=[p]") { description pconf[1]} }
-                    end
-                end
-            end
-
         end
 
         #
-        # Setup the command line parser and execute it
-        # main.  The parser's will call its +run+ method which will
-        # call 
-        # and away we go.  We set
+        # Invoke main to do its thing and kick off the application
+        # Main keeps a reference to the array that it originally started
+        # with when it was created.   So you have to have that first,
+        # then fill it up later.
         #
-        def run(argv = ARGV)
-            setup_parsing(argv)
+        def run(in_argv = ARGV)
+            app_argv.clear
+            app_argv.concat in_argv.dup
             main.run
         end
 
@@ -103,6 +119,8 @@ module Rabal
         # parsed, plugins loaded, some activate, etc.  
         #
         def rabalize
+            puts "Rabalize!"
+            puts main.parameters
         end
     end
 end
