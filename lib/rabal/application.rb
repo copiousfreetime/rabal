@@ -1,5 +1,4 @@
-require 'ostruct'
-require 'optparse'
+require 'main'
 
 module Rabal
     #
@@ -7,38 +6,13 @@ module Rabal
     #
     class Application
 
-        attr_accessor :options
-        attr_accessor :option_parser
-
-        attr_accessor :stdin
-        attr_accessor :stdout
-        attr_accessor :stderr
-        attr_accessor :log
-
+        attr_accessor :main
         attr_accessor :plugin_manager
 
-        def initialize(argv)
+        def initialize
+            @main = nil
+            @plugin_manager = GemPlugin::Manager.instance
             setup_plugins
-            begin
-                option_parser.parse!(argv)
-                return 
-                options.keys.each do |k1|
-                    print "#{k1.to_s.ljust(40)} : "
-                    if options[k1].kind_of?(Hash) then
-                        puts 
-                        options[k1].keys.each do |k2|
-                            k = "    #{k2.to_s}".ljust(40)
-                            puts "#{k} : #{options[k1][k2].to_s}"
-                        end
-                    else
-                        puts options[k1]
-                    end
-                end
-            rescue ::OptionParser::ParseError => pe
-                puts "ERROR: #{pe}"
-                puts option_parser.to_s
-                exit 1
-            end
         end
 
         #
@@ -46,7 +20,6 @@ module Rabal
         # built in plugins and those that are accessible via gems.
         #
         def setup_plugins 
-            @plugin_manager = GemPlugin::Manager.instance
             plugin_manager.load "rabal" => GemPlugin::INCLUDE
             
             # make sure that we are listed as a plugin generally this is
@@ -56,58 +29,80 @@ module Rabal
                 plugin_manager.gems["rabal"] == ROOT_DIR
             end
 
-            # iterate over the available plugins and have them add their
-            # options to the option parser.
-            plugin_manager.plugins.each_pair do |category,list|
-                list.each_pair do |k,plugin|
-                    options.by_plugin[plugin] = OpenStruct.new
-                    option_parser.for_section(plugin).on("--[no-]load-#{plugin.option_name.dashify}",
-                                                         "Load plugin #{plugin.name}") do |add_plugin_opts|
-                        plugin.extend_options(option_parser.for_section(plugin),options.by_plugin[plugin]) if add_plugin_opts
+            #plugin_manager.plugins.each_pair do |category,plugins|
+            #    puts category
+            #    plugins.each do |key,plugin|
+            #        puts "\t#{key} : #{plugin}"
+            #    end
+            #end
+        end
+
+        #
+        # Use Ara's awesome main gem to deal with command line parsing
+        #
+        def setup_parsing(argv)
+            @main = Main.new(argv) {
+                description Rabal::DESCRIPTION
+                author      "#{Rabal::AUTHOR} <#{Rabal::AUTHOR_EMAIL}>"
+                version     Rabal::VERSION
+
+                # Project, the whole reason rabal exists
+                argument("project") {
+                    description "The project on which rabal is executing."
+                }
+
+                # Global Options   
+                option("verbosity=v","v") {
+                    validate    { |p| Logger::SEV_LABEL.include?(p.upcase) }
+                    description "One of : #{Logger::SEV_LABEL.join(",")}"
+
+                }
+                option("logfile=l","l") {
+                    description "The location of the logfile"
+                    default     STDOUT
+                }
+                option("directory=d","d") {
+                    description "The directory in which to create the project directory."
+                    validate    { |d| File.directory?(d) }
+                }
+
+                def run
+                    Rabal.application.rabalize
+                end
+            }
+
+            # Each plugin has its own options and section iterate
+            # over the available plugins and have them add their
+            # options to 'main'
+           
+            Rabal.application.plugin_manager.plugins.each do |category,plugins|
+                plugins.each do |key,plugin|
+                    option_name = plugin.name.split("::").last.downcase.dashify
+                    main.class.class_eval { option("load-#{option_name}") { description "Load plugin #{plugin.name}" } }
+                    plugin.parameters.each do |pname,pconf|
+                            main.class.class_eval { option("#{option_name}-#{pconf[0]}=[p]") { description pconf[1]} }
                     end
                 end
             end
 
         end
 
-        def options 
-            if @options.nil? then
-                @options = OpenStruct.new
-                @options.directory = Dir.pwd
-                @options.log_level = Logger::INFO
-                @options.log_file  = STDOUT
-                @options.by_plugin = {}
-            end
-            return @options
+        #
+        # Setup the command line parser and execute it
+        # main.  The parser's will call its +run+ method which will
+        # call 
+        # and away we go.  We set
+        #
+        def run(argv = ARGV)
+            setup_parsing(argv)
+            main.run
         end
 
-        def option_parser
-            if @option_parser.nil? then
-                @option_parser = Rabal::OptionParser.new do |op|
-                    op.on("-d", "--directory DIR", "parent directory of the project tree", 
-                            "\tDefault: #{options.directory}")  { |dir| options.directory = dir }
-
-                    op.on("-l", "--log LOG", "logfile location","\tDefault: standard out") { |logfile| options.log_file = logfile }
-                    op.on("-v", "--verbosity-level LEVEL", "One of : debug,info,warn,error,fatal",
-                            "\tDefault: #{Logger::SEV_LABEL[options.log_level]}") do |level| 
-                                if l = Logger::SEV_LABEL.index(level.upcase) then
-                                    options.log_level = l
-                                else
-                                    raise ::OptionParser::ParseError, "Invalid log level of #{level}"
-                                end
-                    end
-
-                    op.on("-h", "--help", "Display this help message") { |help| options.help = help }
-                    op.on("-V", "--version", "Display the version.") { |version| options.version = version }
-                end
-            end
-            return @option_parser
-        end
-
-        def run
-            if options.help then
-                puts option_parser
-            end
+        #
+        # Get down and do stuff.  Now that all the options have been
+        # parsed, plugins loaded, some activate, etc.  
+        #
+        def rabalize
         end
     end
 end

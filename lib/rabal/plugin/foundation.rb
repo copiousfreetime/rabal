@@ -1,4 +1,6 @@
 require 'rabal'
+require 'rubygems'
+require 'main'
 
 module Rabal
     module Plugin
@@ -22,15 +24,26 @@ module Rabal
                 # GemPlugin::Manager
                 def inherited(by_class)
                     register_key = "/" + by_class.to_s.downcase
-                    GemPlugin::Manager.instance.register(@@register_as,register_key,by_class)
-                    @@register_as = nil
+                    GemPlugin::Manager.instance.register(register_as,register_key,by_class)
+                    register_as = nil
                 end
 
                 # allows Plugin::Base to store the registration
                 # information in the class variable.
-                def register_as=(ra)
-                    @@register_as = ra
+                attribute :register_as => nil
+
+                # part of the mini DSL for describing a Plugin
+                def parameter(pname,description)
+                    @parameters ||= {}
+                    @parameters[pname] = [pname, description]
                 end
+
+                # get the parameters bac
+                def parameters
+                    @parameters
+                end
+
+                attribute :description =>  "A #{self.name} Without a Description"
 
             end
         end

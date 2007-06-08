@@ -9,4 +9,4 @@ rescue LoadError => e
     retry
 end
 
-Rabal::Application.new(ARGV).run
+Rabal.application.run(ARGV)

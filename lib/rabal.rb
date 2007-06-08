@@ -31,5 +31,19 @@ DESC
         end
     end 
     module_function :require_all_libs_relative_to
+
+    #
+    # Module singleton methods, allow for accessing a single rabal
+    # application from anywhere
+    #
+    class << self
+        def application
+            @application || Rabal::Application.new
+        end
+
+        def application=(app)
+            @application = app
+        end
+    end
 end
 Rabal.require_all_libs_relative_to(__FILE__)
