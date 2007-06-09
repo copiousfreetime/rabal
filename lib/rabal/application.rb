@@ -46,8 +46,8 @@ module Rabal
                     # add the --load-<plugin> option to the global
                     # options
                     main.class.class_eval { 
-                        option("load-#{plugin_load_name}") { 
-                            description "Load plugin #{plugin.name}" 
+                        option("use-#{plugin_load_name}") { 
+                            description "Use plugin #{plugin.name}" 
                         }
                     } 
 
@@ -55,6 +55,7 @@ module Rabal
                     # it off to the side.
                     # instance of Main
                     plugins_main[plugin_load_name] = Main.new { def run; end }
+                    puts "plugin id = #{plugins_main[plugin_load_name].object_id}"
 
                     # load up the options for the plugin and save them
                     # in its very own instance of Main.  These will be
@@ -87,7 +88,7 @@ module Rabal
                     validate    { |d| File.directory?(d) }
                 }
 
-                option("load-all","a") { description "Load all available plugins." }
+                option("use-all","a") { description "Use all available plugins." }
                 option("logfile=l","l") {
                     description "The location of the logfile"
                     default     STDOUT
@@ -119,10 +120,11 @@ module Rabal
             app_argv.clear
             app_argv.concat in_argv.dup
             begin
-                # have to do this in 2 lines, otherwise main.usage is
-                # overwritten while the Rabal::Usage object is create
-                #u = Rabal::Usage.new(Rabal.application).to_s
-                main.usage usage
+                # create a separate usage object for rabal that can hook
+                # in and figure out what parameters were given on the
+                # command line
+                u = Rabal::Usage.new(self)
+                main.usage u
                 main.run 
             rescue Main::Parameter::Error => mpe
                 puts "#{main.program_name}: #{mpe.message}"
@@ -130,13 +132,6 @@ module Rabal
             end
         end
 
-        def usage
-            u = ::Main::Usage.new
-            %w[name synopsis description].each do |chunk|
-                u[chunk] = main.usage[chunk]
-            end 
-            u.to_s
-        end
         #
         # Get down and do stuff.  Now that all the options have been
         # parsed, plugins loaded, some activate, etc.  
