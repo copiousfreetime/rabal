@@ -38,7 +38,7 @@ DESC
     #
     class << self
         def application
-            @application || Rabal::Application.new
+            @application ||= Rabal::Application.new
         end
 
         def application=(app)

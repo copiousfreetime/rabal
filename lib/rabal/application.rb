@@ -18,14 +18,14 @@ module Rabal
             @app_argv = []
             setup_plugins
         end
-        
+
         #
         # Load any and all plugins that are available.  This includes
         # built in plugins and those that are accessible via gems.
         #
         def setup_plugins 
             plugin_manager.load "rabal" => GemPlugin::INCLUDE
-            
+
             # make sure that we are listed as a plugin generally this is
             # only going to happen if run from outside a gem.  Basically
             # while Jeremy is testing. 
@@ -38,14 +38,18 @@ module Rabal
             # plugin.  The options for the plugin will be merged with
             # the global options, and depending on the --load-<plugin>
             # options indicated, they will alter the --help
-           
+
             plugin_manager.plugins.each do |category,plugins|
                 plugins.each do |key,plugin|
                     plugin_load_name = plugin.name.split("::").last.downcase.dashify
 
                     # add the --load-<plugin> option to the global
                     # options
-                    main.class.class_eval { option("load-#{plugin_load_name}") { description "Load plugin #{plugin.name}" } }
+                    main.class.class_eval { 
+                        option("load-#{plugin_load_name}") { 
+                            description "Load plugin #{plugin.name}" 
+                        }
+                    } 
 
                     # create an instance of Main for the plugin and save
                     # it off to the side.
@@ -66,7 +70,7 @@ module Rabal
         # Use Ara's awesome main gem to deal with command line parsing
         #
         def main
-            @main if @main
+            return @main if @main
             @main = Main.new(app_argv) {
                 description Rabal::DESCRIPTION
                 author      "#{Rabal::AUTHOR} <#{Rabal::AUTHOR_EMAIL}>"
@@ -95,8 +99,11 @@ module Rabal
 
                 }
 
+                option("version","V") { 
+                    description "Display the version number"
+                }
+
                 def run
-                    p params
                     Rabal.application.rabalize
                 end
             }
@@ -111,16 +118,32 @@ module Rabal
         def run(in_argv = ARGV)
             app_argv.clear
             app_argv.concat in_argv.dup
-            main.run
+            begin
+                # have to do this in 2 lines, otherwise main.usage is
+                # overwritten while the Rabal::Usage object is create
+                #u = Rabal::Usage.new(Rabal.application).to_s
+                main.usage usage
+                main.run 
+            rescue Main::Parameter::Error => mpe
+                puts "#{main.program_name}: #{mpe.message}"
+                puts "Try `#{main.program_name} --help' for more information."
+            end
         end
 
+        def usage
+            u = ::Main::Usage.new
+            %w[name synopsis description].each do |chunk|
+                u[chunk] = main.usage[chunk]
+            end 
+            u.to_s
+        end
         #
         # Get down and do stuff.  Now that all the options have been
         # parsed, plugins loaded, some activate, etc.  
         #
         def rabalize
             puts "Rabalize!"
-            puts main.parameters
+            p main.params
         end
     end
 end
