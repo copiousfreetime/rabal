@@ -8,13 +8,17 @@ module Rabal
 
         attr_accessor :main
         attr_accessor :plugin_manager
-        attr_accessor :plugins_main 
+        attr_accessor :plugin_load_option_names
+        attr_accessor :plugin_option_names
+        attr_accessor :global_option_names
         attr_accessor :app_argv
 
         def initialize
             @main = nil
             @plugin_manager = GemPlugin::Manager.instance
-            @plugins_main = {}
+            @plugin_option_names = []
+            @global_option_names = %w[directory use-all logfile verbosity version help]
+            @plugin_load_option_names = []
             @app_argv = []
             setup_plugins
         end
@@ -45,24 +49,24 @@ module Rabal
 
                     # add the --load-<plugin> option to the global
                     # options
+                    p_use_name = "use-#{plugin_load_name}"
+                    plugin_load_option_names << p_use_name
+                    pons = []
                     main.class.class_eval { 
-                        option("use-#{plugin_load_name}") { 
+                        option(p_use_name) { 
                             description "Use plugin #{plugin.name}" 
                         }
+
+                        # add in the plugin options.  Although these are
+                        # present in the global main, they won't
+                        # actually get displayed in the --help
+                        plugin.parameters.each do |pname,pconf|
+                            p_option_name = "#{plugin_load_name}-#{pconf[0]}=[p]"
+                            pons << p_option_name
+                            option(p_option_name) { description pconf[1] } 
+                        end
                     } 
-
-                    # create an instance of Main for the plugin and save
-                    # it off to the side.
-                    # instance of Main
-                    plugins_main[plugin_load_name] = Main.new { def run; end }
-                    puts "plugin id = #{plugins_main[plugin_load_name].object_id}"
-
-                    # load up the options for the plugin and save them
-                    # in its very own instance of Main.  These will be
-                    # merged into the global options as need be.
-                    plugin.parameters.each do |pname,pconf|
-                        plugins_main[plugin_load_name].class.class_eval { option("#{plugin_load_name}-#{pconf[0]}=[p]") { description pconf[1]} }
-                    end
+                    plugin_option_names.concat(pons)
                 end
             end
         end
