@@ -1,6 +1,6 @@
 module Rabal
     AUTHOR          = "Jeremy Hinegardner".freeze
-    AUTHOR_EMAIL    = "jeremy@hinegadner.org".freeze
+    AUTHOR_EMAIL    = "jeremy@hinegardner.org".freeze
     HOMEPAGE        = "http://copiousfreetime.rubyforge.org/rabal/"
     COPYRIGHT       = "2007 #{AUTHOR}".freeze
     DESCRIPTION     = <<DESC

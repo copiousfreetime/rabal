@@ -1,4 +1,5 @@
 require 'ostruct'
+require 'main'
 module Rabal
     module Util
         def replace_known_words(str)
@@ -43,5 +44,19 @@ class String
             return [self]
         end
         self.split(split_on).find_all { |c| c.size > 0 }.collect { |c| c.downcase }
+    end
+end
+
+module Main
+    class Parameter
+        # slight alteration to the default synopsis 
+        class Option
+            def short_synopsis
+                long, *short = names
+                value = cast || name 
+                rhs = argument ? (argument == :required ? "=#{ name }" : "=[#{ name }]") : nil 
+                label = ["--#{ long }#{ rhs }", short.map{|s| "-#{ s }"}].flatten.join(", ")
+            end 
+        end 
     end
 end

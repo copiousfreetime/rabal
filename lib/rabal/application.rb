@@ -100,7 +100,7 @@ module Rabal
 
                 option("verbosity=v","v") {
                     validate    { |p| Logger::SEV_LABEL.include?(p.upcase) }
-                    description "One of : #{Logger::SEV_LABEL.join(",")}"
+                    description "One of : #{Logger::SEV_LABEL.join(", ")}"
 
                 }
 

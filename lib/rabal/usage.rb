@@ -56,13 +56,17 @@ module Rabal
         end
 
         def section_options(list)
-            list.collect do |p|
+            list.sort_by{|p| p.name}.collect do |p|
                 ps = ""
-                ps << ::Main::Util.columnize("  * #{ p.synopsis }", :indent => 2, :width => 78)
-                ps << "\n" 
+                ps << "  * #{ p.short_synopsis }".ljust(35)
                 if p.description? then
-                    ps << ::Main::Util.columnize(p.description, :indent => 7, :width => 78)
-                    ps << "\n"
+                    lines = ::Main::Util.columnize(p.description, :indent => 39, :width => 78).split("\n")
+                    first = lines.shift
+                    ps << first.sub(/^\s*/,'  - ')
+                    if lines.size > 0
+                        ps << "\n"
+                        ps << lines.join("\n")
+                    end
                 end
                 ps
             end.join("\n")
