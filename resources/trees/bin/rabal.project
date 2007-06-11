@@ -1,3 +1,10 @@
 #!/usr/bin/env ruby
 
-puts "I am the killer app <%= project %>!"
+begin
+    require '<%= project %>'
+rescue LoadError => le
+    $: << File.expand_path(File.join(File.dirname(__FILE__),"..","lib"))
+    require '<%= project %>'
+end
+
+puts "I am the killer app <%= project %> at version #{<%= project.camelize %>::VERSION}!"
