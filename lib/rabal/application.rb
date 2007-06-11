@@ -152,9 +152,10 @@ module Rabal
         end
 
         #
-        # Find the resource associated with the given path.
+        # Find a resource associated with the given gem
         #
-        def find_resource(name)
+        def plugin_resource(gem_name,resource_path)
+            plugin_manager.resource(gem_name,resource_path)
         end
     end
 end

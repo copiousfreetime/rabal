@@ -47,7 +47,7 @@ module Rabal
             app.plugin_manager.plugins.each do |cat,plugins|
                  plugins.sort_by{ |k,p| p.use_name }.each do |key,plugin|
                      pre = "  " + (plugin.use_always? ? "*" : " ")
-                     s << option_format(pre,plugin.use_name,plugin.description,20,30,78)
+                     s << option_format(pre,"#{plugin.use_name} (#{plugin.register_path})",plugin.description,30,32,78)
                      s << "\n"
 
                      # create the module options for this one, if the

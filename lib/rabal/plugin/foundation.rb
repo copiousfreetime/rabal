@@ -24,6 +24,7 @@ module Rabal
                 # GemPlugin::Manager
                 def inherited(by_class)
                     register_key = "/" + by_class.to_s.downcase
+                    by_class.register_path register_as
                     GemPlugin::Manager.instance.register(register_as,register_key,by_class)
                     register_as = nil
                 end
@@ -51,14 +52,41 @@ module Rabal
                     @use_always = d
                 end
 
+                attribute :register_path
                 attribute :description =>  "I Need a Description"
 
                 def use_name
                     name.split("::").last.dashify
                 end
-
             end
 
+            ############################################################
+            # regular instance methods, provide for convenience to the
+            # child plugins
+            ############################################################
+
+
+            # What gem a plugin belongs to.  This is necessary to access
+            # the resources of the gem the plugin may use.  Overload
+            # this in a child plugin to return what you want.  By
+            # default it uses the first part of the path the gem is
+            # registered under.
+            #
+            # That is when the plugin is defined
+            #
+            #   class MyPlugin < Rabal::Plugin::Base "/my-plugin/something"
+            #   ...
+            #   end
+            #
+            # 'my-plugin' is defined as being the default gem name.
+            def my_gem_name
+                register_path.split("/").find{|p| p.length > 0}
+            end
+
+            # access a resource in the 
+            def resource_by_name(resource_name)
+                Rabal.application.plugin_resource(my_gem_name,resource_name)
+            end
         end
     end
 
