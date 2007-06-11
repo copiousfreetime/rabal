@@ -29,6 +29,7 @@ module Rabal
                 def inherited(by_class)
                     register_key = "/" + by_class.to_s.downcase
                     by_class.register_path register_as
+                    puts "registering #{register_as}, #{register_key}, #{by_class}"
                     GemPlugin::Manager.instance.register(register_as,register_key,by_class)
                     register_as = nil
                 end
@@ -45,7 +46,7 @@ module Rabal
 
                 # get the parameters bac
                 def parameters
-                    @parameters
+                    @parameters ||= {}
                 end
 
                 def use_always?
@@ -74,7 +75,8 @@ module Rabal
             # set to +tree+ and by default, this tree will be 'mounted'
             # at the root of some other tree.
             def initialize(options = {})
-                @tree = PluginTree.new(options,resource_by_name(my_main_tree_name))
+                @parameters = OpenStruct.new(options)
+                @tree = PluginTree.new(options,resource_by_name(my_main_tree_name),".")
             end
 
             ############################################################

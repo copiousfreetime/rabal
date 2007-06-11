@@ -20,6 +20,7 @@ module Rabal
         def initialize(options,src_directory,dest_directory= ".")
             super(dest_directory)
             @src_directory = src_directory
+            puts "Creating tree from #{options.inspect} from src_directory => #{src_directory} into #{dest_directory}"
             @parameters = OpenStruct.new(options)
         end
 
