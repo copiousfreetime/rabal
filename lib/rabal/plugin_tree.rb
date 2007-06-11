@@ -14,10 +14,13 @@ module Rabal
 
         # create a new Plugin Tree based upon a source directory.  This
         # 'mounts' the src_directory into the dest_directory in the
-        # project.  The dest_directory defaults to "."
-        def initialize(src_directory,dest_directory= ".")
+        # project.  The dest_directory defaults to "." .  The +options+
+        # are a hash that are propogated to the +parameters+ member
+        # variable.
+        def initialize(options,src_directory,dest_directory= ".")
             super(dest_directory)
             @src_directory = src_directory
+            @parameters = OpenStruct.new(options)
         end
 
         #

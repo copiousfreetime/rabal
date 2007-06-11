@@ -17,6 +17,10 @@ module Rabal
         # inherit from.
         #
         class Foundation
+
+            # the PluginTree that the plugin creates.
+            attr_accessor :tree
+
             class << self
 
                 # Called when another class inherits from Foundation.
@@ -60,6 +64,18 @@ module Rabal
                 end
             end
 
+            # A Plugin is instantiated and the options passed to it are
+            # the results of the command line options for this plugin.
+            #
+            # The default action for any Plugin is to create a
+            # PluginTree from its options utilizing the +register_path+
+            # to determine a location within the gem's resources.  The
+            # resources is used to instantiate a PluginTree and that is
+            # set to +tree+.
+            def initialize(options = {})
+                @tree = PluginTree.new(options,resource_by_name(my_main_resource_name))
+            end
+
             ############################################################
             # regular instance methods, provide for convenience to the
             # child plugins
@@ -83,7 +99,16 @@ module Rabal
                 register_path.split("/").find{|p| p.length > 0}
             end
 
-            # access a resource in the 
+            # The main resource for this Plugin.  This is generally a
+            # file or a directory that the plugin will use as a template
+            # and create a PluginTree from.
+            def my_main_resource_name
+                regiser_path.split("/").find_all {|p| p.length > 0}[1..-1].join("/")
+            end
+
+            # Access a resource utilized by the gem.  The name is the
+            # path to a file or directory under the 'resources'
+            # directory in the gem this plugin is a part of.
             def resource_by_name(resource_name)
                 Rabal.application.plugin_resource(my_gem_name,resource_name)
             end

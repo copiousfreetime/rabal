@@ -1,7 +1,7 @@
 require File.expand_path(File.join(File.dirname(__FILE__),"spec_helper"))
 describe ProjectTree do
     before(:each) do 
-        @proj_tree = ProjectTree.new("spec-test","Foo Bar","foo@example.com")
+        @proj_tree = ProjectTree.new("spec-test",{ :author => "Foo Bar",:email => "foo@example.com"})
         @working_dir = my_temp_dir
         @before      = Dir.pwd
         Dir.chdir(@working_dir)

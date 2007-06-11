@@ -5,17 +5,12 @@ module Rabal
     #
     class ProjectTree < DirectoryTree
 
-        attr_accessor :project_name
-        attr_accessor :author
-        attr_accessor :email
-
         # FIXME: this should derive a whole bunch of instance variables
         # and delegate items to a Gem specification.
-        def initialize(project_name,author,email)
+        def initialize(project_name,options)
             super(project_name)
-            @project_name = project_name
-            @author = author
-            @email = email
+            @parameters = OpenStruct.new(options)
+            @parameters.project_name = project_name
         end
 
     end

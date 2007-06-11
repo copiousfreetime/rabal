@@ -2,7 +2,7 @@ require 'rabal/tree'
 
 module Rabal
     class ActionTree < Tree
-        
+
         def initialize(data)
             super(data)
         end

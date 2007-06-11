@@ -19,6 +19,12 @@ module Rabal
         # Tree is a leaf.
         attr_accessor :children
 
+        # An abstract data point that can be utilized by child classes
+        # for whatever they like.  If this is non-nil and responds to
+        # method calls it will be searched as part of the
+        # 'method_missing' protocol.
+        attr_accessor :parameters
+
         #
         # Create a new Tree with the given object.to_s as its +name+.
         #
@@ -26,7 +32,7 @@ module Rabal
             @name       = name.to_s
             @parent     = nil
             @children   = {}
-            return self
+            @parameters = nil
         end
 
         #
@@ -153,7 +159,9 @@ module Rabal
         # Tree that responds to the call.
         #
         def method_missing(method_id,*params,&block)
-            if not is_root? then
+            if not parameters.nil? and parameters.respond_to?(method_id) then
+                return parameters.send(method_id, *params, &block)
+            elsif not is_root? then
                 @parent.send method_id, *params, &block
             else
                 raise NoMethodError, "undefined method `#{method_id}' for #{name}:Tree"
