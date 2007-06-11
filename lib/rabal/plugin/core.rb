@@ -8,6 +8,15 @@ module Rabal
             description <<-DESC
             The core functionality and baseline information needed by every project.  
             DESC
+
+            # core is slightly different from the default and uses a
+            # ProjecTree instead of a PluginTree.  It does attach a
+            # PluginTree below the project tree with the basic file
+            # structure
+            def initialize(options)
+                @tree = ProjectTree.new(options[:project] || options["project"],options)
+                @tree << PluginTree.new({},resource_by_name(my_main_tree_name))
+            end
         end
     end
 end

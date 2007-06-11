@@ -34,8 +34,9 @@ module Rabal
             # only going to happen if run from outside a gem.  Basically
             # while Jeremy is testing. 
             if not plugin_manager.loaded?("rabal") then
-                plugin_manager.gems["rabal"] == ROOT_DIR
+                plugin_manager.gems["rabal"] = ROOT_DIR
             end
+
 
             # Each plugin has its own options so iterate over the
             # available plugins, and create an instance of Main for each

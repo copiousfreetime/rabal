@@ -19,7 +19,7 @@ module Rabal
         class Foundation
 
             # the PluginTree that the plugin creates.
-            attr_accessor :tree
+            attr_reader :tree
 
             class << self
 
@@ -56,8 +56,8 @@ module Rabal
                     @use_always = d
                 end
 
-                attribute :register_path
                 attribute :description =>  "I Need a Description"
+                attribute :register_path
 
                 def use_name
                     name.split("::").last.dashify
@@ -71,9 +71,10 @@ module Rabal
             # PluginTree from its options utilizing the +register_path+
             # to determine a location within the gem's resources.  The
             # resources is used to instantiate a PluginTree and that is
-            # set to +tree+.
+            # set to +tree+ and by default, this tree will be 'mounted'
+            # at the root of some other tree.
             def initialize(options = {})
-                @tree = PluginTree.new(options,resource_by_name(my_main_resource_name))
+                @tree = PluginTree.new(options,resource_by_name(my_main_tree_name))
             end
 
             ############################################################
@@ -96,14 +97,17 @@ module Rabal
             #
             # 'my-plugin' is defined as being the default gem name.
             def my_gem_name
-                register_path.split("/").find{|p| p.length > 0}
+                self.class.register_path.split("/").find{|p| p.length > 0}
             end
 
             # The main resource for this Plugin.  This is generally a
             # file or a directory that the plugin will use as a template
             # and create a PluginTree from.
-            def my_main_resource_name
-                regiser_path.split("/").find_all {|p| p.length > 0}[1..-1].join("/")
+            def my_main_tree_name
+                tree_name = self.class.register_path.split("/").find_all {|p| p.length > 0}
+                tree_name.shift
+                tree_name.unshift "trees"
+                tree_name.join("/")
             end
 
             # Access a resource utilized by the gem.  The name is the

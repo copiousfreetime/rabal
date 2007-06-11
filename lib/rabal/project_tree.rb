@@ -12,6 +12,5 @@ module Rabal
             @parameters = OpenStruct.new(options)
             @parameters.project_name = project_name
         end
-
     end
 end
