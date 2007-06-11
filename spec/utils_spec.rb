@@ -1,4 +1,5 @@
 require File.expand_path(File.join(File.dirname(__FILE__),"spec_helper"))
+require 'main'
 
 describe "Utility functions" do
     before(:each) do
@@ -41,8 +42,4 @@ describe "Utility functions" do
         r = @underscores_before.collect { |c| c.dashify }
         r.should == @dashed_final
     end
-
-
-
-
 end
