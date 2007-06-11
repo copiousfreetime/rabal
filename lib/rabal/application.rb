@@ -149,6 +149,17 @@ module Rabal
             main.params.each do |p|
                 puts "#{p.name.rjust(max_name)} : #{p.value} "
             end
+
+            # create the core plugin to start things off
+            core_params = params_for_plugin(Rabal::Plugin::Core)
+            [:directory, :project].each {|k| core_params[k] = main.params[k]}
+            core = Rabal::Plugin::Core.new(core_params)
+            using_plugins.each do |p|
+                next if p === Rabal::Plugin::Core
+                pi = p.new(params_for_plugin(p))
+                core.tree << pi.tree
+            end
+            core.process
         end
 
         #
@@ -156,6 +167,33 @@ module Rabal
         #
         def plugin_resource(gem_name,resource_path)
             plugin_manager.resource(gem_name,resource_path)
+        end
+
+        #
+        # return an array of all the plugin classes being used
+        #
+        def using_plugins
+            using = []
+            plugin_manager.plugins.each do |cat,plugins|
+                plugins.each do |key,plugin|
+                    if main.parameters['use-all'].given? or plugin.use_always? or 
+                        main.parameters["use-#{plugin.use_name}"].given? then
+                        using << plugin
+                    end
+                end
+            end
+        end
+
+        #
+        # return a hash of all the options for a particular plugin with
+        # the plugins name removed from the front
+        #
+        def params_for_plugin(plugin)
+            plugin_hash = {}
+            main.parameters.select{|p| p.type == :option and p.name =~ %r{^#{plugin.use_name}}}.each do |p|
+                plugin_hash[p.name.gsub("#{plugin.use_name}-",'')] = p.value
+            end
+            plugin_hash
         end
     end
 end
