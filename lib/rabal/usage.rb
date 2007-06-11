@@ -44,8 +44,8 @@ module Rabal
             s << "\n\n"
             s << ""
             module_options = []
-            app.plugin_manager.plugins.each do |cat,plugins|
-                 plugins.sort_by{ |k,p| p.use_name }.each do |key,plugin|
+            app.plugin_manager.plugins.sort_by{|c,p| c}.each do |cat,plugins|
+                 plugins.each do |key,plugin|
                      pre = "  " + (plugin.use_always? ? "*" : " ")
                      s << option_format(pre,"#{plugin.use_name} (#{plugin.register_path})",plugin.description,30,32,78)
                      s << "\n"
@@ -64,15 +64,6 @@ module Rabal
             u['Available Modules'] = s
        
             module_options.each { |k,v| u[k] = v }
-            #load_options.sort_by{ |o| o.name }.each do |lo|
-                #if app.main.parameters['use-all'].given? or lo.given?  then
-                    #parts = lo.name.split('-')
-                    #parts.shift
-                    #plugin_name = parts.join('-')
-                    #plugin_options = app.main.parameters.select{|p| p.type == :option and p.name =~ %r{^#{plugin_name}}}
-                    #u["Module options - #{plugin_name.camelize}"] = section_options("  *",plugin_options)
-                #end
-            #end
 
             u['author'] = old_usage['author']
             u.to_s
@@ -96,6 +87,9 @@ module Rabal
         end
 
         def section_options(pre,list)
+            if list.size == 0 then
+                return "No options available\n"
+            end
             list.sort_by{|p| p.name}.collect do |p|
                 ps = ""
                 ps << option_format(pre,p.short_synopsis,p.description,35,39,78)

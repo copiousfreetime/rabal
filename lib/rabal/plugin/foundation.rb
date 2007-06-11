@@ -29,7 +29,6 @@ module Rabal
                 def inherited(by_class)
                     register_key = "/" + by_class.to_s.downcase
                     by_class.register_path register_as
-                    puts "registering #{register_as}, #{register_key}, #{by_class}"
                     GemPlugin::Manager.instance.register(register_as,register_key,by_class)
                     register_as = nil
                 end

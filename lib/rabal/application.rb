@@ -145,7 +145,6 @@ module Rabal
         # parsed, plugins loaded, some activate, etc.  
         #
         def rabalize
-            puts "Rabalize!"
             max_name = main.params.collect { |p| p.name.length }.max
             main.params.each do |p|
                 puts "#{p.name.rjust(max_name)} : #{p.value} "
