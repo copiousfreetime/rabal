@@ -135,8 +135,9 @@ module Rabal
                 main.usage u
                 main.run 
             rescue ::Main::Parameter::Error => mpe
-                puts "ERROR: #{File.basename($0)}: #{mpe.message}"
+                puts "Parameter Error: #{File.basename($0)}: #{mpe.message}"
                 puts "Try `#{File.basename($0)} --help' for more information."
+                exit 1
             end
         end
 
@@ -151,15 +152,22 @@ module Rabal
             end
 
             # create the core plugin to start things off
-            core_params = params_for_plugin(Rabal::Plugin::Core)
-            [:directory, :project].each {|k| core_params[k] = main.params[k]}
-            core = Rabal::Plugin::Core.new(core_params)
-            using_plugins.each do |p|
-                next if p === Rabal::Plugin::Core
-                pi = p.new(params_for_plugin(p))
-                core.tree << pi.tree
+            begin
+                core_params = params_for_plugin(Rabal::Plugin::Core)
+                core_params[:project] = main.params[:project].value
+                core = Rabal::Plugin::Core.new(core_params)
+                using_plugins.each do |p|
+                    next if p == Rabal::Plugin::Core
+                    pi = p.new(params_for_plugin(p))
+                    core.tree << pi.tree
+                end
+                #Dir.chdir(main.params[:directory].value) do 
+                    core.tree.process
+                #end
+            rescue ::Rabal::StandardError => rse
+                puts "Application Error: #{rse.message}"
+                exit 1
             end
-            core.process
         end
 
         #
@@ -182,6 +190,7 @@ module Rabal
                     end
                 end
             end
+            using
         end
 
         #

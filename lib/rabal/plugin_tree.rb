@@ -1,5 +1,6 @@
 require 'rabal'
 require 'find'
+require 'rabal/util'
 
 module Rabal
     # 
@@ -8,6 +9,8 @@ module Rabal
     # 'directory' it represents being '.'
     #
     class PluginTree < DirectoryTree
+
+        include Util
 
         # the source directory from which the project is generated 
         attr_accessor :src_directory
