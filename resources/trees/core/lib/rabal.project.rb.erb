@@ -20,8 +20,8 @@ module <%= project_name.camelize %>
             end
         end
     end 
-    module_function :require_all_libs
+    module_function :require_all_libs_relative_to
 
 end
 
-<%= project_name.camelize %>.require_all_libs
+<%= project_name.camelize %>.require_all_libs(__FILE__)
