@@ -24,4 +24,4 @@ module <%= project_name.camelize %>
 
 end
 
-<%= project_name.camelize %>.require_all_libs(__FILE__)
+<%= project_name.camelize %>.require_all_libs_relative_to(__FILE__)
