@@ -120,7 +120,17 @@ module Rabal
             end
 
             subtree.parent = self
-            children[subtree.name] = subtree
+
+            # Don't overwrite any existing children with the same name,
+            # just put this one's children in that one, I think this
+            # works recursively now.
+            if children.has_key?(subtree.name) then
+                subtree.children.each do |n,tree|
+                    children[n] = tree
+                end
+            else
+                children[subtree.name] = subtree
+            end
            
             subtree.post_add
 

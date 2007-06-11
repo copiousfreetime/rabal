@@ -4,6 +4,7 @@ describe Rabal::Plugin::License do
         @working_dir = my_temp_dir
         @before      = Dir.pwd
         @core        = Rabal::Plugin::Core.new({:project => "new-spec-proj", :author => "Foo Bar", :email => "foobar@example.com"})
+        @base_tree   = Set.new(%w(README Rakefile CHANGES INSTALL COPYING LICENSE lib lib/new-spec-proj lib/new_spec_proj.rb lib/new-spec-proj/version.rb))
         Dir.chdir(@working_dir)
     end
 
@@ -27,7 +28,7 @@ describe Rabal::Plugin::License do
         lic = Rabal::Plugin::License.new({:flavor => "Ruby"})
         @core.tree << lic.tree
         @core.tree.process
-        (%w[LICENSE COPYING] - find_in("new-spec-proj").to_a).should be_empty
+        find_in("new-spec-proj").sort.should == @base_tree.sort
     end
 
 

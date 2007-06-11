@@ -14,7 +14,6 @@ module Rabal
             # PluginTree below the project tree with the basic file
             # structure
             def initialize(options)
-                puts "creating project tree for project #{options[:project]}"
                 @tree = ProjectTree.new(options[:project] || options["project"],options)
                 @tree << PluginTree.new({},resource_by_name(my_main_tree_name))
             end
