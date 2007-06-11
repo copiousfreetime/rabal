@@ -43,9 +43,22 @@ module Rabal
                     @parameters
                 end
 
-                attribute :description =>  "A #{self.name} Without a Description"
+                def use_always?
+                    @use_always
+                end
+
+                def use_always(d = true)
+                    @use_always = d
+                end
+
+                attribute :description =>  "I Need a Description"
+
+                def use_name
+                    name.split("::").last.dashify
+                end
 
             end
+
         end
     end
 

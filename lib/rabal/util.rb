@@ -38,7 +38,7 @@ class String
             split_on = "-"
         when /_/
             split_on = "_"
-        when /[^A-Z][A-Z]/
+        when /[^A-Z][A-Z]*/
             split_on = /([^A-Z]*)()([A-Z][^A-Z]+)/
         else
             return [self]

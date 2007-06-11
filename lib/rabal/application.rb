@@ -51,7 +51,10 @@ module Rabal
                     # options
                     p_use_name = "use-#{plugin_load_name}"
                     plugin_load_option_names << p_use_name
+
+                    # local variable to build up info from within eval.
                     pons = []
+
                     main.class.class_eval { 
                         option(p_use_name) { 
                             description "Use plugin #{plugin.name}" 
