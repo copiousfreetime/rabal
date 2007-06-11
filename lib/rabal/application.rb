@@ -133,7 +133,7 @@ module Rabal
                 u = Rabal::Usage.new(self)
                 main.usage u
                 main.run 
-            rescue Main::Parameter::Error => mpe
+            rescue ::Main::Parameter::Error => mpe
                 puts "#{main.program_name}: #{mpe.message}"
                 puts "Try `#{main.program_name} --help' for more information."
             end
@@ -145,7 +145,10 @@ module Rabal
         #
         def rabalize
             puts "Rabalize!"
-            p main.params
+            max_name = main.params.collect { |p| p.name.length }.max
+            main.params.each do |p|
+                puts "#{p.name.rjust(max_name)} : #{p.value} "
+            end
         end
 
         #
