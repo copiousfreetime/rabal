@@ -147,5 +147,11 @@ module Rabal
             puts "Rabalize!"
             p main.params
         end
+
+        #
+        # Find the resource associated with the given path.
+        #
+        def find_resource(name)
+        end
     end
 end

@@ -33,6 +33,14 @@ def find_in(path)
     found
 end
 
+def resource_tree_dir
+    File.expand_path(File.join(File.dirname(__FILE__),'..',"resources","trees"))
+end
+
+def resource_handle(item)
+    File.join(resource_tree_dir,item)
+end
+
 
 #
 # Tree used to validate that actions are called

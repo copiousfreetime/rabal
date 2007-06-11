@@ -40,7 +40,10 @@ module Rabal
             def from_file(path,strip_ext = true, non_default_file_name = nil)
                 template  = IO.read(File.expand_path(path))
                 file_name = non_default_file_name || File.basename(path)
-                file_name = File.basename(file_name,(strip_ext ? ".*" : "")).underscore
+                file_name = File.basename(file_name,(strip_ext ? ".*" : ""))
+                if file_name.index("-") then
+                    file_name = file_name.underscore
+                end
                 FileTree.new(file_name,template)
             end
 

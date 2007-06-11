@@ -9,24 +9,15 @@ module Rabal
     #
     class PluginTree < DirectoryTree
 
-        # the name of the plugin this tree represents
-        attr_accessor :plugin_name
-
-        # the name of the template that is used to find src_directory
-        attr_accessor :template_name
-
         # the source directory from which the project is generated 
         attr_accessor :src_directory
 
-        # create a new Plugin Tree based upon a source directory
-        # template designated by +template_name+.  The known template
-        # directories are searched for a matching location and that is
-        # used as the +src_directory+.
-        def initialize(template_name,name = ".")
-            super(name)
-            @plugin_name = name
-            @template_name = template_name
-            @src_directory = Rabal::Application.find_src_directory(template_name)
+        # create a new Plugin Tree based upon a source directory.  This
+        # 'mounts' the src_directory into the dest_directory in the
+        # project.  The dest_directory defaults to "."
+        def initialize(src_directory,dest_directory= ".")
+            super(dest_directory)
+            @src_directory = src_directory
         end
 
         #
