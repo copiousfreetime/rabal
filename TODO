@@ -1,15 +1,22 @@
 == Things To Do and Things that are Done
 === You're Dropping the Ball Here.
 
+* Iterate over the plugins handing it the parameters, so it can fill out
+  its local needs.
+* 
+
+* all base plugins
+** bin
+** core
+** ext
+** license
+** spec
+** test
+
+
+
+* highline prompting for items that are not found but required.
 ** use the GemPlugin::Manager for resource management too
-
-** does --help do all help or just up to the previous plugins that have
-   been 
-** --load-all --help ? does that get all the options from all the
-   plugins and then dump the to the screen?
-** break --help up into sections ?  GENERAL  PLUGINS(listing all
-   plugins) and then subsection for each plugin?
-
 
 * command approach (new, add, ...)
 
@@ -31,7 +38,13 @@ svn:ignore, etc)
 === Accomplishments!
 
 * using 'main' have 
-** Each plugin should designate its 'parameters and a brief description'
+*** does --help do all help or just up to the previous plugins that have
+   been 
+** --load-all --help ? does that get all the options from all the
+   plugins and then dump the to the screen?
+** break --help up into sections ?  GENERAL  PLUGINS(listing all
+   plugins) and then subsection for each plugin?
+* Each plugin should designate its 'parameters and a brief description'
 * rabal should be a GemPluginManager
 ** figure out plugin namespaces '/tree/builtin/base' etc.
 ** move tree's to be in directories based on resource matching their namespace
