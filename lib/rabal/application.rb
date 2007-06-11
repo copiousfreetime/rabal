@@ -135,8 +135,8 @@ module Rabal
                 main.usage u
                 main.run 
             rescue ::Main::Parameter::Error => mpe
-                puts "#{main.program_name}: #{mpe.message}"
-                puts "Try `#{main.program_name} --help' for more information."
+                puts "ERROR: #{File.basename($0)}: #{mpe.message}"
+                puts "Try `#{File.basename($0)} --help' for more information."
             end
         end
 
