@@ -1,11 +1,11 @@
 require File.expand_path(File.join(File.dirname(__FILE__),"spec_helper"))
-describe Rabal::Plugin::Bin do
+describe Rabal::Plugin::Spec do
     before(:each) do 
         @app         = Rabal.application
         @working_dir = my_temp_dir
         @before      = Dir.pwd
         @core        = Rabal::Plugin::Core.new({:project => "new-spec-proj", :author => "Foo Bar", :email => "foobar@example.com"})
-        @base_tree   = Set.new(%w(README Rakefile CHANGES INSTALL lib lib/new-spec-proj lib/new_spec_proj.rb lib/new-spec-proj/version.rb bin bin/new_spec_proj))
+        @base_tree   = Set.new(%w(README Rakefile CHANGES INSTALL lib lib/new-spec-proj lib/new_spec_proj.rb lib/new-spec-proj/version.rb spec spec/new_spec_proj_spec.rb spec/spec_helper.rb))
         Dir.chdir(@working_dir)
     end
 
@@ -15,8 +15,8 @@ describe Rabal::Plugin::Bin do
     end
    
     it "should produce a valid bin directory and executable " do
-        bin_plugin = Rabal::Plugin::Bin.new({})
-        @core.tree << bin_plugin.tree
+        spec_plugin = Rabal::Plugin::Spec.new({})
+        @core.tree << spec_plugin.tree
         @core.tree.process
         find_in("new-spec-proj").sort.should == @base_tree.sort
     end

@@ -76,7 +76,9 @@ module Rabal
             # at the root of some other tree.
             def initialize(options = {})
                 @parameters = OpenStruct.new(options)
-                @tree = PluginTree.new(options,resource_by_name(my_main_tree_name),".")
+                main_tree_name = my_main_tree_name
+                @tree = PluginTree.new(options,resource_by_name(main_tree_name),
+                                       File.basename(main_tree_name))
             end
 
             ############################################################

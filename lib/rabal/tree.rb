@@ -121,7 +121,7 @@ module Rabal
 
             subtree.parent = self
             children[subtree.name] = subtree
-            
+           
             subtree.post_add
 
             return self
