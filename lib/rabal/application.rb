@@ -94,6 +94,7 @@ module Rabal
                 option("directory=d","d") {
                     description "The directory in which to create the project directory."
                     validate    { |d| File.directory?(d) }
+                    default     Dir.pwd
                 }
 
                 option("use-all","a") { description "Use all available plugins." }
@@ -147,6 +148,7 @@ module Rabal
         #
         def rabalize
             # create the core plugin to start things off
+            pwd = Dir.pwd
             begin
                 core_params = params_for_plugin(Rabal::Plugin::Core)
                 core_params[:project] = main.params[:project].value
@@ -156,12 +158,16 @@ module Rabal
                     pi = p.new(params_for_plugin(p))
                     core.tree << pi.tree
                 end
-                Dir.chdir(main.params[:directory].value) do 
-                    core.tree.process
-                end
+
+                # not using chdir blocks, as that raises
+                # warning: conflicting chdir during another chdir block
+                Dir.chdir(File.expand_path(main.params[:directory].value))
+                core.tree.process
             rescue ::Rabal::StandardError => rse
                 puts "Application Error: #{rse.message}"
                 exit 1
+            ensure
+                Dir.chdir(pwd)
             end
         end
 
