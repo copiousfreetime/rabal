@@ -32,12 +32,12 @@ This is the directory template associated with the test plugin.  Lets
 walk through the code line by line.
 
 1. every plugin depends upon Rabal::Plugin::Foundation
-2. Toplevel module for Rabal
+2. Top level module for Rabal
 3. Rabal module containing all plugins 
 4. Declare a *Test* plugin that is registered as +/rabal/test+ in the
-   plugin registry.  It is *critical* that your plugin be delcared in
+   plugin registry.  It is *critical* that your plugin be declared in
    this manner.  There is great Ruby voodoo happening here.  All your
-   Rabal plugins muest be declared as inheriting from Rabal::Plugin::Base
+   Rabal plugins must be declared as inheriting from Rabal::Plugin::Base
    with the registration *path* following. You will probably want to use
    "/mypluginproject/pluginname" as the registration path.
 5. describe your plugin
@@ -232,7 +232,7 @@ declaration.  That is the convention to allow the default plugin
 behavior to work.
 
 A String containing the path to the *xyzzy* directory structure is
-returned from the nexted calls:
+returned from the nested calls:
 
     resource_by_name(my_main_tree_name)
 
