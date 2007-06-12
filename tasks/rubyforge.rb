@@ -103,7 +103,7 @@ task :release_rubyforge => [:clean, :package] do
     config["release_changes"]   = last_changeset
     config["Prefomatted"]       = true
 
-    files = FileList["pkg/#{SPEC.rubyforge_project}-#{SPEC.version}.*"].to_a
+    files = FileList["pkg/#{SPEC.name}-#{SPEC.version}.*"].to_a
     puts "Uploading to rubyforge..."
     rf.add_release(SPEC.rubyforge_project, SPEC.name, SPEC.version, *files)
     puts "done."
