@@ -26,8 +26,8 @@ SPEC = Gem::Specification.new do |s|
     s.description        = Rabal::DESCRIPTION
 
     s.extra_rdoc_files   = %w[LICENSE README COPYING README.PLUGIN]
-    s.files              = FileList["lib/**/*", "resources/**/*","bin/**/*"]
-    s.test_files         = FileList["spec/**/*"]
+    s.files              = FileList["lib/**/*.rb", "resources/**/*","bin/*"]
+    s.test_files         = FileList["spec/**/*.rb"]
     s.has_rdoc           = true
     s.rdoc_options       << [ "--line-numbers" , "--inline-source", 
                             "--title", "Rabal -- Ruby Architecture for Building Applications and Libraries",
@@ -60,14 +60,14 @@ end
 # Documentation and Testing (rspec)
 #-----------------------------------------------------------------------
 rd = Rake::RDocTask.new do |rdoc|
-    rdoc.rdoc_dir   = "doc/rdoc"
+    rdoc.rdoc_dir   = "doc"
     rdoc.title      = SPEC.summary
     rdoc.main       = "README"
-    rdoc.rdoc_files = (FileList["lib/**/*","bin/**/*"]+ SPEC.extra_rdoc_files).uniq
+    rdoc.rdoc_files = (FileList["lib/**/*.rb","bin/*"]+ SPEC.extra_rdoc_files).uniq
 end
 
 rspec = Spec::Rake::SpecTask.new do |r|
-    r.rcov      = true
+    r.rcov      = false
     r.rcov_dir  = "doc/coverage"
     r.libs      = SPEC.require_paths
     r.spec_opts = %w(--format specdoc)
