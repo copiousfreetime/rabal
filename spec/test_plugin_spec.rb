@@ -5,7 +5,7 @@ describe Rabal::Plugin::Test do
         @working_dir = my_temp_dir
         @before      = Dir.pwd
         @core        = Rabal::Plugin::Core.new({:project => "new-spec-proj", :author => "Foo Bar", :email => "foobar@example.com"})
-        @base_tree   = Set.new(%w(README Rakefile CHANGES INSTALL lib lib/new-spec-proj lib/new_spec_proj.rb lib/new-spec-proj/version.rb test test/new_spec_proj_test.rb test/test_helper.rb))
+        @base_tree   = Set.new(%w(README Rakefile CHANGES lib lib/new-spec-proj lib/new_spec_proj.rb lib/new-spec-proj/version.rb test test/new_spec_proj_test.rb test/test_helper.rb))
         Dir.chdir(@working_dir)
     end
 

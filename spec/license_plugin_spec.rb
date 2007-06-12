@@ -4,7 +4,7 @@ describe Rabal::Plugin::License do
         @working_dir = my_temp_dir
         @before      = Dir.pwd
         @core        = Rabal::Plugin::Core.new({:project => "new-spec-proj", :author => "Foo Bar", :email => "foobar@example.com"})
-        @base_tree   = Set.new(%w(README Rakefile CHANGES INSTALL COPYING LICENSE lib lib/new-spec-proj lib/new_spec_proj.rb lib/new-spec-proj/version.rb))
+        @base_tree   = Set.new(%w(README Rakefile CHANGES COPYING LICENSE lib lib/new-spec-proj lib/new_spec_proj.rb lib/new-spec-proj/version.rb))
         Dir.chdir(@working_dir)
     end
 

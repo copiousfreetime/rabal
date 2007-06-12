@@ -268,7 +268,7 @@ Since Rabal::Plugin::Core is the plugin that creates the root of the
 entire tree, its +@parameters+ are available.  Currently these are
 available during tree generation as:
 
-* *project* - the name of the project from the command line
+* *root.name* - the name of the project from the command line
 * *author* - the author of the project from the <tt>--core-author</tt> option
 * *email* - the email address of the author from the <tt>--core-email</tt> option
 

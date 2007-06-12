@@ -1,4 +1,4 @@
-== <%= project %>
+== <%= root.name %>
 
 * Homepage
 * rubyforge project

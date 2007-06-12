@@ -12,6 +12,7 @@ task :default => :spec
 
 # since we have directories named 'core' wipe out what CLEAN has
 CLEAN.exclude("**/core")
+puts CLEAN.to_a
 
 #-----------------------------------------------------------------------
 # Packaging and Installation
