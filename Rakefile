@@ -8,6 +8,10 @@ $: << File.join(File.dirname(__FILE__),"lib")
 
 require 'rabal'
 
+# since we have directories named 'core' wipe out what CLEAN has
+CLEAN.clear
+CLEAN << FileList["**/*~", "**/*.bak"]
+
 SPEC = Gem::Specification.new do |s|
     s.name               = "rabal"
     s.author             = Rabal::AUTHOR
