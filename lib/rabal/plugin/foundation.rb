@@ -75,6 +75,7 @@ module Rabal
             # at the root of some other tree.
             def initialize(options = {})
                 @parameters = OpenStruct.new(options)
+                validate_parameters
                 main_tree_name = my_main_tree_name
                 @tree = PluginTree.new(options,resource_by_name(main_tree_name),
                                        File.basename(main_tree_name))
@@ -85,7 +86,19 @@ module Rabal
             # child plugins
             ############################################################
 
-
+            #
+            # validate the parameters of the plugin in the simplest way
+            # possible.  Make sure that each listend parameters is not
+            # null.  This assumes that @parameters has a method for each
+            # parameter naem
+            #
+            def validate_parameters
+                self.class.parameters.each do |param,desc|
+                    if not @parameters.respond_to?(param) or @parameters.send(param).nil? then
+                        raise PluginParameterMissingError, "Missing parameter '#{param}' from #{self.class.use_name} plugin.  See --use-#{self.class.use_name} --help"
+                    end
+                end
+            end
             # What gem a plugin belongs to.  This is necessary to access
             # the resources of the gem the plugin may use.  Overload
             # this in a child plugin to return what you want.  By

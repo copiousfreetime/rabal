@@ -1,46 +1,43 @@
 == Things To Do and Things that are Done
 === You're Dropping the Ball Here.
 
-* Iterate over the plugins handing it the parameters, so it can fill out
-  its local needs.
-* 
+* Base plugins
+** ext
+** hoe
 
-* all base plugins
+* highline prompting for items that are not found but required.
+
+* commands ?
+** add
+** update
+
+* when there are ERB Errors, present that in an effective manner
+* lint command
+* Hoe support
+
+* SCM Support for:
+** Initialization, first setup
+** Adding to and modification of the 'ignore' file (.boring, .cvsignore svn:ignore, etc)
+** Adding tree's to the project
+** tagging the project with a release
+
+=== Accomplishments!
+
+* Use GemPlugin
+** manage built-in plugins
+** manage gem based plugins
+** maange resources
+
+* Base plugins
 ** bin
 ** core
-** ext
 ** license
 ** spec
 ** test
 
-
-
-* highline prompting for items that are not found but required.
-** use the GemPlugin::Manager for resource management too
-
-* command approach (new, add, ...)
-
-* fix ERB errors, show better error
-* lint command
-* License declaration or addition
-* Hoe support
-
-* SCM API Support for:
-** Initialization, first setup
-** Adding to and modification of the 'ignore' file (.boring, .cvsignore
-svn:ignore, etc)
-** Adding tree's to the project
-** tagging the project with a release
-** making sure nothing is left out of the project
-
-
-
-=== Accomplishments!
-
-* using 'main' have 
-*** does --help do all help or just up to the previous plugins that have
-   been 
-** --load-all --help ? does that get all the options from all the
+* use ara's main gem
+** --use-all 
+** rework --help so it 
    plugins and then dump the to the screen?
 ** break --help up into sections ?  GENERAL  PLUGINS(listing all
    plugins) and then subsection for each plugin?

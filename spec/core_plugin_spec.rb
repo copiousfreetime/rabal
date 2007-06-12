@@ -21,4 +21,9 @@ describe Rabal::Plugin::Core do
         @core.tree.process
         find_in("new-spec-proj").sort.should == @base_tree.sort
     end
+
+    it "should raise PluginParameterMissingError if missing information" do
+        lambda {Rabal::Plugin::Core.new({})}.should raise_error(Rabal::PluginParameterMissingError)
+    end
+
 end
