@@ -82,7 +82,7 @@ module Rabal
             return @main if @main
             @main = Main.new(app_argv) {
                 description Rabal::DESCRIPTION
-                author      "#{Rabal::AUTHOR} <#{Rabal::AUTHOR_EMAIL}>"
+                author      Rabal::AUTHOR
                 version     Rabal::VERSION
 
                 # Project, the whole reason rabal exists

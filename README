@@ -1,4 +1,4 @@
-Rabal
+== Rabal
 
 * Homepage[http://copiousfreetime.rubyforge.org/rabal/]
 * {Rubyforge Project}[http://rubyforge.org/projects/copiousfreetime]
@@ -135,7 +135,7 @@ See the README.PLUGIN for information on how to develop your own.
       No options available
 
     AUTHOR
-      Jeremy Hinegardner <jeremy@hinegardner.org>
+      Jeremy Hinegardner 
 
 
 == REQUIREMENTS
@@ -147,6 +147,13 @@ See the README.PLUGIN for information on how to develop your own.
 * rake
 * rspec
 * rcov
+
+== BUGS
+
+Rabal is taking the release early and release often approach.  There
+are guaranteed to be bugs.  In fact, there are some known options that
+currently do nothing.  Please report all bugs in the {rubyforge bug
+tracker}[http://rubyforge.org/tracker/?atid=14326&group_id=3707&func=browse]
 
 == CREDITS
 

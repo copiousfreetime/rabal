@@ -1,27 +1,28 @@
-How to Develop a Plugin for Rabal
+== How to Develop a Plugin for Rabal
 
-== OVERVIEW
-
-Rabal uses the the +gem_plugin+ gem to manage its plugins.  A basic
-plugin is a single class that inherits from Rabal::Plugin::Foundation.
+Rabal uses the +gem_plugin+ gem to manage its plugins.  A basic plugin
+is a single class that inherits from Rabal::Plugin::Foundation.
 
 A plugin has +parameters+ a +description+ and a flag +use_always+ which
 indicates if the plugin's use is required. 
 
 == Basic Plugin - only directory/file structure
 
+The basic Rabal::Plugin::Test that ships with rabal demonstrates the
+default behavior of a plugin.  
+
     1: require 'rabal/plugin/foundation'
     2:  module Rabal
     3:     module Plugin
     4:         class Test < Rabal::Plugin::Base "/rabal/test"
     5:             description "Add a Test::Unit framework."
-    6:         end
-    7:     end
-    8:  end
+               end
+           end
+        end
 
-This is the 'test' plugin that ships with rabal.  It shows all that is required
-for a basic plugin that only has a directory/file structure associated
-with it.
+This is the 'test' plugin that ships with rabal.  It shows all that is
+required for a basic plugin that only has a directory/file structure
+associated with it.
 
     test/
     test/rabal.project_test.rb.erb
@@ -30,154 +31,246 @@ with it.
 This is the directory template associated with the test plugin.  Lets
 walk through the code line by line.
 
-# every plugin depends upon Rabal::Plugin::Foundation
-# Toplevel module for Rabal
-# Rabal module containing all plugins 
-# Declare a *Test* plugin that is registered as "/rabal/test" in the
-  plugin registry.  It is *critical* that your plugin be delcared in
-  this manner.  There is great Ruby voodoo happening here.  All your
-  Rabal plugins muest be declared as inheriting from Rabal::Plugin::Base
-  with the registration *path* following. You will probably want to use
-  "/mypluginproject/pluginname" as the registration path.
-# describe your plugin
+1. every plugin depends upon Rabal::Plugin::Foundation
+2. Toplevel module for Rabal
+3. Rabal module containing all plugins 
+4. Declare a *Test* plugin that is registered as +/rabal/test+ in the
+   plugin registry.  It is *critical* that your plugin be delcared in
+   this manner.  There is great Ruby voodoo happening here.  All your
+   Rabal plugins muest be declared as inheriting from Rabal::Plugin::Base
+   with the registration *path* following. You will probably want to use
+   "/mypluginproject/pluginname" as the registration path.
+5. describe your plugin
 
 Associated with your plugin is a directory tree.  This tree should be
 located in the +resources+ directory under the root of your gem.  This
 will enable the resources to be named and accessed via the
-*resource_by_name* method available from within your plugin.
++resource_by_name+ method available from within your plugin.
 
-In your directory tree, if *rabal.project* is in the file or directory
-path it will be replaced with the project name used in the *rabal*
-command.
+In your directory tree, if +rabal.project+ is in the file or directory
+path it will be replaced with the project name from the +rabal+ command.
 
-The parameters of your plugin are available from within the ERB template
-to use in generating the basic files.
+The parameters of your plugin, along with parameters associated with
+plugins further up the directory structure are available in your ERB
+templates.  The scope of parameters is explained further down.
 
-== Plugin with Parameters
+== Default Plugin Behavior
 
-== Plugin with decision making 
+In many cases all you will need to do is declare the appropriate class,
+add some parameters and a description and let the default behavior take
+over.  Lets look at the +initialize+ method of Rabal::Plugin::Foundation
+to see what happens in the default case.
+
+    1. def initialize(options = {}) 
+    2.     @parameters = OpenStruct.new(options)
+    3.     validate_parameters
+    4.     main_tree_name = my_main_tree_name
+    5.     @tree = PluginTree.new(options,resource_by_name(main_tree_name), File.basename(main_tree_name))
+       end
+
+The default behavior of a plugin is pretty straight forward.
+
+1. It is initialized with a Hash representing the +parameter+'s given on
+   the command line that apply to this plugin.  
+2. Convert the +options+ into an OpenStruct.  This is fairly important
+   as this is how the +parameters+ get exposed to the ERB templates.
+3. Validate the parameters.  The default mechanism is just to make sure
+   that each declare +parameter+ is present and has a non-nil value.
+   Override +validate_parameters+ to validate via your own mechanism.
+   If the validation fails, you should raise PluginParameterMissingError
+   with an appropriate message.
+4. +my_main_tree_name+ is a method from the parent class of all plugins,
+   Rabal::Plugin::Foundation.  It gives the name of the default
+   directory from within the +resources+ of the gem. This is assumed to
+   be <tt>trees/plugin_name</tt>.
+5. Create a PluginTree instance from the default resource directory.
+   This recursively descends the source directory creating all
+   DirectoryTree and FileTree instances that are necessary to represent
+   the tree below +my_main_tree_name+.  
+   
+=== IMPORTANT!!! All plugins are required to have a 'tree' method which returns something that is kind_of?(Tree)
+
+As an example of the default behavior, from the root of the rabal gem,
+the Rabal::Plugin::Test plugin has a resource directory structure of:
+
+    rabal/resources/trees/test
+    rabal/resources/trees/test/rabal.project_test.rb.erb
+    rabal/resources/trees/test/test_helper.rb.erb
+
+This will result in the following items being created, assuming a
+project name of +myproj+.
+
+    myproj/test
+    myproj/test/myproj_test.rb
+    myproj/test/test_helper.rb
+
+The +rabal.project+ items from the path are automatically replaced with
+the +project+ name given on the command line.  Each of the .erb files is
+run through ERB.
+
+== Plugin with Parameters and non-default behavior
+
+The Rabal::Plugin::License plugin that ships with Rabal is a good example of a
+plugin that uses the currently available DSL for declaring plugins, and
+utilizing non-default behavior.
+
+     module Rabal
+         module Plugin
+   1:       class License < Rabal::Plugin::Base "/rabal/license"
+   2:           TYPES = %w[BSD GPL LGPL MIT Ruby]
+   3:           parameter "flavor", "Flavor of License for your project: #{TYPES.join(', ')}"
+   4:           description "Indicate under what license your project is released."
+   5:           use_always
+
+   7:           def initialize(options)
+   6:               @parameters = OpenStruct.new(options)
+   8:               if not @parameters.respond_to?(:flavor) then
+                        raise PluginParameterMissingError, "Missing parameter 'flavor' from license plugin.  See --use-license --help"
+                    end
+                    suffix = @parameters.flavor
+                    if TYPES.include?(suffix) then
+   9:                   resource_dir = resource_by_name(my_main_tree_name)
+  10:                   @tree = DirectoryTree.new(".")
+  11:                   Dir.glob(File.join(resource_dir,"*.#{suffix.downcase}")).each do |file|
+                            @tree << FileTree.from_file(file)
+                        end
+                    else
+  12:                   raise PluginParameterMissingError, "Invalid value '#{suffix}' for 'flavor' parameter from license plugin.  Only #{TYPES.join(",")} are currently supported."
+                    end
+                end
+            end
+        end
+    end
+
+Again lets walk through the indicated lines and describe what is
+happening.
+
+1. Declare the License plugin and register it as +/rabal/license+
+2. Class level constants used internally by Rabal::Plugin::License.
+3. Declare a plugin parameter.  The form here is <tt>parameter name,
+   description</tt>.  The +flavor+ parameter will be exposed on the
+   command line as <tt>--license-flavor</tt> and the parameter description will
+   appear next to the option when <tt>--help</tt> is used on the command line.
+4. Declare the plugin description.  This appears in <tt>AVAILABLE
+   MODULES</tt> section in the <tt>--help</tt>.
+5. Declare that this plugin is always used.  It is listed with a '*'
+   next to it in <tt>AVAILABLE MODULES</tt> and its <tt>MODULE
+   OPTIONS</tt> are always listed in <tt>--help</tt>.
+6. When a plugin is instantiated, it is passed as Hash in the +options+
+   parameter to +initialize+.  This +options+ parameter contains the
+   results of the command line options for this plugin.  In this case if
+   the <tt>--license-flavor</tt> command line option was used +options+
+   will be a Hash with a :flavor key.
+7. Convert +options+ to a local OpenStruct for easy use.  The default
+   initializer in Rabal::Plugin::Foundation has this behavior
+8. Validate that the +flavor+ parameter was given on the command line.
+   The default behavior if no +initialize+ method overwritten is to
+   validate that all of a plugins +parameters+ have a non-nil value.
+9. Access the directory within the plugin containing the files that this
+   plugin will use.  In this case that directory happens to be
+   +gem_directory/resources/trees/license/+
+10. Every Plugin is required to have a +@tree+ instance variable.  This
+    creates a new DirectoryTree instance and associates it with the "."
+    directory within the resulting project structure.  This in effect
+    makes this DirectoryTree instance at the *root* of the project
+    structure.
+11. Loop over the files available in the resource directory finding the
+    file(s) that have an +flavor+ extension.  Each of the files that
+    matches is associated with a FileTree instance which will take care
+    of the ERB necessities.  The FileTree instances are added to the
+    DirectoryTree created in the previous step.  As a result the file(s)
+    created here will appear in the *root* directory of the resulting
+    project tree.
+12. Raise an error indicating that the +flavor+ parameter was given an
+    invalid value. This error will be caught by the rabal application and
+    displayed to the end user.
+
 
 == Packaging
 
-== Trees
-    ./example/lib
-    ./example/lib/example
-    ./example/lib/example.rb
-    ./example/lib/example/version.rb
-    ./example/CHANGES
-    ./example/INSTALL
-    ./example/README
-    ./example/Rakefile
+It is assumed that your plugin will be packaged as a gem.  To make your
+plugin available to rabal it must be dependent upon both rabal and
+gem_plugin.  This is achieved by something similar to the following to
+your gem specification.
 
-Rabal currently ships with plugins for:
+   Gem::Specification.new do |s|
+        ...
+        s.add_dependency("gem_plugin")
+        s.add_dependency("rabal")
+        ...
+   end
 
-* core - core functionality and baseline information need by every  project
-* license - indicate under what license your project is released.  Has
-  templates for BSD, GPL, LGPL, MIT and Ruby License
-* bin - command line application
-* spec - an RSpec starting point
-* test - a Test::Unit starting point
+If this is done, when your gem is installed you can check that your gem
+is seen with Rabal by doing:
 
-You are highly encouraged to write your own plugins and distribute them.
-See the README.PLUGIN for information on how to develop your own.
+    rabal --use-all --help
 
-== EXAMPLE
+This will display all the available plugins and their command line
+options.
 
-  % rabal --use-all --core-author="Ruby Programmer" --core-email="rp@example.com"  --license-flavor=Ruby myproj
-  [...]
-  % find ./myproj
-  ./myproj/
-  ./myproj/LICENSE
-  ./myproj/COPYING
-  ./myproj/README
-  ./myproj/lib
-  ./myproj/lib/myproj
-  ./myproj/lib/myproj/version.rb
-  ./myproj/lib/myproj.rb
-  ./myproj/Rakefile
-  ./myproj/INSTALL
-  ./myproj/CHANGES
-  ./myproj/spec
-  ./myproj/spec/spec_helper.rb
-  ./myproj/spec/myproj_spec.rb
-  ./myproj/bin
-  ./myproj/bin/myproj
+== Resources and Trees
 
-== SYNOPSIS
+At the core of rabal are the resource trees utilized by the plugins to
+generate an output directory/file structure.  These tree _templates_ are
+stored within your gem under the +resources/trees+ directory from
+withing your gem. 
 
-    NAME
-      rabal v0.0.1
+You can get a jump start on your plugin project with:
 
-    SYNOPSIS
-      rabal project [options]+
+    rabal --core-author="My Name" --core-email=author@example.com --license-flavor=MIT --use-test myrabalplugin
+    mkdir -p myrabalplugin/resources/trees/xyzzy
 
-    DESCRIPTION
-      Ruby Architecture for Building Applications and Libraries.
-      
-      Rabal is a command line application for bootstrapping, packaging and
-      distributing ruby projects.
+The declaration of your plugin in the .rb file should look something
+like:
 
-    GLOBAL OPTIONS
-      --directory=directory, -d          - The directory in which to create the 
-                                           project directory. 
-      --help, -h                       
-      --logfile=logfile, -l              - The location of the logfile 
-      --use-all, -a                      - Use all available plugins. 
-      --verbosity=verbosity, -v          - One of : DEBUG, INFO, WARN, ERROR, 
-                                           FATAL, ANY 
-      --version, -V                      - Display the version number 
+    class MyRabalPlugin < Rabal::Plugin::Base "/myrabalplugin/xyzzy"
+    ...
+    end
 
-    AVAILABLE MODULES
-      Force any module to be used by giving the --use-[modulename] option. 
-      Modules with a '*' next to them are always used. 
-      
-         bin (/rabal/bin)           - Add a command line application. 
-        *core (/rabal/core)         - The core functionality and baseline 
-                                      information needed by every project. 
-        *license (/rabal/license)   - Indicate under what license your project is 
-                                      released. 
-         spec (/rabal/spec)         - Add an RSpec framework. 
-         test (/rabal/test)         - Add a Test::Unit framework. 
+Notice the *xyzzy* in both the resource directory and the plugin class
+declaration.  That is the convention to allow the default plugin
+behavior to work.
 
-    MODULE OPTIONS - BIN
-      No options available
+A String containing the path to the *xyzzy* directory structure is
+returned from the nexted calls:
 
-    MODULE OPTIONS - CORE
-      --core-author=[core-author]        - Author of the project 
-      --core-email=[core-email]          - Email address of the author 
+    resource_by_name(my_main_tree_name)
 
-    MODULE OPTIONS - LICENSE
-      --license-flavor=[license-flavor]  - Flavor of License for your project: 
-                                           BSD, GPL, LGPL, MIT, Ruby 
++my_main_tree_name+ returns +trees/xyzzy+ and +resource_by_name+ will
+return +/path/to/gem/resources/trees/xyzzy+.
 
-    MODULE OPTIONS - SPEC
-      No options available
+A later release of rabal will include a rabal plugin generation plugin
+to simplify the creation of rabal plugins.  
 
-    MODULE OPTIONS - TEST
-      No options available
+== Parameter scope
 
-    AUTHOR
-      Jeremy Hinegardner <jeremy@hinegardner.org>
+The internal mechanisms of rabal use a Tree data structure to represent
+the directories and files that are created by rabal.  Each node in the
+tree is represented by a Tree or child class such as DirectoryTree or
+FileTree.  Each Tree has a +@parameters+ instance variable, which is
+by convention an instance of OpenStruct. It can be any object though.
 
+Any Tree instance or erb template when it is evaluated has access to any
+method on its own Tree or any Tree above it in its path, terminating at
+the *root* of the Tree which is created by Rabal::Plugin::Core.
 
-== REQUIREMENTS
-=== For running
-* main
-* gem_plugin
+Essentially, in a Tree instance or in an ERB template +method_missing+
+is defined such that the method call cascades up the Tree data structure
+until a Tree node is found that either responds to that method or has a
++@parameters+ instance variable that responds to the method call.  
 
-=== For development
-* rake
-* rspec
-* rcov
+If the call cascades all the way to the *root* and nothing responds to
+it, then NoMethodError is raised.  
 
-== CREDITS
+=== Core Parameters
 
-rabal is inspired by:
+Since Rabal::Plugin::Core is the plugin that creates the root of the
+entire tree, its +@parameters+ are available.  Currently these are
+available during tree generation as:
 
-* Cabal - http://www.haskell.org/cabal/
-* Hoe - http://seattlerb.rubyforge.org/hoe/
-* Conversations with Bruce Williams - http://codefluency.com/
+* *project* - the name of the project from the command line
+* *author* - the author of the project from the <tt>--core-author</tt> option
+* *email* - the email address of the author from the <tt>--core-email</tt> option
 
-== LICENSE:
+This list will continue to grow as rabal evolves.
 
-Released under the same conditions as Ruby.  See LICENSE and COPYING

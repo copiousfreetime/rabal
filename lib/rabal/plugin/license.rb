@@ -8,7 +8,7 @@ module Rabal
         #
         class License < Rabal::Plugin::Base "/rabal/license"
             TYPES = %w[BSD GPL LGPL MIT Ruby]
-            parameter "flavor", "Flavor of Licese for your project: #{TYPES.join(', ')}"
+            parameter "flavor", "Flavor of License for your project: #{TYPES.join(', ')}"
             description "Indicate under what license your project is released."
             use_always
 
