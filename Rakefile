@@ -11,8 +11,7 @@ require 'rabal'
 task :default => :spec
 
 # since we have directories named 'core' wipe out what CLEAN has
-CLEAN.clear
-CLEAN << FileList["**/*~", "**/*.bak"]
+CLEAN.exclude("**/core")
 
 #-----------------------------------------------------------------------
 # Packaging and Installation

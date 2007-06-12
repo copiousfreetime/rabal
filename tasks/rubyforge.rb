@@ -15,7 +15,7 @@ desc "Sync doc/ with rubyforge site"
 task :sync_rubyforge do |rf|
     rf_config = YAML::load(File.read(File.join(ENV["HOME"],".rubyforge","user-config.yml")))
     dest_host = "#{rf_config['username']}@rubyforge.org"
-    dest_dir  = "/var/www/gforge-projects/#{SPEC.rubyforge_name}/#{SPEC.name}"
+    dest_dir  = "/var/www/gforge-projects/#{SPEC.rubyforge_project}/#{SPEC.name}"
 
     # trailing slash on source, none on destination
     sh "rsync -zav --delete doc/ #{dest_host}:#{dest_dir}"
@@ -85,7 +85,7 @@ task :post_news do
     subject, title, body, urls = announcement
     rf = RubyForge.new
     rf.login
-    rf.post_news(SPEC.rubyforge_name, subject, "#{title}\n\n#{urls}\n\n#{body}")
+    rf.post_news(SPEC.rubyforge_project, subject, "#{title}\n\n#{urls}\n\n#{body}")
     puts "Posted to rubyforge"
 end
 
@@ -103,9 +103,9 @@ task :release_rubyforge => [:clean, :package] do
     config["release_changes"]   = last_changeset
     config["Prefomatted"]       = true
 
-    files = FileList["pkg/#{SPEC.rubyforge_name}-#{SPEC.version}.*"].to_a
+    files = FileList["pkg/#{SPEC.rubyforge_project}-#{SPEC.version}.*"].to_a
     puts "Uploading to rubyforge..."
-    rf.add_release(SPEC.rubyforge_name, SPEC.name, SPEC.version, *files)
+    rf.add_release(SPEC.rubyforge_project, SPEC.name, SPEC.version, *files)
     puts "done."
 end
 
