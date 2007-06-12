@@ -1,6 +1,7 @@
 == Things To Do and Things that are Done
 === You're Dropping the Ball Here.
 
+* Factor out meta information, subclass Gem::Specification ?
 * Base plugins
 ** ext
 ** hoe

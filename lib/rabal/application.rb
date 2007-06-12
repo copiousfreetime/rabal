@@ -146,11 +146,6 @@ module Rabal
         # parsed, plugins loaded, some activate, etc.  
         #
         def rabalize
-            max_name = main.params.collect { |p| p.name.length }.max
-            main.params.each do |p|
-                puts "#{p.name.rjust(max_name)} : #{p.value} "
-            end
-
             # create the core plugin to start things off
             begin
                 core_params = params_for_plugin(Rabal::Plugin::Core)

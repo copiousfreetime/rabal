@@ -6,26 +6,30 @@ require 'spec/rake/spectask'
 
 $: << File.join(File.dirname(__FILE__),"lib")
 
+require 'rabal'
+
 SPEC = Gem::Specification.new do |s|
     s.name               = "rabal"
-    s.author             = "Jeremy Hinegardner"
-    s.email              = "jeremy@hinegardner.org"
-    s.homepage           = "http://copiousfreetime.rubyforge.org/rabal/"
+    s.author             = Rabal::AUTHOR
+    s.email              = Rabal::AUTHOR_EMAIL
+    s.homepage           = Rabal::HOMEPAGE
     s.summary            = "A tool for bootstrapping project development"
-    s.description        =<<-DESC
-    Ruby Architecture for Building Applications and Libraries. 
+    s.platform           = Gem::Platform::Ruby
+    s.description        = Rabal::DESCRIPTION
 
-    A tool for bootstrapping project development 
-    DESC
-
-    s.extra_rdoc_files   = FileList["README", "LICENSE"]
-    s.files              = FileList["lib/**/*", "spec/**/*","data/**/*","bin/**/*"]
+    s.extra_rdoc_files   = FileList[%w[LICENSE README COPYING]]
+    s.files              = FileList["lib/**/*", "spec/**/*","resources/**/*","bin/**/*"]
+    s.test_files         = FileList["spec/**/*"]
     s.has_rdoc           = true
-    s.rdoc_options       << [ "--line-numbers" , "--inline-source", "--title", s.summary,
+    s.rdoc_options       << [ "--line-numbers" , "--inline-source", 
+                            "--title", "Rabal -- Ruby Architecture for Building Applications and Libraries",
                              "--main", "README" ]
 
     s.rubyforge_project  = "copiousfreetime"
     s.version            = Gem::Version.create("0.0.1")
+    s.add_dependency("main", ">= 0.0.2")
+    s.add_dependency("gem_plugin", ">= 0.2.1")
+    s.executables        = %w[ bin/rabal ]
 end
 
 task :default => :spec

@@ -4,6 +4,8 @@ module Rabal
     HOMEPAGE        = "http://copiousfreetime.rubyforge.org/rabal/"
     COPYRIGHT       = "2007 #{AUTHOR}".freeze
     DESCRIPTION     = <<DESC
+Ruby Architecture for Building Applications and Libraries.
+
 Rabal is a commandline application for bootstrapping, packaging and
 distributing ruby projects.
 DESC
