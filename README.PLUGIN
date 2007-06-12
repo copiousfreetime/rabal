@@ -27,7 +27,31 @@ with it.
     test/rabal.project_test.rb.erb
     test/test_helper.rb.erb
 
-This is the directory template associated with the test plugin.
+This is the directory template associated with the test plugin.  Lets
+walk through the code line by line.
+
+# every plugin depends upon Rabal::Plugin::Foundation
+# Toplevel module for Rabal
+# Rabal module containing all plugins 
+# Declare a *Test* plugin that is registered as "/rabal/test" in the
+  plugin registry.  It is *critical* that your plugin be delcared in
+  this manner.  There is great Ruby voodoo happening here.  All your
+  Rabal plugins muest be declared as inheriting from Rabal::Plugin::Base
+  with the registration *path* following. You will probably want to use
+  "/mypluginproject/pluginname" as the registration path.
+# describe your plugin
+
+Associated with your plugin is a directory tree.  This tree should be
+located in the +resources+ directory under the root of your gem.  This
+will enable the resources to be named and accessed via the
+*resource_by_name* method available from within your plugin.
+
+In your directory tree, if *rabal.project* is in the file or directory
+path it will be replaced with the project name used in the *rabal*
+command.
+
+The parameters of your plugin are available from within the ERB template
+to use in generating the basic files.
 
 == Plugin with Parameters
 
