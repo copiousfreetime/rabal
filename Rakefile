@@ -8,10 +8,15 @@ $: << File.join(File.dirname(__FILE__),"lib")
 
 require 'rabal'
 
+task :default => :spec
+
 # since we have directories named 'core' wipe out what CLEAN has
 CLEAN.clear
 CLEAN << FileList["**/*~", "**/*.bak"]
 
+#-----------------------------------------------------------------------
+# Packaging and Installation
+#-----------------------------------------------------------------------
 SPEC = Gem::Specification.new do |s|
     s.name               = "rabal"
     s.author             = Rabal::AUTHOR
@@ -36,15 +41,6 @@ SPEC = Gem::Specification.new do |s|
     s.executables        = %w[ rabal ]
 end
 
-task :default => :spec
-
-rd = Rake::RDocTask.new do |rdoc|
-    rdoc.rdoc_dir   = "doc/rdoc"
-    rdoc.title      = SPEC.summary
-    rdoc.main       = "README"
-    rdoc.rdoc_files = (FileList["lib/**/*","bin/**/*"]+ SPEC.extra_rdoc_files).uniq
-end
-
 packaging = Rake::GemPackageTask.new(SPEC) do |pkg|
     pkg.need_tar = true
     pkg.need_zip = true
@@ -61,9 +57,28 @@ task :gemspec do
     puts SPEC.to_ruby
 end
 
+#-----------------------------------------------------------------------
+# Documentation and Testing (rspec)
+#-----------------------------------------------------------------------
+rd = Rake::RDocTask.new do |rdoc|
+    rdoc.rdoc_dir   = "doc/rdoc"
+    rdoc.title      = SPEC.summary
+    rdoc.main       = "README"
+    rdoc.rdoc_files = (FileList["lib/**/*","bin/**/*"]+ SPEC.extra_rdoc_files).uniq
+end
+
 rspec = Spec::Rake::SpecTask.new do |r|
     r.rcov      = true
     r.rcov_dir  = "doc/coverage"
     r.libs      = SPEC.require_paths
     r.spec_opts = %w(--format specdoc)
 end
+
+#-----------------------------------------------------------------------
+# if we are in the project source code control sandbox then there are
+# other tasks available.
+#-----------------------------------------------------------------------
+if File.directory?("_darcs") then
+    require 'tasks/rubyforge'
+end
+
