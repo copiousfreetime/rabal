@@ -156,9 +156,9 @@ module Rabal
                     pi = p.new(params_for_plugin(p))
                     core.tree << pi.tree
                 end
-                #Dir.chdir(main.params[:directory].value) do 
+                Dir.chdir(main.params[:directory].value) do 
                     core.tree.process
-                #end
+                end
             rescue ::Rabal::StandardError => rse
                 puts "Application Error: #{rse.message}"
                 exit 1

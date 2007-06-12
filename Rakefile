@@ -18,7 +18,7 @@ SPEC = Gem::Specification.new do |s|
     s.description        = Rabal::DESCRIPTION
 
     s.extra_rdoc_files   = FileList[%w[LICENSE README COPYING]]
-    s.files              = FileList["lib/**/*", "spec/**/*","resources/**/*","bin/**/*"]
+    s.files              = FileList["lib/**/*", "resources/**/*","bin/**/*"]
     s.test_files         = FileList["spec/**/*"]
     s.has_rdoc           = true
     s.rdoc_options       << [ "--line-numbers" , "--inline-source", 
@@ -38,7 +38,7 @@ rd = Rake::RDocTask.new do |rdoc|
     rdoc.rdoc_dir   = "doc/rdoc"
     rdoc.title      = SPEC.summary
     rdoc.main       = "README"
-    rdoc.rdoc_files = SPEC.files + SPEC.extra_rdoc_files
+    rdoc.rdoc_files = FileList["lib/**/*","bin/**/*"]+ SPEC.extra_rdoc_files
 end
 
 packaging = Rake::GemPackageTask.new(SPEC) do |pkg|
