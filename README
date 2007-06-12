@@ -8,7 +8,7 @@ Rabal
 
 Rabal is the Ruby Architecture for Building Applications and Libraries.
 Taking ideas from Haskell's Cabal, the Hoe and Rubyforge projects, rabal 
-is a generalized project generation tool for initial creation of the
+is a generalised project generation tool for initial creation of the
 files and directories considered necessary in any ruby project.
 
 == FEATURES
@@ -53,7 +53,7 @@ Rabal currently ships with plugins for:
 * license - indicate under what license your project is released.  Has
   templates for BSD, GPL, LGPL, MIT and Ruby License
 * bin - command line application
-* spec - an RSpect starting point
+* spec - an RSpec starting point
 * test - a Test::Unit starting point
 
 You are highly encouraged to write your own plugins and distribute them.
@@ -61,7 +61,7 @@ See the README.PLUGIN for information on how to develop your own.
 
 == EXAMPLE
 
-  % rabal --use-all --core-author="Ruby Programmer" --core-email="rp@example.com"  --license-flavor=Ruby mypro
+  % rabal --use-all --core-author="Ruby Programmer" --core-email="rp@example.com"  --license-flavor=Ruby myproj
   [...]
   % find ./myproj
   ./myproj/
@@ -92,7 +92,7 @@ See the README.PLUGIN for information on how to develop your own.
     DESCRIPTION
       Ruby Architecture for Building Applications and Libraries.
       
-      Rabal is a commandline application for bootstrapping, packaging and
+      Rabal is a command line application for bootstrapping, packaging and
       distributing ruby projects.
 
     GLOBAL OPTIONS
@@ -109,7 +109,7 @@ See the README.PLUGIN for information on how to develop your own.
       Force any module to be used by giving the --use-[modulename] option. 
       Modules with a '*' next to them are always used. 
       
-         bin (/rabal/bin)           - Add a commandline application. 
+         bin (/rabal/bin)           - Add a command line application. 
         *core (/rabal/core)         - The core functionality and baseline 
                                       information needed by every project. 
         *license (/rabal/license)   - Indicate under what license your project is 
@@ -125,7 +125,7 @@ See the README.PLUGIN for information on how to develop your own.
       --core-email=[core-email]          - Email address of the author 
 
     MODULE OPTIONS - LICENSE
-      --license-flavor=[license-flavor]  - Flavor of Licese for your project: 
+      --license-flavor=[license-flavor]  - Flavor of License for your project: 
                                            BSD, GPL, LGPL, MIT, Ruby 
 
     MODULE OPTIONS - SPEC
