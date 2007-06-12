@@ -14,7 +14,7 @@ SPEC = Gem::Specification.new do |s|
     s.email              = Rabal::AUTHOR_EMAIL
     s.homepage           = Rabal::HOMEPAGE
     s.summary            = "A tool for bootstrapping project development"
-    s.platform           = Gem::Platform::Ruby
+    s.platform           = Gem::Platform::RUBY
     s.description        = Rabal::DESCRIPTION
 
     s.extra_rdoc_files   = FileList[%w[LICENSE README COPYING]]
@@ -29,7 +29,7 @@ SPEC = Gem::Specification.new do |s|
     s.version            = Gem::Version.create("0.0.1")
     s.add_dependency("main", ">= 0.0.2")
     s.add_dependency("gem_plugin", ">= 0.2.1")
-    s.executables        = %w[ bin/rabal ]
+    s.executables        = %w[ rabal ]
 end
 
 task :default => :spec
