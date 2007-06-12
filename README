@@ -11,6 +11,10 @@ Taking ideas from Haskell's Cabal, the Hoe and Rubyforge projects, rabal
 is a generalised project generation tool for initial creation of the
 files and directories considered necessary in any ruby project.
 
+== INSTALL
+
+    gem install rabal
+
 == FEATURES
 
 Rabal uses the concept of a +plugin+.  A rabal +plugin+ defines a file and
