@@ -1,6 +1,4 @@
 require 'rabal'
-require 'find'
-require 'rabal/util'
 
 module Rabal
     # 

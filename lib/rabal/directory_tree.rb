@@ -1,5 +1,6 @@
-require 'rabal/action_tree'
 require 'rabal/util'
+require 'rabal/tree'
+require 'rabal/logger'
 
 module Rabal
     include Util
@@ -9,14 +10,13 @@ module Rabal
     # parent of the directory this DirectoryTree represents.
     #
     class DirectoryTree < ActionTree
-        
+
         # basename of the directory this Tree represents
         attr_accessor :dir_name
 
         # the File system directory that is the parent of the directory
         # this DirectoryTree represents.
         attr_accessor :parent_dir
-
 
         # Create a DirectoryTree based up a name, or another directory.
         # Only the last portion of the directory is used.  That is

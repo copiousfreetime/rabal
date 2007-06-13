@@ -1,3 +1,11 @@
+require 'find'
+require 'erb'
+require 'logger'
+require 'ostruct'
+
+require 'rubygems'
+require 'main'
+
 module Rabal
     AUTHOR          = "Jeremy Hinegardner".freeze
     AUTHOR_EMAIL    = "jeremy@hinegardner.org".freeze
@@ -17,22 +25,6 @@ DESC
     }
 
     #
-    # Utility method to require all files ending in .rb that lie in the
-    # directory below this file that has the same name as the filename
-    # passed in.
-    #
-    def require_all_libs_relative_to(fname)
-        search_me = File.join(File.dirname(fname),File.basename(fname,".*"))
-        
-        Dir.entries(search_me).each do |rb|
-            if File.extname(rb) == ".rb" then
-                require File.join(search_me,rb)
-            end
-        end
-    end 
-    module_function :require_all_libs_relative_to
-
-    #
     # Module singleton methods, allow for accessing a single rabal
     # application from anywhere
     #
@@ -46,4 +38,18 @@ DESC
         end
     end
 end
-Rabal.require_all_libs_relative_to(__FILE__)
+
+# require all the files
+require 'rabal/action_tree'
+require 'rabal/application'
+require 'rabal/directory_tree'
+require 'rabal/error'
+require 'rabal/file_tree'
+require 'rabal/logger'
+require 'rabal/plugin'
+require 'rabal/plugin_tree'
+require 'rabal/project_tree'
+require 'rabal/tree'
+require 'rabal/usage'
+require 'rabal/util'
+require 'rabal/version'

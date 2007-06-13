@@ -1,3 +1,5 @@
+require 'rabal'
+
 module Rabal
     class StandardError < ::StandardError; end
     class TemplateNotFoundError < Rabal::StandardError ; end 

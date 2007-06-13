@@ -1,3 +1,5 @@
+require 'rabal'
+
 module Rabal
     class Version
         MAJOR   = 0 

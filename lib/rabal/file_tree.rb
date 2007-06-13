@@ -1,6 +1,4 @@
-require 'rabal/action_tree'
-require 'rabal/util'
-require 'erb'
+require 'rabal'
 
 module Rabal
     include Util

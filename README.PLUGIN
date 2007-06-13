@@ -168,7 +168,7 @@ happening.
    validate that all of a plugins +parameters+ have a non-nil value.
 9. Access the directory within the plugin containing the files that this
    plugin will use.  In this case that directory happens to be
-   +gem_directory/resources/trees/license/+
+   <tt>gem_directory/resources/trees/license/</tt>
 10. Every Plugin is required to have a +@tree+ instance variable.  This
     creates a new DirectoryTree instance and associates it with the "."
     directory within the resulting project structure.  This in effect
@@ -212,7 +212,7 @@ options.
 
 At the core of rabal are the resource trees utilized by the plugins to
 generate an output directory/file structure.  These tree _templates_ are
-stored within your gem under the +resources/trees+ directory from
+stored within your gem under the <tt>resources/trees</tt> directory from
 withing your gem. 
 
 You can get a jump start on your plugin project with:
@@ -236,8 +236,8 @@ returned from the nested calls:
 
     resource_by_name(my_main_tree_name)
 
-+my_main_tree_name+ returns +trees/xyzzy+ and +resource_by_name+ will
-return +/path/to/gem/resources/trees/xyzzy+.
++my_main_tree_name+ returns <tt>trees/xyzzy</tt> and +resource_by_name+ will
+return <tt>/path/to/gem/resources/trees/xyzzy</tt>.
 
 A later release of rabal will include a rabal plugin generation plugin
 to simplify the creation of rabal plugins.  
@@ -247,7 +247,7 @@ to simplify the creation of rabal plugins.
 The internal mechanisms of rabal use a Tree data structure to represent
 the directories and files that are created by rabal.  Each node in the
 tree is represented by a Tree or child class such as DirectoryTree or
-FileTree.  Each Tree has a +@parameters+ instance variable, which is
+FileTree.  Each Tree has a +parameters+ instance variable, which is
 by convention an instance of OpenStruct. It can be any object though.
 
 Any Tree instance or erb template when it is evaluated has access to any
@@ -257,7 +257,7 @@ the *root* of the Tree which is created by Rabal::Plugin::Core.
 Essentially, in a Tree instance or in an ERB template +method_missing+
 is defined such that the method call cascades up the Tree data structure
 until a Tree node is found that either responds to that method or has a
-+@parameters+ instance variable that responds to the method call.  
++parameters+ instance variable that responds to the method call.  
 
 If the call cascades all the way to the *root* and nothing responds to
 it, then NoMethodError is raised.  
@@ -265,10 +265,10 @@ it, then NoMethodError is raised.
 === Core Parameters
 
 Since Rabal::Plugin::Core is the plugin that creates the root of the
-entire tree, its +@parameters+ are available.  Currently these are
+entire tree, its +parameters+ are available.  Currently these are
 available during tree generation as:
 
-* *root.name* - the name of the project from the command line
+* <b>root.name</b> - the name of the project from the command line
 * *author* - the author of the project from the <tt>--core-author</tt> option
 * *email* - the email address of the author from the <tt>--core-email</tt> option
 

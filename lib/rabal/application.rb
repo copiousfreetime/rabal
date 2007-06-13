@@ -1,10 +1,12 @@
-require 'main'
+require 'rabal/logger'
 
 module Rabal
     #
     # The Rabal application 
     #
     class Application
+
+        include Log
 
         attr_accessor :main
         attr_accessor :plugin_manager
@@ -13,7 +15,17 @@ module Rabal
         attr_accessor :global_option_names
         attr_accessor :app_argv
 
-        def initialize
+        # used for testing mainly
+        attr_reader     :stdin
+        attr_reader     :stdout
+        attr_reader     :stderr
+
+
+        def initialize(stdin = $stdin, stdout = $stdout, stderr = $stderr)
+            @stdin = stdin
+            @stdout = stdout
+            @stderr = stderr
+
             @main = nil
             @plugin_manager = GemPlugin::Manager.instance
             @plugin_option_names = []
@@ -104,8 +116,9 @@ module Rabal
                 }
 
                 option("verbosity=v","v") {
-                    validate    { |p| Logger::SEV_LABEL.include?(p.upcase) }
-                    description "One of : #{Logger::SEV_LABEL.join(", ")}"
+                    validate    { |p| ::Logger::SEV_LABEL.include?(p.upcase) }
+                    description "One of : #{::Logger::SEV_LABEL.join(", ")}"
+                    default     "INFO"
 
                 }
 
@@ -136,8 +149,8 @@ module Rabal
                 main.usage u
                 main.run 
             rescue ::Main::Parameter::Error => mpe
-                puts "Parameter Error: #{File.basename($0)}: #{mpe.message}"
-                puts "Try `#{File.basename($0)} --help' for more information."
+                stderr.puts "Parameter Error: #{File.basename($0)}: #{mpe.message}"
+                stderr.puts "Try `#{File.basename($0)} --help' for more information."
                 exit 1
             end
         end
@@ -147,14 +160,18 @@ module Rabal
         # parsed, plugins loaded, some activate, etc.  
         #
         def rabalize
+            logfile_and_level_if_necessary
+            
             # create the core plugin to start things off
             pwd = Dir.pwd
             begin
+                Log.debug("Loading plugins")
                 core_params = params_for_plugin(Rabal::Plugin::Core)
                 core_params[:project] = main.params[:project].value
                 core = Rabal::Plugin::Core.new(core_params)
                 using_plugins.each do |p|
                     next if p == Rabal::Plugin::Core
+                    Log.debug("processing #{p.name} plugin")
                     pi = p.new(params_for_plugin(p))
                     core.tree << pi.tree
                 end
@@ -164,7 +181,7 @@ module Rabal
                 Dir.chdir(File.expand_path(main.params[:directory].value))
                 core.tree.process
             rescue ::Rabal::StandardError => rse
-                puts "Application Error: #{rse.message}"
+                stderr.puts "Application Error: #{rse.message}"
                 exit 1
             ensure
                 Dir.chdir(pwd)
@@ -204,6 +221,17 @@ module Rabal
                 plugin_hash[p.name.gsub("#{plugin.use_name}-",'')] = p.value
             end
             plugin_hash
+        end
+
+        #
+        # if the params for the logfile were given then open them up and
+        # 
+        def logfile_and_level_if_necessary
+            if main.params["logfile"].given? then
+                Log.logger = main.params["logfile"].value
+            end
+            Log.logger.level = ::Logger::SEV_LABEL.index(main.params["verbosity"].value)
+            Log.info "Logger initialized"
         end
     end
 end

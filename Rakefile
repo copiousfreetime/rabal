@@ -68,7 +68,7 @@ rd = Rake::RDocTask.new do |rdoc|
 end
 
 rspec = Spec::Rake::SpecTask.new do |r|
-    r.rcov      = false
+    r.rcov      = true
     r.rcov_dir  = "doc/coverage"
     r.libs      = SPEC.require_paths
     r.spec_opts = %w(--format specdoc)

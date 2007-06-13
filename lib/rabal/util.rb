@@ -1,5 +1,5 @@
-require 'ostruct'
-require 'main'
+require 'rabal'
+
 module Rabal
     module Util
         def replace_known_words(str)

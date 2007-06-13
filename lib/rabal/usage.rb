@@ -1,4 +1,5 @@
-require 'main'
+require 'rabal'
+
 module Rabal
 
     # Rabal has unique Usage output requirements and as such the default

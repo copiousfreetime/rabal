@@ -1,4 +1,4 @@
-require 'rabal'
+require 'rabal/logger'
 
 module Rabal
     #

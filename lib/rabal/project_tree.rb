@@ -1,4 +1,5 @@
-require 'rabal/directory_tree'
+require 'rabal'
+
 module Rabal
     #
     # The ProjectTree represents the master configuration/specification

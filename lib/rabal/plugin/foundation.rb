@@ -1,6 +1,4 @@
-require 'rabal'
-require 'rubygems'
-require 'main'
+require 'gem_plugin'
 
 module Rabal
     module Plugin
