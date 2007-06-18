@@ -27,8 +27,8 @@ module Rabal
                 spec.rdoc_options       = [ "--line-numbers" , "--inline-source" ]
 
                 spec.test_files         = FileList["spec/**/*.rb"]
-                spec.executable         = "rabal"
-                spec.files              = spec.test_files + spec.executables + spec.extra_rdoc_files + 
+                spec.executable         = spec.name
+                spec.files              = spec.test_files + spec.extra_rdoc_files + 
                                           FileList["lib/**/*.rb", "resources/**/*"]
 
                 spec.add_dependency("main", ">= 0.0.2")

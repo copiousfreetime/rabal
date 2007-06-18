@@ -32,6 +32,7 @@ namespace :doc do
 
     desc "View the RDoc documentation locally"
     task :view => :rdoc do
+        show_files Rabal::SPEC.local_rdoc_dir
     end
 
 end
@@ -49,7 +50,7 @@ namespace :test do
     end
 
     task :coverage => [:spec] do
-        show_coverage_results
+        show_files Rabal::SPEC.local_coverage_dir
     end
 end
 
@@ -57,9 +58,10 @@ end
 # Packaging and Distribution
 #-----------------------------------------------------------------------
 namespace :dist do
+
     Rake::GemPackageTask.new(Rabal::SPEC) do |pkg|
-        pkg.need_tar = true
-        pkg.need_zip = true
+        pkg.need_tar = Rabal::SPEC.need_tar
+        pkg.need_zip = Rabal::SPEC.need_zip
     end
 
     desc "Install as a gem"
@@ -86,6 +88,7 @@ namespace :dist do
         rubyforge = RubyForge.new
         rubyforge.login
     end
+
 end
 
 
@@ -100,10 +103,11 @@ namespace :site do
 
     desc "Update the website on rubyforge"
     task :deploy => :build do
-        sh "rsync -zav --delete #{Rabal::SPEC.local_site_dir} #{Rabal::SPEC.remote_site_dir}"
+        sh "rsync -zav --delete #{Rabal::SPEC.local_site_dir} #{Rabal::SPEC.remote_site_location}"
     end
 
     desc "View the website locally"
     task :view => :build do
     end
+
 end

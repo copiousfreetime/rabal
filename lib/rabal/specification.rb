@@ -23,17 +23,14 @@ module Rabal
         # default 'doc'
         attr_accessor :local_rdoc_dir
 
-        # remote directory for storing rdoc
-        # This defaults to +remote_root/local_rdoc_dir+.  If it is set
-        # to anything then then it is appended to +remote_root+
+        # remote directory for storing rdoc, default 'doc'
         attr_accessor :remote_rdoc_dir
 
         # local directory for coverage report
         attr_accessor :local_coverage_dir
         
         # remote directory for storing coverage reports
-        # This defaults to +remote_root/local_coverage_dir+.  If it is set
-        # to anything then then it is appended to +remote_root+
+        # This defaults to 'coverage'
         attr_accessor :remote_coverage_dir
 
         # local directory for generated website, default +site/public+
@@ -42,6 +39,13 @@ module Rabal
         # remote directory relative to +remote_root+ for the website.
         # website.
         attr_accessor :remote_site_dir
+
+        # is a .tgz to be created?, default 'true'
+        attr_accessor :need_tar
+
+        # is a .zip to be created, default 'true'
+        attr_accessor :need_zip
+
 
         def initialize
             @remote_user = nil
@@ -54,6 +58,9 @@ module Rabal
             @remote_coverage_dir    = "coverage"
             @local_site_dir         = "site/public"
             @remote_site_dir        = "."
+            
+            @need_tar   = true
+            @need_zip   = true
 
             @spec                   = Gem::Specification.new
 
@@ -78,9 +85,9 @@ module Rabal
         def remote_root 
             if rubyforge_project.nil? or 
                 rubyforge_project == name then
-                return RUBYFORGE_ROOT + name
+                return RUBYFORGE_ROOT + "#{name}/"
             else
-                return RUBYFORGE_ROOT + "#{rubyforge_project}/#{name}"
+                return RUBYFORGE_ROOT + "#{rubyforge_project}/#{name}/"
             end
         end
 
@@ -94,6 +101,23 @@ module Rabal
                 flist << FileList["#{rp}/**/*.rb"]
             end
             flist.flatten.uniq
+        end
+
+        # calculate the remote directories
+        def remote_root_location
+            "#{remote_user}@#{remote_host}:#{remote_root}"
+        end
+           
+        def remote_rdoc_location
+            remote_root_location + @remote_rdoc_dir
+        end
+
+        def remote_coverage_location
+            remote_root_loation + @remote_coverage_dir
+        end
+
+        def remote_site_location
+            remote_root_location + @remote_site_dir
         end
 
         # we delegate any other calls to spec
