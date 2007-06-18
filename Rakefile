@@ -12,73 +12,98 @@ task :default => :spec
 
 # since we have directories named 'core' wipe out what CLEAN has
 CLEAN.exclude("**/core")
-puts CLEAN.to_a
 
 #-----------------------------------------------------------------------
-# Packaging and Installation
+# Documentation
 #-----------------------------------------------------------------------
-SPEC = Gem::Specification.new do |s|
-    s.name               = "rabal"
-    s.author             = Rabal::AUTHOR
-    s.email              = Rabal::AUTHOR_EMAIL
-    s.homepage           = Rabal::HOMEPAGE
-    s.summary            = "A tool for bootstrapping project development"
-    s.platform           = Gem::Platform::RUBY
-    s.description        = Rabal::DESCRIPTION
+namespace :doc do
 
-    s.extra_rdoc_files   = %w[LICENSE README COPYING README.PLUGIN]
-    s.files              = FileList["lib/**/*.rb", "resources/**/*","bin/*"]
-    s.test_files         = FileList["spec/**/*.rb"]
-    s.has_rdoc           = true
-    s.rdoc_options       << [ "--line-numbers" , "--inline-source", 
-                            "--title", "Rabal -- Ruby Architecture for Building Applications and Libraries",
-                             "--main", "README" ]
+    # generating documentation locally
+    Rake::RDocTask.new do |rdoc|
+        rdoc.rdoc_dir   = Rabal::SPEC.local_rdoc_dir
+        rdoc.options    = Rabal::SPEC.rdoc_options 
+        rdoc.rdoc_files = Rabal::SPEC.rdoc_files
+    end
 
-    s.rubyforge_project  = "copiousfreetime"
-    s.version            = Gem::Version.create("0.0.1")
-    s.add_dependency("main", ">= 0.0.2")
-    s.add_dependency("gem_plugin", ">= 0.2.1")
-    s.executables        = %w[ rabal ]
-end
+    desc "Deploy the RDoc documentation to rubyforge"
+    task :deploy => :rerdoc do
+        sh  "rsync -zav --delete doc/ #{Rabal::SPEC.rubyforge_rdoc_dest}"
+    end
 
-packaging = Rake::GemPackageTask.new(SPEC) do |pkg|
-    pkg.need_tar = true
-    pkg.need_zip = true
-end
+    desc "View the RDoc documentation locally"
+    task :view => :rdoc do
+    end
 
-
-desc "Install as a gem"
-task :install_gem => [:clobber, :package] do
-    sh "sudo gem install pkg/*.gem"
-end
-
-desc "Dump gemspec"
-task :gemspec do
-    puts SPEC.to_ruby
 end
 
 #-----------------------------------------------------------------------
-# Documentation and Testing (rspec)
+# Testing
 #-----------------------------------------------------------------------
-rd = Rake::RDocTask.new do |rdoc|
-    rdoc.rdoc_dir   = "doc"
-    rdoc.title      = SPEC.summary
-    rdoc.main       = "README"
-    rdoc.rdoc_files = (FileList["lib/**/*.rb","bin/*"]+ SPEC.extra_rdoc_files).uniq
+namespace :test do
+
+    Spec::Rake::SpecTask.new do |r|
+        r.rcov      = true
+        r.rcov_dir  = Rabal::SPEC.local_coverage_dir
+        r.libs      = Rabal::SPEC.require_paths
+        r.spec_opts = %w(--format specdoc)
+    end
+
+    task :coverage => [:spec] do
+        show_coverage_results
+    end
 end
 
-rspec = Spec::Rake::SpecTask.new do |r|
-    r.rcov      = true
-    r.rcov_dir  = "doc/coverage"
-    r.libs      = SPEC.require_paths
-    r.spec_opts = %w(--format specdoc)
+#-----------------------------------------------------------------------
+# Packaging and Distribution
+#-----------------------------------------------------------------------
+namespace :dist do
+    Rake::GemPackageTask.new(Rabal::SPEC) do |pkg|
+        pkg.need_tar = true
+        pkg.need_zip = true
+    end
+
+    desc "Install as a gem"
+    task :install => [:clobber, :package] do
+        sh "sudo gem install pkg/#{Rabal::SPEC.full_name}.gem"
+    end
+
+    # uninstall the gem and all executables
+    desc "Uninstall gem"
+    task :uninstall do 
+        sh "sudo gem uninstall #{Rabal::SPEC.name} -x"
+    end
+
+    desc "dump gemspec"
+    task :gemspec do
+        puts Rabal::SPEC.to_ruby
+    end
+
+    desc "reinstall gem"
+    task :reinstall => [:install, :uninstall]
+
+    desc "Release files to rubyforge"
+    task :release => [:clean, :package] do
+        rubyforge = RubyForge.new
+        rubyforge.login
+    end
 end
 
-#-----------------------------------------------------------------------
-# if we are in the project source code control sandbox then there are
-# other tasks available.
-#-----------------------------------------------------------------------
-if File.directory?("_darcs") then
-    require 'tasks/rubyforge'
-end
 
+#-----------------------------------------------------------------------
+# Website maintenance
+#-----------------------------------------------------------------------
+namespace :site do
+
+    desc "Build the public website"
+    task :build do
+    end
+
+    desc "Update the website on rubyforge"
+    task :deploy => :build do
+        sh "rsync -zav --delete #{Rabal::SPEC.local_site_dir} #{Rabal::SPEC.remote_site_dir}"
+    end
+
+    desc "View the website locally"
+    task :view => :build do
+    end
+end

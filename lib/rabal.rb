@@ -7,16 +7,6 @@ require 'rubygems'
 require 'main'
 
 module Rabal
-    AUTHOR          = "Jeremy Hinegardner".freeze
-    AUTHOR_EMAIL    = "jeremy@hinegardner.org".freeze
-    HOMEPAGE        = "http://copiousfreetime.rubyforge.org/rabal/"
-    COPYRIGHT       = "2007 #{AUTHOR}".freeze
-    DESCRIPTION     = <<DESC
-Ruby Architecture for Building Applications and Libraries.
-
-Rabal is a commandline application for bootstrapping, packaging and
-distributing ruby projects.
-DESC
 
     ROOT_DIR        = File.expand_path(File.join(File.dirname(__FILE__),".."))
     LIB_DIR         = File.join(ROOT_DIR,"lib").freeze
@@ -45,10 +35,12 @@ require 'rabal/application'
 require 'rabal/directory_tree'
 require 'rabal/error'
 require 'rabal/file_tree'
+require 'rabal/gemspec'
 require 'rabal/logger'
 require 'rabal/plugin'
 require 'rabal/plugin_tree'
 require 'rabal/project_tree'
+require 'rabal/specification'
 require 'rabal/tree'
 require 'rabal/usage'
 require 'rabal/util'

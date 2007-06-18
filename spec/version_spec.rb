@@ -8,8 +8,8 @@ describe "Rabal::Version" do
         Rabal::Version::MINOR.should >= 0
     end
 
-    it "should have a build number that is >= 0" do
-        Rabal::Version::BUILD.should >= 0
+    it "should have a tiny number that is >= 0" do
+        Rabal::Version::TINY.should >= 0
     end
 
     it "should have an array representation" do
