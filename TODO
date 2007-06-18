@@ -1,12 +1,14 @@
 == Things To Do and Things that are Done
 === You're Dropping the Ball Here.
 
-* Factor out meta information, subclass Gem::Specification ?
+* highline prompting for items that are not found but required.
+* build plugins for all the items necessary for deployment etc.
+
 * Base plugins
+* factor out core so that it doesn't include lib ?
 ** ext
 ** hoe
 
-* highline prompting for items that are not found but required.
 
 * commands ?
 ** add
@@ -23,6 +25,8 @@
 ** tagging the project with a release
 
 === Accomplishments!
+
+* Factor out meta information, subclass Gem::Specification ?
 
 * Use GemPlugin
 ** manage built-in plugins

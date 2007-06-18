@@ -25,20 +25,23 @@ namespace :doc do
         rdoc.rdoc_files = Rabal::SPEC.rdoc_files
     end
 
-    desc "Deploy the RDoc documentation to rubyforge"
-    task :deploy => :rerdoc do
-        sh  "rsync -zav --delete doc/ #{Rabal::SPEC.rubyforge_rdoc_dest}"
-    end
-
     desc "View the RDoc documentation locally"
     task :view => :rdoc do
         show_files Rabal::SPEC.local_rdoc_dir
     end
 
+    # TODO: factor this out into rubyforge namespace
+    desc "Deploy the RDoc documentation to rubyforge"
+    task :rdoc => :rerdoc do
+        sh  "rsync -zav --delete doc/ #{Rabal::SPEC.rubyforge_rdoc_dest}"
+    end
+
+
+
 end
 
 #-----------------------------------------------------------------------
-# Testing
+# Testing - TODO factor this out into a separate taslklib
 #-----------------------------------------------------------------------
 namespace :test do
 
@@ -55,7 +58,7 @@ namespace :test do
 end
 
 #-----------------------------------------------------------------------
-# Packaging and Distribution
+# Packaging 
 #-----------------------------------------------------------------------
 namespace :dist do
 
@@ -83,16 +86,26 @@ namespace :dist do
     desc "reinstall gem"
     task :reinstall => [:install, :uninstall]
 
+    # TODO: factor this out into separate tasklib
     desc "Release files to rubyforge"
-    task :release => [:clean, :package] do
+    task :release => [:clean, :pkg:package] do
         rubyforge = RubyForge.new
         rubyforge.login
     end
+
+
+end
+
+#-----------------------------------------------------------------------
+# Distribution
+#-----------------------------------------------------------------------
+namespace :dist do
 
 end
 
 
 #-----------------------------------------------------------------------
+# TODO: factor website out into its own tasklib
 # Website maintenance
 #-----------------------------------------------------------------------
 namespace :site do
