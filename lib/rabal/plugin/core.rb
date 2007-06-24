@@ -2,8 +2,9 @@ require 'rabal/plugin/foundation'
 module Rabal
     module Plugin
         class Core < Rabal::Plugin::Base "/rabal/core"
-            parameter "author", "Author of the project" 
-            parameter "email", "Email address of the author"
+            parameter "author", "Author of the project (full name)", lambda { |x| x.length > 2 } 
+            # validating non-perfect email from regular-expressions.info
+            parameter "email", "Email address of the author", lambda { |x| x =~ /\A[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\Z/i }
             use_always
             description <<-DESC
             The core functionality and baseline information needed by every project.  

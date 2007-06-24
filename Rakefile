@@ -36,8 +36,6 @@ namespace :doc do
         sh  "rsync -zav --delete doc/ #{Rabal::SPEC.rubyforge_rdoc_dest}"
     end
 
-
-
 end
 
 #-----------------------------------------------------------------------
@@ -55,6 +53,7 @@ namespace :test do
     task :coverage => [:spec] do
         show_files Rabal::SPEC.local_coverage_dir
     end
+
 end
 
 #-----------------------------------------------------------------------
@@ -92,7 +91,6 @@ namespace :dist do
         rubyforge = RubyForge.new
         rubyforge.login
     end
-
 
 end
 

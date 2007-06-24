@@ -1,4 +1,5 @@
 require 'gem_plugin'
+require 'highline/import'
 
 module Rabal
     module Plugin
@@ -36,9 +37,11 @@ module Rabal
                 attribute :register_as => nil
 
                 # part of the mini DSL for describing a Plugin
-                def parameter(pname,description)
+                def parameter(pname,description,block = nil)
                     @parameters ||= {}
-                    @parameters[pname] = [pname, description]
+                    @parameters[pname] = {:name => pname,
+                                          :desc => description,
+                                          :proc => block}
                 end
 
                 # get the parameters bac
@@ -84,19 +87,27 @@ module Rabal
             # child plugins
             ############################################################
 
-            #
             # validate the parameters of the plugin in the simplest way
             # possible.  Make sure that each listend parameters is not
             # null.  This assumes that @parameters has a method for each
             # parameter naem
             #
             def validate_parameters
-                self.class.parameters.each do |param,desc|
-                    if not @parameters.respond_to?(param) or @parameters.send(param).nil? then
-                        raise PluginParameterMissingError, "Missing parameter '#{param}' from #{self.class.use_name} plugin.  See --use-#{self.class.use_name} --help"
+                self.class.parameters.each do |name,param_info|
+                    if not @parameters.respond_to?(name) or @parameters.send(name).nil? then
+                        @parameters.send("#{name}=",prompt_for_param(param_info[:name],param_info[:desc],param_info[:proc]))
                     end
                 end
             end
+
+            # prompt the user for the value that we want from them
+            def prompt_for_param(param,desc,validation_proc = nil)
+                ask("#{desc} ? ") do |q| 
+                    q.readline = true 
+                    q.validate = validation_proc 
+                end
+            end
+
             # What gem a plugin belongs to.  This is necessary to access
             # the resources of the gem the plugin may use.  Overload
             # this in a child plugin to return what you want.  By

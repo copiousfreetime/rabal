@@ -77,9 +77,9 @@ module Rabal
                         # present in the global main, they won't
                         # actually get displayed in the --help
                         plugin.parameters.each do |pname,pconf|
-                            p_option_name = "#{plugin_load_name}-#{pconf[0]}=[p]"
+                            p_option_name = "#{plugin_load_name}-#{pconf[:name]}=[p]"
                             pons << p_option_name
-                            option(p_option_name) { description pconf[1] } 
+                            option(p_option_name) { description pconf[:desc] } 
                         end
                     } 
                     plugin_option_names.concat(pons)
@@ -161,14 +161,17 @@ module Rabal
         #
         def rabalize
             logfile_and_level_if_necessary
-            
-            # create the core plugin to start things off
+
+            # save our current directory for returning
             pwd = Dir.pwd
             begin
                 Log.debug("Loading plugins")
-                core_params = params_for_plugin(Rabal::Plugin::Core)
-                core_params[:project] = main.params[:project].value
-                core = Rabal::Plugin::Core.new(core_params)
+
+                # create the core plugin to start things off
+                core_params             = params_for_plugin(Rabal::Plugin::Core)
+                core_params[:project]   = main.params[:project].value
+                core                    = Rabal::Plugin::Core.new(core_params)
+
                 using_plugins.each do |p|
                     next if p == Rabal::Plugin::Core
                     Log.debug("processing #{p.name} plugin")
@@ -178,10 +181,16 @@ module Rabal
 
                 # not using chdir blocks, as that raises
                 # warning: conflicting chdir during another chdir block
+                # hence our saving of pwd before begin
                 Dir.chdir(File.expand_path(main.params[:directory].value))
+
                 core.tree.process
             rescue ::Rabal::StandardError => rse
                 stderr.puts "Application Error: #{rse.message}"
+                exit 1
+            rescue Interrupt => ie
+                stderr.puts
+                stderr.puts "Interrupted"
                 exit 1
             ensure
                 Dir.chdir(pwd)
