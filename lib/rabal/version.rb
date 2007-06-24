@@ -14,10 +14,6 @@ module Rabal
             def to_s
                 to_a.join(".")
             end
-            
-            def to_gem_version
-                ::Gem::Version.create(VERSION)
-            end
         end
     end 
     VERSION = Version.to_s

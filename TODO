@@ -1,7 +1,7 @@
 == Things To Do and Things that are Done
 === You're Dropping the Ball Here.
 
-* highline prompting for items that are not found but required.
+* update Rakefiles with tasks
 * build plugins for all the items necessary for deployment etc.
 * use a configuration file for defaults that are always used.
 
@@ -27,6 +27,7 @@
 
 === Accomplishments!
 
+* highline prompting for items that are not found but required.
 * Factor out meta information, subclass Gem::Specification ?
 
 * Use GemPlugin

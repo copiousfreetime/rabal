@@ -4,14 +4,19 @@ require 'rake/clean'
 require 'rake/rdoctask'
 require 'spec/rake/spectask'
 
-$: << File.join(File.dirname(__FILE__),"lib")
+# since we have directories named 'core' remove that from CLEAN
+CLEAN.exclude("**/core")
 
+$: << File.join(File.dirname(__FILE__),"lib")
 require 'rabal'
 
-task :default => :spec
+# load all the extra tasks for the project
+TASK_DIR = File.join(File.dirname(__FILE__),"tasks")
+FileList[File.join(TASK_DIR,"*.rb")].each do |tasklib|
+    require "tasks/#{File.basename(tasklib)}"
+end
 
-# since we have directories named 'core' wipe out what CLEAN has
-CLEAN.exclude("**/core")
+task :default => :test
 
 #-----------------------------------------------------------------------
 # Documentation
@@ -30,34 +35,10 @@ namespace :doc do
         show_files Rabal::SPEC.local_rdoc_dir
     end
 
-    # TODO: factor this out into rubyforge namespace
-    desc "Deploy the RDoc documentation to rubyforge"
-    task :rdoc => :rerdoc do
-        sh  "rsync -zav --delete doc/ #{Rabal::SPEC.rubyforge_rdoc_dest}"
-    end
-
 end
 
 #-----------------------------------------------------------------------
-# Testing - TODO factor this out into a separate taslklib
-#-----------------------------------------------------------------------
-namespace :test do
-
-    Spec::Rake::SpecTask.new do |r|
-        r.rcov      = true
-        r.rcov_dir  = Rabal::SPEC.local_coverage_dir
-        r.libs      = Rabal::SPEC.require_paths
-        r.spec_opts = %w(--format specdoc)
-    end
-
-    task :coverage => [:spec] do
-        show_files Rabal::SPEC.local_coverage_dir
-    end
-
-end
-
-#-----------------------------------------------------------------------
-# Packaging 
+# Packaging and Distribution
 #-----------------------------------------------------------------------
 namespace :dist do
 
@@ -84,41 +65,5 @@ namespace :dist do
 
     desc "reinstall gem"
     task :reinstall => [:install, :uninstall]
-
-    # TODO: factor this out into separate tasklib
-    desc "Release files to rubyforge"
-    task :release => [:clean, :pkg:package] do
-        rubyforge = RubyForge.new
-        rubyforge.login
-    end
-
-end
-
-#-----------------------------------------------------------------------
-# Distribution
-#-----------------------------------------------------------------------
-namespace :dist do
-
-end
-
-
-#-----------------------------------------------------------------------
-# TODO: factor website out into its own tasklib
-# Website maintenance
-#-----------------------------------------------------------------------
-namespace :site do
-
-    desc "Build the public website"
-    task :build do
-    end
-
-    desc "Update the website on rubyforge"
-    task :deploy => :build do
-        sh "rsync -zav --delete #{Rabal::SPEC.local_site_dir} #{Rabal::SPEC.remote_site_location}"
-    end
-
-    desc "View the website locally"
-    task :view => :build do
-    end
 
 end
