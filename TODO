@@ -4,6 +4,7 @@
 * update Rakefiles with tasks
 * build plugins for all the items necessary for deployment etc.
 * use a configuration file for defaults that are always used.
+* add in Autotest Tasks 
 
 * Base plugins
 * factor out core so that it doesn't include lib ?
