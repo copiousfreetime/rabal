@@ -1,0 +1,45 @@
+require 'rubygems'
+require '<%= root.name %>/specification'
+require '<%= root.name %>/version'
+require 'rake'
+
+module <%= root.name.capitalize %>
+    SPEC = <%= root.name.capitalize %>::Specification.new do |spec|
+                spec.name               = "<%= root.name %>"
+                spec.version            = <%= root.name.capitalize %>::VERSION
+                spec.rubyforge_project  = "<%= root.name %>"
+                spec.author             = "<%= root.author %>"
+                spec.email              = "<%= root.email %>"
+                spec.homepage           = "http://<%= root.name %>.rubyforge.org/"
+
+                spec.summary            = "A Summary of <%= root.name %>"
+                spec.description        = <<-DESC
+                A longer more detailed description of <%= root.name %>
+                DESC
+
+                spec.extra_rdoc_files   = %w[LICENSE README COPYING]
+                spec.has_rdoc           = true
+                spec.rdoc_main          = "README"
+                spec.rdoc_options       = [ "--line-numbers" , "--inline-source" ]
+
+                spec.test_files         = FileList["spec/**/*.rb", "test/**/*.rb"]
+                spec.executable         = spec.name
+                spec.files              = spec.test_files + spec.extra_rdoc_files + 
+                                          FileList["lib/**/*.rb", "resources/**/*"]
+                
+                # add dependencies
+                # spec.add_dependency("somegem", ">= 0.4.2")
+
+                spec.platform           = Gem::Platform::RUBY
+
+                spec.local_rdoc_dir     = "doc/rdoc"
+                spec.remote_rdoc_dir    = "#{spec.name}/rdoc"
+                spec.local_coverage_dir = "doc/coverage"
+                spec.remote_coverage_dir= "#{spec.name}/coverage"
+
+                spec.remote_site_dir    = "#{spec.name}/"
+
+           end
+end
+
+

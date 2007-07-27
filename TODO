@@ -1,6 +1,8 @@
 == Things To Do and Things that are Done
 === You're Dropping the Ball Here.
 
+* remove files from consideration that end in ~
+
 * update Rakefiles with tasks
 * build plugins for all the items necessary for deployment etc.
 * use a configuration file for defaults that are always used.

@@ -6,7 +6,7 @@ describe Rabal::Application do
     before(:each) do 
         @working_dir = my_temp_dir
         @before      = Dir.pwd
-        @base_tree   = Set.new(%w(README Rakefile CHANGES LICENSE lib lib/spec-proj lib/new_spec_proj.rb lib/spec-proj/version.rb))
+        @base_tree   = Set.new(%w(README Rakefile CHANGES LICENSE lib lib/spec-proj lib/new_spec_proj.rb lib/spec-proj/version.rb lib/spec-proj/specification.rb lib/spec-proj/gemspec.rb))
         @stdin       = StringIO.new
         @stdout      = StringIO.new
         @stderr      = StringIO.new

@@ -3,6 +3,8 @@
 #-----------------------------------------------------------------------
 namespace :test do
 
+    task :default => :spec
+
     Spec::Rake::SpecTask.new do |r| 
         r.rcov      = true
         r.rcov_dir  = Rabal::SPEC.local_coverage_dir

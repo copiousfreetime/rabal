@@ -5,7 +5,7 @@ describe Rabal::Plugin::Bin do
         @working_dir = my_temp_dir
         @before      = Dir.pwd
         @core        = Rabal::Plugin::Core.new({:project => "new-spec-proj", :author => "Foo Bar", :email => "foobar@example.com"})
-        @base_tree   = Set.new(%w(README Rakefile CHANGES lib lib/new-spec-proj lib/new_spec_proj.rb lib/new-spec-proj/version.rb bin bin/new_spec_proj))
+        @base_tree   = Set.new(%w(README Rakefile CHANGES lib lib/new-spec-proj lib/new_spec_proj.rb lib/new-spec-proj/version.rb bin bin/new_spec_proj lib/new-spec-proj/specification.rb lib/new-spec-proj/gemspec.rb))
         Dir.chdir(@working_dir)
     end
 
