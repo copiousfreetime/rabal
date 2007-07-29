@@ -4,7 +4,6 @@
 
 * update Rakefiles with tasks
 ** append to clobber for rdoc and such tasks - make sure that happens
-** how to deal with additional rake tasks for sub directories
 
 * build plugins for all the items necessary for deployment etc.
 * use a configuration file for defaults that are always used.
@@ -30,6 +29,10 @@
 ** tagging the project with a release
 
 === Accomplishments!
+* update Rakefiles with tasks
+* spec
+* testunit
+** how to deal with additional rake tasks for sub directories
 
 * highline prompting for items that are not found but required.
 * Factor out meta information, subclass Gem::Specification ?
