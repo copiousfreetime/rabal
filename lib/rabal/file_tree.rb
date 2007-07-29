@@ -65,7 +65,14 @@ module Rabal
         #
         def before_action
             info("creating content for #{file_name}")
-            @file_contents = ERB.new(template).result(binding)
+            begin 
+                @file_contents = ERB.new(template).result(binding)
+            rescue Exception => e
+                error("Error evaluating template #{file_name}")
+                e.message.split("\n").each do |m|
+                    error(m)
+                end
+            end
         end
 
         #
