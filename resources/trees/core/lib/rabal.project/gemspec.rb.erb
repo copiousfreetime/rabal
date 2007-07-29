@@ -3,6 +3,7 @@ require '<%= root.name %>/specification'
 require '<%= root.name %>/version'
 require 'rake'
 
+# The Gem Specification plus some extras for <%= root.name %>.
 module <%= root.name.capitalize %>
     SPEC = <%= root.name.capitalize %>::Specification.new do |spec|
                 spec.name               = "<%= root.name %>"

@@ -22,6 +22,12 @@ describe Rabal::Plugin::Core do
         find_in("new-spec-proj").sort.should == @base_tree.sort
     end
 
+    it "the tree should have author and email" do
+        @core.tree.process
+        @core.tree.author.should == "Foo Bar"
+        @core.tree.email.should == "foobar@example.com"
+    end
+
     # TODO: test to make sure that highline is used
     # it "should raise PluginParameterMissingError if missing information" do
     #   lambda {Rabal::Plugin::Core.new({})}.should raise_error(Rabal::PluginParameterMissingError)

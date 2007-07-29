@@ -44,7 +44,7 @@ module Rabal
                                           :proc => block}
                 end
 
-                # get the parameters bac
+                # get the parameters back
                 def parameters
                     @parameters ||= {}
                 end
@@ -95,7 +95,8 @@ module Rabal
             def validate_parameters
                 self.class.parameters.each do |name,param_info|
                     if not @parameters.respond_to?(name) or @parameters.send(name).nil? then
-                        @parameters.send("#{name}=",prompt_for_param(param_info[:name],param_info[:desc],param_info[:proc]))
+                        value = prompt_for_param(param_info[:name],param_info[:desc],param_info[:proc])
+                        @parameters.send("#{name}=",value)
                     end
                 end
             end
