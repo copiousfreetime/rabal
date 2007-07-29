@@ -15,7 +15,8 @@ module Rabal
                 options = options.marshal_dump
             end
             @parameters = OpenStruct.new(options)
-            @parameters.project_name = project_name
+            @parameters.raw_project_name = project_name
+            @parameters.project_name = project_name.gsub(/^ruby-/,'')
         end
     end
 end

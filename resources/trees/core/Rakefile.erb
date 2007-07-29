@@ -4,7 +4,7 @@ require 'rake/clean'
 require 'rake/rdoctask'
 
 $: << File.join(File.dirname(__FILE__),"lib")
-require '<%= project_name %>'
+require '<%= project_name.underscore %>'
 
 # load all the extra tasks for the project
 TASK_DIR = File.join(File.dirname(__FILE__),"tasks")

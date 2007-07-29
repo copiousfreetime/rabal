@@ -1,7 +1,7 @@
 namespace :extension do  
     desc "Build the extension(s)"
     task :build do
-        SPEC.extensions.each do |extension|
+        <%= project_name.camelize %>::SPEC.extensions.each do |extension|
             path = Pathname.new(extension)
             parts = path.split
             conf = parts.last

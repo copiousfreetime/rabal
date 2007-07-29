@@ -215,6 +215,18 @@ module Rabal
             end
         end
 
+        #
+        # Return true of false if the given subtree exists or not
+        #
+        def has_subtree?(path)
+            begin
+                find_subtree(path)
+                return true
+            rescue PathNotFoundError
+                return false
+            end
+        end
+
         private
 
         #

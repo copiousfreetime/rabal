@@ -13,9 +13,9 @@ module <%= project_name.camelize %>
                 spec.email              = "<%= root.email %>"
                 spec.homepage           = "http://<%= project_name %>.rubyforge.org/"
 
-                spec.summary            = "A Summary of <%= project_name %>"
+                spec.summary            = "A Summary of <%= project_name %>."
                 spec.description        = <<-DESC
-                A longer more detailed description of <%= project_name %>
+                A longer more detailed description of <%= project_name %>.
                 DESC
 
                 spec.extra_rdoc_files   = FileList["[A-Z]*"]
@@ -24,13 +24,18 @@ module <%= project_name.camelize %>
                 spec.rdoc_options       = [ "--line-numbers" , "--inline-source" ]
 
                 spec.test_files         = FileList["spec/**/*.rb", "test/**/*.rb"]
-                spec.executable         = spec.name
                 spec.files              = spec.test_files + spec.extra_rdoc_files + 
                                           FileList["lib/**/*.rb", "resources/**/*"]
-                
+                <% if root.has_subtree?(["bin"]) then %>
+                spec.executable         = spec.name
+                <% end %>
+
                 # add dependencies
                 # spec.add_dependency("somegem", ">= 0.4.2")
-
+                <% if root.has_subtree?(["ext"]) then %>
+                spec.add_dependency("mkrf")
+                spec.extensions << "ext/<%= project_name %>/ext/mkrf_conf.rb"
+                <% end %>
                 spec.platform           = Gem::Platform::RUBY
 
                 spec.local_rdoc_dir     = "doc/rdoc"
