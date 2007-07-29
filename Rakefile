@@ -21,7 +21,7 @@ task :default => 'test:default'
 #-----------------------------------------------------------------------
 # Documentation
 #-----------------------------------------------------------------------
-namespace :doc do
+namespace :doc do |ns|
 
     # generating documentation locally
     Rake::RDocTask.new do |rdoc|
@@ -34,7 +34,6 @@ namespace :doc do
     task :view => :rdoc do
         show_files Rabal::SPEC.local_rdoc_dir
     end
-
 end
 
 #-----------------------------------------------------------------------
