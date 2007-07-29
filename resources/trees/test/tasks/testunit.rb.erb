@@ -7,7 +7,7 @@ namespace :test do
     task :default => :test
 
     Rake::TestTask.new do |t| 
-        t.libs      = <%= root.name.capitalize %>::SPEC.require_paths
+        t.libs      = <%= project_name.camelize %>::SPEC.require_paths
         t.test_files= FileList["test/**/*.rb"]
     end
 

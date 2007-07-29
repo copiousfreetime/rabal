@@ -1,21 +1,21 @@
 require 'rubygems'
-require '<%= root.name %>/specification'
-require '<%= root.name %>/version'
+require '<%= project_name %>/specification'
+require '<%= project_name %>/version'
 require 'rake'
 
-# The Gem Specification plus some extras for <%= root.name %>.
-module <%= root.name.capitalize %>
-    SPEC = <%= root.name.capitalize %>::Specification.new do |spec|
-                spec.name               = "<%= root.name %>"
-                spec.version            = <%= root.name.capitalize %>::VERSION
-                spec.rubyforge_project  = "<%= root.name %>"
+# The Gem Specification plus some extras for <%= project_name. %>.
+module <%= project_name.camelize %>
+    SPEC = <%= project_name.camelize %>::Specification.new do |spec|
+                spec.name               = "<%= project_name %>"
+                spec.version            = <%= project_name.camelize %>::VERSION
+                spec.rubyforge_project  = "<%= project_name %>"
                 spec.author             = "<%= root.author %>"
                 spec.email              = "<%= root.email %>"
-                spec.homepage           = "http://<%= root.name %>.rubyforge.org/"
+                spec.homepage           = "http://<%= project_name %>.rubyforge.org/"
 
-                spec.summary            = "A Summary of <%= root.name %>"
+                spec.summary            = "A Summary of <%= project_name %>"
                 spec.description        = <<-DESC
-                A longer more detailed description of <%= root.name %>
+                A longer more detailed description of <%= project_name %>
                 DESC
 
                 spec.extra_rdoc_files   = FileList["[A-Z]*"]

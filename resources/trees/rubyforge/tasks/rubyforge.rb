@@ -6,7 +6,7 @@ require 'rubyforge'
 namespace :doc do
     desc "Deploy the RDoc documentation to rubyforge"
     task :deploy => :rerdoc do
-        sh "rsync -zav --delete #{<%= root.name.capitalize %>::SPEC.local_rdoc_dir}/ #{<%= root.name.capitalize %>::SPEC.rubyforge_rdoc_dest}"
+        sh "rsync -zav --delete #{<%= project_name.camelize %>::SPEC.local_rdoc_dir}/ #{<%= project_name.camelize %>::SPEC.rubyforge_rdoc_dest}"
     end
 end
 
@@ -21,20 +21,20 @@ namespace :dist do
         
         # make sure this release doesn't already exist
         releases = rubyforge.autoconfig['release_ids']
-        if releases.has_key?(<%= root.name.capitalize %>::SPEC.name) and releases[<%= root.name.capitalize %>::SPEC.name][<%= root.name.capitalize %>::VERSION] then
-            abort("Release #{<%= root.name.capitalize %>::VERSION} already exists!")
+        if releases.has_key?(<%= project_name.camelize %>::SPEC.name) and releases[<%= project_name.camelize %>::SPEC.name][<%= project_name.camelize %>::VERSION] then
+            abort("Release #{<%= project_name.camelize %>::VERSION} already exists!")
         end
         
         config = rubyforge.userconfig
-        config["release_notes"]     = <%= root.name.capitalize %>::SPEC.description
+        config["release_notes"]     = <%= project_name.camelize %>::SPEC.description
         config["release_changes"]   = last_changeset
         config["Prefomatted"]       = true
 
 
         puts "Uploading to rubyforge..."
-        files = FileList[File.join("pkg","#{<%= root.name.capitalize %>::SPEC.name}-#{<%= root.name.capitalize %>::VERSION}.*")].to_a
+        files = FileList[File.join("pkg","#{<%= project_name.camelize %>::SPEC.name}-#{<%= project_name.camelize %>::VERSION}.*")].to_a
         rubyforge.login
-        #rubyforge.add_release(<%= root.name.capitalize %>::SPEC.rubyforge_project, <%= root.name.capitalize %>::SPEC.name, <%= root.name.capitalize %>::VERSION, *files)
+        #rubyforge.add_release(<%= project_name.camelize %>::SPEC.rubyforge_project, <%= project_name.camelize %>::SPEC.name, <%= project_name.camelize %>::VERSION, *files)
         puts "done."
     end
 end
@@ -51,13 +51,13 @@ def last_changeset
 end
 
 def announcement
-    urls    = "  #{<%= root.name.capitalize %>::SPEC.homepage}"
-    subject = "#{<%= root.name.capitalize %>::SPEC.name} #{<%= root.name.capitalize %>::VERSION} Released"
-    title   = "#{<%= root.name.capitalize %>::SPEC.name} version #{<%= root.name.capitalize %>::VERSION} has been released."
+    urls    = "  #{<%= project_name.camelize %>::SPEC.homepage}"
+    subject = "#{<%= project_name.camelize %>::SPEC.name} #{<%= project_name.camelize %>::VERSION} Released"
+    title   = "#{<%= project_name.camelize %>::SPEC.name} version #{<%= project_name.camelize %>::VERSION} has been released."
     body    = <<BODY
-#{<%= root.name.capitalize %>::SPEC.description.rstrip}
+#{<%= project_name.camelize %>::SPEC.description.rstrip}
 
-{{ Changelog for Version #{<%= root.name.capitalize %>::VERSION} }}
+{{ Changelog for Version #{<%= project_name.camelize %>::VERSION} }}
 
 #{last_changeset.rstrip}
 
@@ -72,7 +72,7 @@ namespace :announce do
         subject, title, body, urls = announcement
 
         File.open("email.txt", "w") do |mail|
-            mail.puts "From: #{<%= root.name.capitalize %>::SPEC.author} <#{<%= root.name.capitalize %>::SPEC.email}>"
+            mail.puts "From: #{<%= project_name.camelize %>::SPEC.author} <#{<%= project_name.camelize %>::SPEC.email}>"
             mail.puts "To: ruby-talk@ruby-lang.org"
             mail.puts "Date: #{Time.now.rfc2822}"
             mail.puts "Subject: [ANN] #{subject}"
@@ -93,12 +93,12 @@ namespace :announce do
     
     CLOBBER << "email.txt"
 
-    desc "Post news of #{<%= root.name.capitalize %>::SPEC.name} to #{<%= root.name.capitalize %>::SPEC.rubyforge_project} on rubyforge"
+    desc "Post news of #{<%= project_name.camelize %>::SPEC.name} to #{<%= project_name.camelize %>::SPEC.rubyforge_project} on rubyforge"
     task :post_news do
         subject, title, body, urls = announcement
         rubyforge = RubyForge.new
         rubyforge.login
-        rubyforge.post_news(<%= root.name.capitalize %>::SPEC.rubyforge_project, subject, "#{title}\n\n#{urls}\n\n#{body}")
+        rubyforge.post_news(<%= project_name.camelize %>::SPEC.rubyforge_project, subject, "#{title}\n\n#{urls}\n\n#{body}")
         puts "Posted to rubyforge"
     end
 
