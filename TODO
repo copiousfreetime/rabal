@@ -1,9 +1,10 @@
 == Things To Do and Things that are Done
 === You're Dropping the Ball Here.
 
-
 * update Rakefiles with tasks
 ** append to clobber for rdoc and such tasks - make sure that happens
+** update update rubyforge task to check and see if the current version
+   already exists.
 
 * build plugins for all the items necessary for deployment etc.
 * use a configuration file for defaults that are always used.
@@ -28,6 +29,7 @@
 ** tagging the project with a release
 
 === Accomplishments!
+
 * change capitalize to camelize in class names in templates
 * update Rakefiles with tasks
 ** how to deal with additional rake tasks for sub directories
