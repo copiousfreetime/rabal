@@ -50,7 +50,7 @@ module Rabal
             app.plugin_manager.plugins.sort_by{|c,p| c}.each do |cat,plugins|
                  plugins.each do |key,plugin|
                      pre = "  " + (plugin.use_always? ? "*" : " ")
-                     s << option_format(pre,"#{plugin.use_name} (#{plugin.register_path})",plugin.description,38,40,78)
+                     s << option_format(pre,"#{plugin.use_name} (#{plugin.register_path})",plugin.description,40,43,78)
                      s << "\n"
 
                      # create the module options for this one, if the
@@ -95,7 +95,7 @@ module Rabal
             end
             list.sort_by{|p| p.name}.collect do |p|
                 ps = ""
-                ps << option_format(pre,p.short_synopsis,p.description,35,42,78)
+                ps << option_format(pre,p.short_synopsis,p.description,42,45,78)
                 ps
             end.join("\n")
         end

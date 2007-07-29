@@ -1,0 +1,7 @@
+require 'rubygems'
+require 'mkrf'
+Mkrf::Generator.new('<%= ext_soname %>') do |g|
+    g.logger.level = Logger::DEBUG
+    g.include_library('<%= ext_library_name %>','<%= ext_library_method %>')
+    g.include_header('<%= ext_library_name %>.h')
+end
