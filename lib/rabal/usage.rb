@@ -25,10 +25,12 @@ module Rabal
         # to dump, or rename
         def to_s
             u = ::Main::Usage.new
-            # just transfer directly over these
-            %w[name synopsis description].each do |chunk|
+            # just transfer directly over these chunks
+            %w[name synopsis].each do |chunk|
                 u[chunk.dup] = old_usage[chunk].to_s
             end
+
+            u['description'] = ::Main::Util.columnize(old_usage['description'].to_s, :indent => 6, :width => 78)
 
             arguments       = app.main.parameters.select{|p| p.type == :argument}
             global_options  = app.main.parameters.select{|p| p.type == :option and app.global_option_names.include?(p.name) }
@@ -48,7 +50,7 @@ module Rabal
             app.plugin_manager.plugins.sort_by{|c,p| c}.each do |cat,plugins|
                  plugins.each do |key,plugin|
                      pre = "  " + (plugin.use_always? ? "*" : " ")
-                     s << option_format(pre,"#{plugin.use_name} (#{plugin.register_path})",plugin.description,30,32,78)
+                     s << option_format(pre,"#{plugin.use_name} (#{plugin.register_path})",plugin.description,38,40,78)
                      s << "\n"
 
                      # create the module options for this one, if the
@@ -93,7 +95,7 @@ module Rabal
             end
             list.sort_by{|p| p.name}.collect do |p|
                 ps = ""
-                ps << option_format(pre,p.short_synopsis,p.description,35,39,78)
+                ps << option_format(pre,p.short_synopsis,p.description,35,42,78)
                 ps
             end.join("\n")
         end

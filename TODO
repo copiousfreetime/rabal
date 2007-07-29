@@ -2,6 +2,7 @@
 === You're Dropping the Ball Here.
 
 
+* change capitalize to camelize in class names in templates
 * update Rakefiles with tasks
 ** append to clobber for rdoc and such tasks - make sure that happens
 
