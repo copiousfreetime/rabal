@@ -9,7 +9,7 @@ describe "Rabal::Version" do
     end
 
     it "should have a tiny number that is >= 0" do
-        Rabal::Version::TINY.should >= 0
+        Rabal::Version::BUILD.should >= 0
     end
 
     it "should have an array representation" do

@@ -21,7 +21,7 @@ module Rabal
                 packaging and distributing ruby projects.
                 DESC
 
-                spec.extra_rdoc_files   = %w[LICENSE README COPYING README.PLUGIN]
+                spec.extra_rdoc_files   = FileList["[A-Z]"]
                 spec.has_rdoc           = true
                 spec.rdoc_main          = "README"
                 spec.rdoc_options       = [ "--line-numbers" , "--inline-source" ]

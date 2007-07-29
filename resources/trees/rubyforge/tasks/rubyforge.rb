@@ -6,7 +6,7 @@ require 'rubyforge'
 namespace :doc do
     desc "Deploy the RDoc documentation to rubyforge"
     task :deploy => :rerdoc do
-        sh "rsync -zav --delete #{Rabal::SPEC.local_rdoc_dir}/ #{Rabal::SPEC.rubyforge_rdoc_dest}"
+        sh "rsync -zav --delete #{<%= root.name.capitalize %>::SPEC.local_rdoc_dir}/ #{<%= root.name.capitalize %>::SPEC.rubyforge_rdoc_dest}"
     end
 end
 
@@ -21,20 +21,20 @@ namespace :dist do
         
         # make sure this release doesn't already exist
         releases = rubyforge.autoconfig['release_ids']
-        if releases.has_key?(Rabal::SPEC.name) and releases[Rabal::SPEC.name][Rabal::VERSION] then
-            abort("Release #{Rabal::VERSION} already exists!")
+        if releases.has_key?(<%= root.name.capitalize %>::SPEC.name) and releases[<%= root.name.capitalize %>::SPEC.name][<%= root.name.capitalize %>::VERSION] then
+            abort("Release #{<%= root.name.capitalize %>::VERSION} already exists!")
         end
         
         config = rubyforge.userconfig
-        config["release_notes"]     = Rabal::SPEC.description
+        config["release_notes"]     = <%= root.name.capitalize %>::SPEC.description
         config["release_changes"]   = last_changeset
         config["Prefomatted"]       = true
 
 
         puts "Uploading to rubyforge..."
-        files = FileList[File.join("pkg","#{Rabal::SPEC.name}-#{Rabal::VERSION}.*")].to_a
+        files = FileList[File.join("pkg","#{<%= root.name.capitalize %>::SPEC.name}-#{<%= root.name.capitalize %>::VERSION}.*")].to_a
         rubyforge.login
-        rubyforge.add_release(Rabal::SPEC.rubyforge_project, Rabal::SPEC.name, Rabal::VERSION, *files)
+        #rubyforge.add_release(<%= root.name.capitalize %>::SPEC.rubyforge_project, <%= root.name.capitalize %>::SPEC.name, <%= root.name.capitalize %>::VERSION, *files)
         puts "done."
     end
 end
@@ -51,13 +51,13 @@ def last_changeset
 end
 
 def announcement
-    urls    = "  #{Rabal::SPEC.homepage}"
-    subject = "#{Rabal::SPEC.name} #{Rabal::VERSION} Released"
-    title   = "#{Rabal::SPEC.name} version #{Rabal::VERSION} has been released."
+    urls    = "  #{<%= root.name.capitalize %>::SPEC.homepage}"
+    subject = "#{<%= root.name.capitalize %>::SPEC.name} #{<%= root.name.capitalize %>::VERSION} Released"
+    title   = "#{<%= root.name.capitalize %>::SPEC.name} version #{<%= root.name.capitalize %>::VERSION} has been released."
     body    = <<BODY
-#{Rabal::SPEC.description.rstrip}
+#{<%= root.name.capitalize %>::SPEC.description.rstrip}
 
-{{ Changelog for Version #{Rabal::VERSION} }}
+{{ Changelog for Version #{<%= root.name.capitalize %>::VERSION} }}
 
 #{last_changeset.rstrip}
 
@@ -72,7 +72,7 @@ namespace :announce do
         subject, title, body, urls = announcement
 
         File.open("email.txt", "w") do |mail|
-            mail.puts "From: #{Rabal::SPEC.author} <#{Rabal::SPEC.email}>"
+            mail.puts "From: #{<%= root.name.capitalize %>::SPEC.author} <#{<%= root.name.capitalize %>::SPEC.email}>"
             mail.puts "To: ruby-talk@ruby-lang.org"
             mail.puts "Date: #{Time.now.rfc2822}"
             mail.puts "Subject: [ANN] #{subject}"
@@ -93,12 +93,12 @@ namespace :announce do
     
     CLOBBER << "email.txt"
 
-    desc "Post news of #{Rabal::SPEC.name} to #{Rabal::SPEC.rubyforge_project} on rubyforge"
+    desc "Post news of #{<%= root.name.capitalize %>::SPEC.name} to #{<%= root.name.capitalize %>::SPEC.rubyforge_project} on rubyforge"
     task :post_news do
         subject, title, body, urls = announcement
         rubyforge = RubyForge.new
         rubyforge.login
-        rubyforge.post_news(Rabal::SPEC.rubyforge_project, subject, "#{title}\n\n#{urls}\n\n#{body}")
+        rubyforge.post_news(<%= root.name.capitalize %>::SPEC.rubyforge_project, subject, "#{title}\n\n#{urls}\n\n#{body}")
         puts "Posted to rubyforge"
     end
 
