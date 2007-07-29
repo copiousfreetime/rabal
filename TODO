@@ -1,15 +1,16 @@
 == Things To Do and Things that are Done
 === You're Dropping the Ball Here.
 
-* remove files from consideration that end in ~
 
 * update Rakefiles with tasks
+** append to clobber for rdoc and such tasks - make sure that happens
+** 
+
 * build plugins for all the items necessary for deployment etc.
 * use a configuration file for defaults that are always used.
 * add in Autotest Tasks 
 
 * Base plugins
-* factor out core so that it doesn't include lib ?
 ** ext
 ** hoe
 
@@ -32,6 +33,7 @@
 
 * highline prompting for items that are not found but required.
 * Factor out meta information, subclass Gem::Specification ?
+* remove files from consideration that end in ~
 
 * Use GemPlugin
 ** manage built-in plugins

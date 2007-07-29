@@ -45,6 +45,7 @@ module Rabal
                 Dir.entries(".").each do |entry|
                     next if entry[0] == ?.
                     next if pwd == entry
+                    next if entry[-1] == ?~
         
                     if File.file?(entry) then
                         tree << FileTree.from_file(entry,true,replace_known_words(entry))

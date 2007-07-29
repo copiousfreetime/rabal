@@ -4,11 +4,11 @@ module Rabal
     class Version
         MAJOR   = 0 
         MINOR   = 0 
-        TINY    = 1 
+        BUILD    = 1 
 
         class << self
             def to_a
-                [MAJOR, MINOR, TINY]
+                [MAJOR, MINOR, BUILD]
             end
 
             def to_s
