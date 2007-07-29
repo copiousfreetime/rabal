@@ -176,6 +176,7 @@ module Rabal
                     next if p == Rabal::Plugin::Core
                     Log.debug("processing #{p.name} plugin")
                     pi = p.new(params_for_plugin(p))
+                    Log.debug("getting tree #{pi.tree.inspect}")
                     core.tree << pi.tree
                 end
 

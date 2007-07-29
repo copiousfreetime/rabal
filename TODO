@@ -4,7 +4,7 @@
 
 * update Rakefiles with tasks
 ** append to clobber for rdoc and such tasks - make sure that happens
-** 
+** how to deal with additional rake tasks for sub directories
 
 * build plugins for all the items necessary for deployment etc.
 * use a configuration file for defaults that are always used.

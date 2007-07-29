@@ -120,10 +120,14 @@ module Rabal
             end
 
             subtree.parent = self
+           
+            # FIXME: techinically this should no longer be called 'post_add' 
+            # but maybe 'add_hook'  
+            subtree.post_add
 
             # Don't overwrite any existing children with the same name,
-            # just put this one's children in that one, I think this
-            # works recursively now.
+            # just put the new subtree's children into the children of
+            # the already existing subtree.
             if children.has_key?(subtree.name) then
                 subtree.children.each do |n,tree|
                     children[n] = tree
@@ -131,8 +135,6 @@ module Rabal
             else
                 children[subtree.name] = subtree
             end
-           
-            subtree.post_add
 
             return self
         end

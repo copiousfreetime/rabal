@@ -2,7 +2,6 @@ require 'rubygems'
 require 'rake/gempackagetask'
 require 'rake/clean'
 require 'rake/rdoctask'
-require 'spec/rake/spectask'
 
 # since we have directories named 'core' remove that from CLEAN
 CLEAN.exclude("**/core")

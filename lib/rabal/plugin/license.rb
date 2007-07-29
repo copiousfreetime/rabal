@@ -15,10 +15,8 @@ module Rabal
             def initialize(options)
                 @parameters = OpenStruct.new(options)
                 validate_parameters
-                #if not @parameters.respond_to?(:flavor) then
-                    #raise PluginParameterMissingError, "Missing parameter 'flavor' from license plugin.  See --use-license --help"
-                #end
                 suffix = @parameters.flavor
+
                 # look at all files in our resource directory and any
                 # that have the same suffix as the 'flavor' load it into
                 # the tree.

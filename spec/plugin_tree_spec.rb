@@ -36,8 +36,8 @@ describe Rabal::PluginTree do
         @tree << d1
         d1d2 = %w(misc misc/stuff)
 
-        @tree.add_at_path("misc/stuff", PluginTree.new({},resource_handle("spec"),"spec"))
-        spec = %w(misc/stuff/spec misc/stuff/spec/spec_helper.rb misc/stuff/spec/new_spec_proj_spec.rb)
+        @tree.add_at_path("misc/stuff", PluginTree.new({},resource_handle("spec"),"subdir"))
+        spec = %w(misc/stuff/subdir misc/stuff/subdir/spec/spec_helper.rb misc/stuff/subdir/spec/new_spec_proj_spec.rb misc/stuff/subdir/tasks/rspec.rb misc/stuff/subdir/spec misc/stuff/subdir/tasks)
         
         @tree.process
         find_in('new-spec-proj').sort.should == (@base_tree + d1d2 + spec).sort

@@ -13,7 +13,7 @@ FileList[File.join(TASK_DIR,"*.rb")].each do |tasklib|
     require "tasks/#{File.basename(tasklib)}"
 end
 
-task :default => :test
+task :default => "test:default"
 
 #-----------------------------------------------------------------------
 # Documentation
