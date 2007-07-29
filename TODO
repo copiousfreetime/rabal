@@ -18,7 +18,6 @@
 ** add
 ** update
 
-* when there are ERB Errors, present that in an effective manner
 * lint command
 * Hoe support
 
@@ -30,6 +29,7 @@
 
 === Accomplishments!
 
+* when there are ERB Errors, present that in an effective manner
 * change capitalize to camelize in class names in templates
 * update Rakefiles with tasks
 ** how to deal with additional rake tasks for sub directories
