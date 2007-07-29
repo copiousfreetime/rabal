@@ -6,9 +6,16 @@ module Rabal
             parameter   "project", "The Rubyforge project/umbrella under which this project resides."
 
             def initialize(options)
+                begin
+                    require 'rubyforge'
+                rescue LoadError
+                    Log::fatal("Unable to use the rubyforge plugin, the rubyforge library is required.")
+                    exit 1
+                end
+
                 @parameters = OpenStruct.new(options)
                 validate_parameters
-                @tree = PluginTree.new({}, resource_by_name(my_main_tree_name))
+                @tree = PluginTree.new(@parameters.marshal_dump, resource_by_name(my_main_tree_name))
             end
         end
     end

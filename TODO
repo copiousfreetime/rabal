@@ -10,16 +10,10 @@
 * use a configuration file for defaults that are always used.
 * add in Autotest Tasks 
 
-* Base plugins
-** ext
-** hoe
-
 * commands ?
 ** add
 ** update
-
-* lint command
-* Hoe support
+** lint 
 
 * SCM Support for:
 ** Initialization, first setup
@@ -51,6 +45,7 @@
 ** license
 ** spec
 ** test
+** ext
 
 * use ara's main gem
 ** --use-all 
