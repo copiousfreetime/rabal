@@ -27,7 +27,7 @@ describe Rabal::PluginTree do
     it "should allow for insertion into the Plugin Tree" do
         @tree << PluginTree.new({},resource_handle("test"),"test")
         @tree.process
-        find_in('new-spec-proj').sort.should == (@base_tree +  %w(test test/new_spec_proj_test.rb test/test_helper.rb)).sort
+        find_in('new-spec-proj').sort.should == (@base_tree +  %w(test test/tasks test/tasks/testunit.rb test/test test/test/new_spec_proj_test.rb test/test/test_helper.rb)).sort
     end
 
     it "should allow for insertion into the Plugin Tree somewhere other than the root" do
