@@ -5,8 +5,8 @@
 * Highline prompting for arguments missed on the commandline
 * logfile and verbosity options works
 * Refactored generated rakefile tasks into namespaces
-** rubyforge support
-** rspec and ruby unit templates
+* rubyforge support
+* rspec and ruby unit templates
 
 === Version 0.0.1
 

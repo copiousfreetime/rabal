@@ -37,10 +37,10 @@ module Rabal
 
                 spec.platform           = Gem::Platform::RUBY
 
+                spec.remote_user        = "jjh"
                 spec.local_rdoc_dir     = "doc/rdoc"
-                spec.remote_rdoc_dir    = "#{spec.name}/rdoc"
+                spec.remote_rdoc_dir    = ""
                 spec.local_coverage_dir = "doc/coverage"
-                spec.remote_coverage_dir= "#{spec.name}/coverage"
 
                 spec.remote_site_dir    = "#{spec.name}/"
 

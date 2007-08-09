@@ -6,7 +6,7 @@ require 'rubyforge'
 namespace :doc do
     desc "Deploy the RDoc documentation to rubyforge"
     task :deploy => :rerdoc do
-        sh "rsync -zav --delete #{Rabal::SPEC.local_rdoc_dir}/ #{Rabal::SPEC.rubyforge_rdoc_dest}"
+        sh "rsync -zav --delete #{Rabal::SPEC.local_rdoc_dir}/ #{Rabal::SPEC.remote_rdoc_location}"
     end
 end
 
