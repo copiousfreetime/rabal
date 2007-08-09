@@ -3,7 +3,7 @@ module Rabal
     module Plugin
         class Rubyforge < Rabal::Plugin::Base "/rabal/rubyforge"
             description "Add rubyforge support"
-            parameter   "project", "The Rubyforge project/umbrella under which this project resides."
+            parameter   "rubyforge_project", "The Rubyforge project/umbrella under which this project resides."
 
             def initialize(options)
                 begin

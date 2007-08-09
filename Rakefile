@@ -40,11 +40,13 @@ end
 #-----------------------------------------------------------------------
 namespace :dist do
 
-    Rake::GemPackageTask.new(Rabal::SPEC) do |pkg|
+    GEM_SPEC = eval(Rabal::SPEC.to_ruby)
+
+    Rake::GemPackageTask.new(GEM_SPEC) do |pkg|
         pkg.need_tar = Rabal::SPEC.need_tar
         pkg.need_zip = Rabal::SPEC.need_zip
     end
-
+    
     desc "Install as a gem"
     task :install => [:clobber, :package] do
         sh "sudo gem install pkg/#{Rabal::SPEC.full_name}.gem"

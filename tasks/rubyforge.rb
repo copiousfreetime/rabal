@@ -22,7 +22,7 @@ namespace :dist do
         # make sure this release doesn't already exist
         releases = rubyforge.autoconfig['release_ids']
         if releases.has_key?(Rabal::SPEC.name) and releases[Rabal::SPEC.name][Rabal::VERSION] then
-            abort("Release #{Rabal::VERSION} already exists!")
+            abort("ERROR: Release #{Rabal::VERSION} already exists!  Unable to release.")
         end
         
         config = rubyforge.userconfig
@@ -55,7 +55,7 @@ def announcement
     subject = "#{Rabal::SPEC.name} #{Rabal::VERSION} Released"
     title   = "#{Rabal::SPEC.name} version #{Rabal::VERSION} has been released."
     body    = <<BODY
-#{Rabal::SPEC.description.rstrip}
+#{::Main::Util.columnize(Rabal::SPEC.description.rstrip,:indent => 0, :width => 72)}
 
 {{ Changelog for Version #{Rabal::VERSION} }}
 

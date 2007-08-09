@@ -2,7 +2,7 @@ require 'rabal'
 
 module Rabal
     class Version
-        MAJOR   = 0 
+        MAJOR   = 0
         MINOR   = 1 
         BUILD   = 0
 

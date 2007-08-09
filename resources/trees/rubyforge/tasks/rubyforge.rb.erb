@@ -22,7 +22,7 @@ namespace :dist do
         # make sure this release doesn't already exist
         releases = rubyforge.autoconfig['release_ids']
         if releases.has_key?(<%= project_name.camelize %>::SPEC.name) and releases[<%= project_name.camelize %>::SPEC.name][<%= project_name.camelize %>::VERSION] then
-            abort("Release #{<%= project_name.camelize %>::VERSION} already exists!")
+            abort("Release #{<%= project_name.camelize %>::VERSION} already exists! Unable to release.")
         end
         
         config = rubyforge.userconfig
@@ -34,7 +34,7 @@ namespace :dist do
         puts "Uploading to rubyforge..."
         files = FileList[File.join("pkg","#{<%= project_name.camelize %>::SPEC.name}-#{<%= project_name.camelize %>::VERSION}.*")].to_a
         rubyforge.login
-        #rubyforge.add_release(<%= project_name.camelize %>::SPEC.rubyforge_project, <%= project_name.camelize %>::SPEC.name, <%= project_name.camelize %>::VERSION, *files)
+        rubyforge.add_release(<%= project_name.camelize %>::SPEC.rubyforge_project, <%= project_name.camelize %>::SPEC.name, <%= project_name.camelize %>::VERSION, *files)
         puts "done."
     end
 end
