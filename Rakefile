@@ -47,6 +47,8 @@ namespace :dist do
         pkg.need_zip = Rabal::SPEC.need_zip
     end
     
+    CLOBBER.include("pkg/**")
+    
     desc "Install as a gem"
     task :install => [:clobber, :package] do
         sh "sudo gem install pkg/#{Rabal::SPEC.full_name}.gem"
