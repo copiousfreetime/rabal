@@ -1,4 +1,13 @@
 = rabal Changelog
+=== Version 0.1.0 
+
+* Support for building ruby C extensions
+* Highline prompting for arguments missed on the commandline
+* logfile and verbosity options works
+* Refactored generated rakefile tasks into namespaces
+** rubyforge support
+** rspec and ruby unit templates
+
 === Version 0.0.1
 
 * Initial public release
