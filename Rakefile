@@ -29,7 +29,7 @@ namespace :doc do |ns|
         rdoc.rdoc_files = Rabal::SPEC.rdoc_files
     end
 
-    desc "View the RDoc documentation locally"
+    #desc "View the RDoc documentation locally"
     task :view => :rdoc do
         show_files Rabal::SPEC.local_rdoc_dir
     end
@@ -47,10 +47,8 @@ namespace :dist do
         pkg.need_zip = Rabal::SPEC.need_zip
     end
     
-    CLOBBER.include("pkg/**")
-    
     desc "Install as a gem"
-    task :install => [:clobber, :package] do
+    task :install => [:clobber_package, :package] do
         sh "sudo gem install pkg/#{Rabal::SPEC.full_name}.gem"
     end
 
@@ -68,4 +66,14 @@ namespace :dist do
     desc "reinstall gem"
     task :reinstall => [:install, :uninstall]
 
+end
+
+#-----------------------------------------------------------------------
+# update the top level clobber task to depend on all possible sub-level
+# tasks that have a name like ':clobber'  in other namespaces
+#-----------------------------------------------------------------------
+Rake.application.tasks.each do |t|
+    if t.name =~ /:clobber/ then
+        task :clobber => [t.name]
+    end
 end
