@@ -35,6 +35,7 @@ namespace :doc do |ns|
     task :view => :rdoc do
         show_files Rabal::SPEC.local_rdoc_dir
     end
+    
 end
 
 #-----------------------------------------------------------------------

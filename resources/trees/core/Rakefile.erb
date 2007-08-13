@@ -38,7 +38,7 @@ end
 #-----------------------------------------------------------------------
 namespace :dist do
 
-    GEM_SPEC = eval(<%= project_name.camelize %>:::SPEC.to_ruby)
+    GEM_SPEC = eval(<%= project_name.camelize %>::SPEC.to_ruby)
 
     Rake::GemPackageTask.new(GEM_SPEC) do |pkg|
         pkg.need_tar = <%= project_name.camelize %>::SPEC.need_tar
