@@ -2,9 +2,11 @@
 
 begin
     require '<%= project_name %>'
-rescue LoadError => le
-    $: << File.expand_path(File.join(File.dirname(__FILE__),"..","lib"))
-    require '<%= project_name %>'
+rescue LoadError 
+    path = File.expand_path(File.join(File.dirname(__FILE__),"..","lib"))
+    raise if $:.include?(path)
+    $: << path
+    retry
 end
 
 puts "I am the killer app <%= project_name %> at version #{<%= project_name.camelize %>::VERSION}!"

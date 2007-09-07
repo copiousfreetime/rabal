@@ -34,6 +34,7 @@ module Rabal
                 spec.add_dependency("main", ">= 0.0.2")
                 spec.add_dependency("gem_plugin", ">= 0.2.1")
                 spec.add_dependency("highline", ">= 1.2.9")
+                spec.required_ruby_version  = ">= 1.8.5"
 
                 spec.platform           = Gem::Platform::RUBY
 
