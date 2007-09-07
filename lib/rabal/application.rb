@@ -122,10 +122,6 @@ module Rabal
 
                 }
 
-                option("version","V") { 
-                    description "Display the version number"
-                }
-
                 def run
                     Rabal.application.rabalize
                 end
