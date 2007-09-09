@@ -7,7 +7,7 @@ namespace :site do
     task :build do
     end
 
-    desc "Update the website on rubyforge"
+    desc "Update the website on #{Rabal::SPEC.remote_site_location}"
     task :deploy => :build do
         sh "rsync -zav --delete #{Rabal::SPEC.local_site_dir} #{Rabal::SPEC.remote_site_location}"
     end

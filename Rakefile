@@ -33,6 +33,10 @@ namespace :doc do |ns|
         show_files Rabal::SPEC.local_rdoc_dir
     end
     
+    desc "Deploy the RDoc documentation to #{Rabal::SPEC.remote_rdoc_location}"
+    task :deploy => :rerdoc do
+        sh "rsync -zav --delete #{Rabal::SPEC.local_rdoc_dir}/ #{Rabal::SPEC.remote_rdoc_location}"
+    end
 end
 
 #-----------------------------------------------------------------------
