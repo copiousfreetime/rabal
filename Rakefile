@@ -12,10 +12,7 @@ $: << File.join(File.dirname(__FILE__),"lib")
 require 'rabal'
 
 # load all the extra tasks for the project
-TASK_DIR = File.join(File.dirname(__FILE__),"tasks")
-FileList[File.join(TASK_DIR,"*.rb")].each do |tasklib|
-    require "tasks/#{File.basename(tasklib)}"
-end
+FileList["tasks/*.rake"].each { |tasklib| load tasklib }
 
 task :default => 'test:default'
 
@@ -76,7 +73,6 @@ namespace :dist do
                                'pkg',"#{Rabal::SPEC.full_name}.gem").upload
         sh "ssh jeremy@copiousfreetime.org rake -f /var/www/vhosts/www.copiousfreetime.org/htdocs/gems/Rakefile"
     end
-
 end
 
 #-----------------------------------------------------------------------
