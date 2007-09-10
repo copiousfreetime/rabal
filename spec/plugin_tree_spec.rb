@@ -8,7 +8,7 @@ describe Rabal::PluginTree do
         @tree        = ProjectTree.new('new-spec-proj', {:author => "Some Author", :email => "author@example.com"})
         @tree        << PluginTree.new({:data1 => "some_data" },resource_handle("core"))
 
-        @base_tree   = Set.new(%w(README Rakefile CHANGES lib lib/new-spec-proj lib/new_spec_proj.rb lib/new-spec-proj/version.rb lib/new-spec-proj/gemspec.rb lib/new-spec-proj/specification.rb))
+        @base_tree   = Set.new(%w(README Rakefile CHANGES lib lib/new-spec-proj lib/new_spec_proj.rb lib/new-spec-proj/version.rb lib/new-spec-proj/gemspec.rb lib/new-spec-proj/specification.rb tasks tasks/announce.rake tasks/distribution.rake tasks/documentation.rake tasks/setup.rb))
     
         @before = Dir.pwd
         Dir.chdir(@working_dir)
@@ -27,7 +27,7 @@ describe Rabal::PluginTree do
     it "should allow for insertion into the Plugin Tree" do
         @tree << PluginTree.new({},resource_handle("test"),"test")
         @tree.process
-        find_in('new-spec-proj').sort.should == (@base_tree +  %w(test test/tasks test/tasks/testunit.rb test/test test/test/new_spec_proj_test.rb test/test/test_helper.rb)).sort
+        find_in('new-spec-proj').sort.should == (@base_tree +  %w(test test/tasks test/tasks/testunit.rake test/test test/test/new_spec_proj_test.rb test/test/test_helper.rb)).sort
     end
 
     it "should allow for insertion into the Plugin Tree somewhere other than the root" do
@@ -37,7 +37,7 @@ describe Rabal::PluginTree do
         d1d2 = %w(misc misc/stuff)
 
         @tree.add_at_path("misc/stuff", PluginTree.new({},resource_handle("spec"),"subdir"))
-        spec = %w(misc/stuff/subdir misc/stuff/subdir/spec/spec_helper.rb misc/stuff/subdir/spec/new_spec_proj_spec.rb misc/stuff/subdir/tasks/rspec.rb misc/stuff/subdir/spec misc/stuff/subdir/tasks)
+        spec = %w(misc/stuff/subdir misc/stuff/subdir/spec/spec_helper.rb misc/stuff/subdir/spec/new_spec_proj_spec.rb misc/stuff/subdir/tasks/rspec.rake misc/stuff/subdir/spec misc/stuff/subdir/tasks)
         
         @tree.process
         find_in('new-spec-proj').sort.should == (@base_tree + d1d2 + spec).sort
