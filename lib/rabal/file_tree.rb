@@ -23,7 +23,7 @@ module Rabal
         
         # the contents of the file to write
         attr_accessor :file_contents
-
+        
         class << self
 
             #

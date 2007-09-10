@@ -91,7 +91,7 @@ module Rabal
             # validate the parameters of the plugin in the simplest way
             # possible.  Make sure that each listend parameters is not
             # null.  This assumes that @parameters has a method for each
-            # parameter naem
+            # parameter name
             #
             def validate_parameters
                 self.class.parameters.each do |name,param_info|
