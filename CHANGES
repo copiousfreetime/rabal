@@ -3,7 +3,7 @@
 === Version 0.2.0
 
 * create conditional tasks based upon the availability of libraries (webby, heel, rubyforge)
-* added in site plugin add associated tasks
+* added in site plugin and associated tasks
 * moved all rake tasks to .rake files
 * added tasks to show website and rdoc if heel is installed
 
