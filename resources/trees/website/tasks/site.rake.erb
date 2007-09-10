@@ -14,6 +14,13 @@ namespace :site do
     end
 
     if HAVE_WEBBY then
+        desc "Create the initial webiste template"
+        task :init do
+            Dir.chdir <%= project_name.camelize %>::SPEC.ROOT_DIR do
+                ::Webby::Main.run(["website"])
+            end
+        end
+        
         desc "Build the public website"
         task :build do
             sh "pushd website && rake"
