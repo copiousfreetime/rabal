@@ -27,6 +27,6 @@ namespace :dist do
     end
 
     desc "reinstall gem"
-    task :reinstall => [:install, :uninstall]
+    task :reinstall => [:uninstall, :install]
 
 end

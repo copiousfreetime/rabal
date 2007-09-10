@@ -27,7 +27,7 @@ namespace :dist do
     end
 
     desc "reinstall gem"
-    task :reinstall => [:install, :uninstall]
+    task :reinstall => [:uninstall, :install]
 
     desc "distribute copiously"
     task :copious => [:package] do

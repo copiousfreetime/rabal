@@ -1,6 +1,7 @@
 #-----------------------------------------------------------------------
 # Website maintenance
 #-----------------------------------------------------------------------
+
 namespace :site do
     
     desc "Remove all the files from the local deployment of the site"
@@ -16,7 +17,7 @@ namespace :site do
     if HAVE_WEBBY then
         desc "Create the initial webiste template"
         task :init do
-            Dir.chdir <%= project_name.camelize %>::SPEC.ROOT_DIR do
+            Dir.chdir <%= project_name.camelize %>::ROOT_DIR do
                 ::Webby::Main.run(["website"])
             end
         end
