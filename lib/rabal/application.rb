@@ -241,7 +241,7 @@ module Rabal
                 Log.logger = main.params["logfile"].value
             end
             Log.logger.level = ::Logger::SEV_LABEL.index(main.params["verbosity"].value)
-            Log.info "Logger initialized"
+            Log.debug "Logger initialized"
         end
     end
 end

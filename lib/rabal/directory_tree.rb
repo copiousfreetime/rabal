@@ -33,10 +33,10 @@ module Rabal
         def before_action
             @parent_dir = Dir.pwd
             if not File.directory?(dir_name) then
-                info("creating directory #{dir_name}")
+                info("creating #{dir_name}")
                 Dir.mkdir(dir_name)
             else
-                info("skipping directory #{dir_name} - already exists")
+                debug("skipping #{dir_name} - already exists")
             end
         end
 
@@ -44,7 +44,7 @@ module Rabal
         # change into the directory
         #
         def action
-            info("entering directory #{dir_name}")
+            debug("entering #{dir_name}")
             Dir.chdir(dir_name)
         end
 
@@ -52,7 +52,7 @@ module Rabal
         # change back to the parent directory
         #
         def after_action
-            info("leaving directory #{dir_name}")
+            debug("leaving #{dir_name}")
             Dir.chdir(parent_dir)
         end
     end

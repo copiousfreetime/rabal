@@ -7,7 +7,7 @@ module Rabal
                 return @logger if @logger
                 @logger = ::Logger.new($stdout)
                 @logger.datetime_format ="%Y-%m-%d %H:%M:%S"
-                @logger
+                @logger = $stdout
             end
 
             def logger=(log)

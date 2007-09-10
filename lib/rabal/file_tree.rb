@@ -64,7 +64,7 @@ module Rabal
         # binding for erb if there is one
         #
         def before_action
-            info("creating content for #{file_name}")
+            debug("creating content for #{file_name}")
             begin 
                 @file_contents = ERB.new(template).result(binding)
             rescue Exception => e
@@ -82,12 +82,12 @@ module Rabal
         #
         def action
             if not File.file?(file_name) then
-                info("writing file #{file_name}")
+                info("creating #{file_name}")
                 File.open(file_name,"w+") do |f|
                     f.write(file_contents)
                 end
             else
-                info("skipping file #{file_name} - already exists")
+                debug("skipping #{file_name} - already exists")
             end
         end
     end
