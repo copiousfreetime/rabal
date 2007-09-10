@@ -2,13 +2,7 @@
 === You're Dropping the Ball Here.
 
 * make the bin executable
-* implement show_files, throw display message if heel is not installed.
-
-* update Rakefiles with tasks
-** implement namespace 'site' tasks
-* split toplevel rake file out so that is tis nothing more than a 'require'
-* all tasks moved to the task directory
-* rename require'd rake files to .rake
+* add in support for generating a key for your project and signing your gem.
 
 * build plugins for all the items necessary for deployment etc.
 * use a configuration file for defaults that are always used.
@@ -19,7 +13,6 @@
 ** update - have a magic number for a template, know if its an old version or not.
 ** lint 
 
-
 * SCM Support for:
 ** Initialization, first setup
 ** Adding to and modification of the 'ignore' file (.boring, .cvsignore svn:ignore, etc)
@@ -28,12 +21,14 @@
 
 === Accomplishments!
 
+* implement show_files
 * split toplevel rake file out so that is tis nothing more than a 'require'
 * all tasks moved to the task directory
 * rename require'd rake files to .rake
 * when there are ERB Errors, present that in an effective manner
 * change capitalize to camelize in class names in templates
 * update Rakefiles with tasks
+** implement namespace 'site' tasks
 ** how to deal with additional rake tasks for sub directories
 ** spec
 ** testunit
