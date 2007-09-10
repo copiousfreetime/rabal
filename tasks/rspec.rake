@@ -12,8 +12,11 @@ namespace :test do
         r.libs      = Rabal::SPEC.require_paths
         r.spec_opts = %w(--format specdoc --color)
     end
-
-    task :coverage => [:spec] do
-        show_files Rabal::SPEC.local_coverage_dir
-    end 
+ 
+    if HAVE_HEEL then
+        desc "View the code coverage report locally"
+        task :coverage => [:spec] do
+            sh "heel --root #{Rabal::SPEC.local_coverage_dir}"
+        end 
+    end
 end

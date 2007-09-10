@@ -5,10 +5,6 @@
 
 * update Rakefiles with tasks
 ** implement namespace 'site' tasks
-* split toplevel rake file out so that is tis nothing more than a 'require'
-* all tasks moved to the task directory
-* rename require'd rake files to .rake
-
 * build plugins for all the items necessary for deployment etc.
 * use a configuration file for defaults that are always used.
 * add in Autotest Tasks 
@@ -27,6 +23,9 @@
 
 === Accomplishments!
 
+* split toplevel rake file out so that is tis nothing more than a 'require'
+* all tasks moved to the task directory
+* rename require'd rake files to .rake
 * when there are ERB Errors, present that in an effective manner
 * change capitalize to camelize in class names in templates
 * update Rakefiles with tasks

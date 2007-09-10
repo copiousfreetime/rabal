@@ -43,7 +43,7 @@ module Rabal
                 spec.remote_rdoc_dir    = ""
                 spec.local_coverage_dir = "doc/coverage"
 
-                spec.remote_site_dir    = "#{spec.name}/"
+                spec.remote_site_dir    = ""
 
            end
 end

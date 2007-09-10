@@ -1,4 +1,12 @@
-= rabal Changelog
+=  Changelog
+
+=== Version 0.2.0
+
+* create conditional tasks based upon the availability of libraries (webby, heel, rubyforge)
+* add in site plugin
+* moved all rake tasks to .rake files
+* added tasks to show website and rdoc if heel is installed
+
 === Version 0.1.0 
 
 * Support for building ruby C extensions
