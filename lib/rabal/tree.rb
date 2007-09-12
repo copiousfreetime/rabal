@@ -15,7 +15,7 @@ module Rabal
         # root.
         attr_accessor :parent
 
-        # The children of this node.  If this Array is empty, then this
+        # The children of this node.  If this Hash is empty, then this
         # Tree is a leaf.
         attr_accessor :children
 
@@ -128,9 +128,10 @@ module Rabal
             # Don't overwrite any existing children with the same name,
             # just put the new subtree's children into the children of
             # the already existing subtree.
+
             if children.has_key?(subtree.name) then
-                subtree.children.each do |n,tree|
-                    children[n] = tree
+                subtree.children.each_pair do |subtree_child_name,subtree_child_tree|
+                    children[subtree.name] << subtree_child_tree
                 end
             else
                 children[subtree.name] = subtree

@@ -234,10 +234,10 @@ module Rabal
         # if the params for the logfile were given then open them up and
         # 
         def logfile_and_level_if_necessary
-            if main.params["logfile"].given? then
+            if @main.params[:logfile].given? then
                 Log.logger = main.params["logfile"].value
             end
-            Log.logger.level = ::Logger::SEV_LABEL.index(main.params["verbosity"].value)
+            Log.logger.level = ::Logger::SEV_LABEL.index(main.params[:verbosity].value)
             Log.debug "Logger initialized"
         end
     end

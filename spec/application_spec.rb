@@ -24,7 +24,7 @@ describe Rabal::Application do
         begin
             @application.run(%w[--help])
         rescue SystemExit => se
-            se.status.should == 1
+            se.status.should == 0
         end
     end
 
@@ -33,7 +33,7 @@ describe Rabal::Application do
             @application.run(%w[--blah])
         rescue SystemExit => se
             se.status.should == 1
-            #@stderr.string.should =~ /unrecognized option `--blah'/m
+            @stderr.string.should =~ /unrecognized option `--blah'/m
         end
     end
 
@@ -41,7 +41,7 @@ describe Rabal::Application do
         begin
             @application.run(%w[--use-all --help])
         rescue SystemExit => se
-            se.status.should == 1
+            se.status.should == 0
         end
     end 
 end
