@@ -28,137 +28,165 @@ For example, the +core+ plugin that is the base main required plugin of
 rabal is defined by the parameters +author+ and +email+ and the
 following directory/file template:
 
-   ./core/
-   ./core/lib
-   ./core/lib/rabal.project
-   ./core/lib/rabal.project.rb.erb
-   ./core/lib/rabal.project/version.rb.erb
-   ./core/CHANGES
-   ./core/INSTALL
-   ./core/README
-   ./core/Rakefile
+    ./core/CHANGES.erb
+    ./core/lib/rabal.project
+    ./core/lib/rabal.project/gemspec.rb.erb
+    ./core/lib/rabal.project/specification.rb.erb
+    ./core/lib/rabal.project/version.rb.erb
+    ./core/lib/rabal.project.rb.erb
+    ./core/Rakefile.erb
+    ./core/README.erb
+    ./core/tasks/announce.rake.erb
+    ./core/tasks/distribution.rake.erb
+    ./core/tasks/documentation.rake.erb
+    ./core/tasks/setup.rb.erb
 
 From this template with 'example' as the project the following structure
 was created:
 
-    ./example/
-    ./example/lib
-    ./example/lib/example
-    ./example/lib/example.rb
-    ./example/lib/example/version.rb
     ./example/CHANGES
-    ./example/INSTALL
-    ./example/README
+    ./example/lib/example/gemspec.rb
+    ./example/lib/example/specification.rb
+    ./example/lib/example/version.rb
+    ./example/lib/example.rb
+    ./example/LICENSE
     ./example/Rakefile
+    ./example/README
+    ./example/tasks/announce.rake
+    ./example/tasks/distribution.rake
+    ./example/tasks/documentation.rake
+    ./example/tasks/setup.rb
 
 Rabal currently ships with plugins for:
 
-* core - core functionality and baseline information need by every  project
+* bin - command line application
+* core - core functionality and baseline information need by every project
+* ext - ruby C extensions 
 * license - indicate under what license your project is released.  Has
   templates for BSD, GPL, LGPL, MIT and Ruby License
-* bin - command line application
 * spec - an RSpec starting point
 * test - a Test::Unit starting point
+* website - a website starting point (using webby framework)
 
 You are highly encouraged to write your own plugins and distribute them.
 See the README.PLUGIN for information on how to develop your own.
 
 == EXAMPLE
 
-  % rabal --use-all --core-author="Ruby Programmer" --core-email="rp@example.com"  --license-flavor=Ruby myproj
+  % rabal --use-all myproj
+  Author of the project (full name) ? Ruby Programmer
+  Email address of the author ? rp@example.com
+  Name of the resulting .so file (e.g.  myext) ? myprojext
+  Check for the existence of this method in the library ? main
+  Library to link against (e.g. libsomething) ? libmyproj
+  Flavor of License for your project: BSD, GPL, LGPL, MIT, RUBY ? RUBY
   [...]
   % find ./myproj
-  ./myproj/
-  ./myproj/LICENSE
-  ./myproj/COPYING
-  ./myproj/README
-  ./myproj/lib
-  ./myproj/lib/myproj
-  ./myproj/lib/myproj/version.rb
-  ./myproj/lib/myproj.rb
-  ./myproj/Rakefile
-  ./myproj/INSTALL
-  ./myproj/CHANGES
-  ./myproj/spec
-  ./myproj/spec/spec_helper.rb
-  ./myproj/spec/myproj_spec.rb
+  ./myproj
   ./myproj/bin
   ./myproj/bin/myproj
+  ./myproj/CHANGES
+  ./myproj/COPYING
+  ./myproj/ext
+  ./myproj/ext/myproj
+  ./myproj/ext/myproj/ext
+  ./myproj/ext/myproj/ext/mkrf_conf.rb
+  ./myproj/lib
+  ./myproj/lib/myproj
+  ./myproj/lib/myproj/gemspec.rb
+  ./myproj/lib/myproj/specification.rb
+  ./myproj/lib/myproj/version.rb
+  ./myproj/lib/myproj.rb
+  ./myproj/LICENSE
+  ./myproj/Rakefile
+  ./myproj/README
+  ./myproj/spec
+  ./myproj/spec/myproj_spec.rb
+  ./myproj/spec/spec_helper.rb
+  ./myproj/tasks
+  ./myproj/tasks/announce.rake
+  ./myproj/tasks/distribution.rake
+  ./myproj/tasks/documentation.rake
+  ./myproj/tasks/extension.rake
+  ./myproj/tasks/rspec.rake
+  ./myproj/tasks/rubyforge.rake
+  ./myproj/tasks/setup.rb
+  ./myproj/tasks/site.rake
+  ./myproj/tasks/testunit.rake
+  ./myproj/test
+  ./myproj/test/myproj_test.rb
+  ./myproj/test/test_helper.rb
+
 
 == SYNOPSIS
 
     NAME
-      rabal v0.0.1
+      rabal v0.2.3
 
     SYNOPSIS
       rabal project [options]+
 
     DESCRIPTION
-      Ruby Architecture for Building Applications and Libraries.
-      
-      Rabal is a command line application for bootstrapping, packaging and
-      distributing ruby projects.
+      Ruby Architecture for Building Applications and Libraries. Rabal is a 
+      commandline application for bootstrapping, packaging and distributing 
+      ruby projects. 
 
     GLOBAL OPTIONS
-      --directory=directory, -d          - The directory in which to create the 
-                                           project directory. 
-      --help, -h                       
-      --logfile=logfile, -l              - The location of the logfile 
-      --use-all, -a                      - Use all available plugins. 
-      --verbosity=verbosity, -v          - One of : DEBUG, INFO, WARN, ERROR, 
-                                           FATAL, ANY 
-      --version, -V                      - Display the version number 
+      --directory=directory, -d                - The directory in which to 
+                                                 create the project directory. 
+      --help, -h                              
+      --logfile=logfile, -l                    - The location of the logfile 
+      --use-all, -a                            - Use all available plugins. 
+      --verbosity=verbosity, -v                - One of : DEBUG, INFO, WARN, 
+                                                 ERROR, FATAL, ANY 
 
     AVAILABLE MODULES
       Force any module to be used by giving the --use-[modulename] option. 
       Modules with a '*' next to them are always used. 
       
-         bin (/rabal/bin)           - Add a command line application. 
-        *core (/rabal/core)         - The core functionality and baseline 
-                                      information needed by every project. 
-        *license (/rabal/license)   - Indicate under what license your project is 
-                                      released. 
-         spec (/rabal/spec)         - Add an RSpec framework. 
-         test (/rabal/test)         - Add a Test::Unit framework. 
-
-    MODULE OPTIONS - BIN
-      No options available
+         bin (/rabal/bin)                      - Add a commandline application. 
+        *core (/rabal/core)                    - The core functionality and 
+                                                 baseline information needed by 
+                                                 every project. 
+         ext (/rabal/ext)                      - Add a ruby extension 
+        *license (/rabal/license)              - Indicate under what license your 
+                                                 project is released. 
+         rubyforge (/rabal/rubyforge)          - Add rubyforge support 
+         spec (/rabal/spec)                    - Add an RSpec framework. 
+         test (/rabal/test)                    - Add a Test::Unit framework. 
+         website (/rabal/website)              - Add a website for your 
+                                                 application. 
 
     MODULE OPTIONS - CORE
-      --core-author=[core-author]        - Author of the project 
-      --core-email=[core-email]          - Email address of the author 
+      --core-author=[core-author]              - Author of the project (full 
+                                                 name) 
+      --core-email=[core-email]                - Email address of the author 
 
     MODULE OPTIONS - LICENSE
-      --license-flavor=[license-flavor]  - Flavor of License for your project: 
-                                           BSD, GPL, LGPL, MIT, Ruby 
-
-    MODULE OPTIONS - SPEC
-      No options available
-
-    MODULE OPTIONS - TEST
-      No options available
+      --license-flavor=[license-flavor]        - Flavor of License for your 
+                                                 project: BSD, GPL, LGPL, MIT, 
+                                                 RUBY 
 
     AUTHOR
-      Jeremy Hinegardner 
+      Jeremy Hinegardner
 
+  
 
 == REQUIREMENTS
+
 === For running
 * main
 * gem_plugin
+* rake
 
 === For development
-* rake
 * rspec
 * rcov
 * mktemp
 
 == BUGS
 
-Rabal is taking the release early and release often approach.  There
-are guaranteed to be bugs.  In fact, there are some known options that
-currently do nothing.  Please report all bugs in the {rubyforge bug
-tracker}[http://rubyforge.org/tracker/?atid=14326&group_id=3707&func=browse]
+Please report all bugs in the {rubyforge bug tracker}[http://rubyforge.org/tracker/?atid=14326&group_id=3707&func=browse]
 
 == CREDITS
 
@@ -171,3 +199,5 @@ rabal is inspired by:
 == LICENSE:
 
 Released under the same conditions as Ruby.  See LICENSE and COPYING
+
+Code Generated by Rabal is licensed under the conditions of your project
