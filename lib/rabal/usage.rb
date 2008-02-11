@@ -69,6 +69,9 @@ module Rabal
             module_options.each { |k,v| u[k] = v }
 
             u['author'] = old_usage['author']
+
+            # fake out usage so that it allows no parameters
+            u.main = OpenStruct.new( { :parameters => [] } )
             u.to_s
         end
 

@@ -151,6 +151,7 @@ See the README.PLUGIN for information on how to develop your own.
 * rake
 * rspec
 * rcov
+* mktemp
 
 == BUGS
 

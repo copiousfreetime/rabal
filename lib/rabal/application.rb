@@ -93,6 +93,7 @@ module Rabal
         def main
             return @main if @main
             @main = Main.new(app_argv) {
+
                 description Rabal::SPEC.description
                 author      Rabal::SPEC.author
                 version     Rabal::VERSION
@@ -144,7 +145,7 @@ module Rabal
                 u = Rabal::Usage.new(self)
                 main.usage u
                 main.run 
-            rescue ::Main::Parameter::Error => mpe
+            rescue ::Main::Parameter::InvalidOption, ::Main::Parameter::Error => mpe
                 stderr.puts "Parameter Error: #{File.basename($0)}: #{mpe.message}"
                 stderr.puts "Try `#{File.basename($0)} --help' for more information."
                 exit 1
