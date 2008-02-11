@@ -4,7 +4,7 @@ module Rabal
     class Version
         MAJOR   = 0
         MINOR   = 2 
-        BUILD   = 0
+        BUILD   = 3
 
         class << self
             def to_a

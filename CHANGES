@@ -1,4 +1,15 @@
 =  Changelog
+=== Version 0.2.3
+
+* fix compatibility bug with main 2.8.0
+
+=== Version 0.2.2
+
+* put in missing init.rb stub to avoid GemPlugin confusion
+
+=== Version 0.2.1
+
+* fix bug wherein some templates get lost for subdirectories when multiple modules are in use.
 
 === Version 0.2.0
 

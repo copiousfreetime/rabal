@@ -16,9 +16,9 @@ module Rabal
         attr_accessor :app_argv
 
         # used for testing mainly
-        attr_reader     :stdin
-        attr_reader     :stdout
-        attr_reader     :stderr
+        attr_reader   :stdin
+        attr_reader   :stdout
+        attr_reader   :stderr
 
 
         def initialize(stdin = $stdin, stdout = $stdout, stderr = $stderr)
@@ -234,10 +234,10 @@ module Rabal
         # if the params for the logfile were given then open them up and
         # 
         def logfile_and_level_if_necessary
-            if @main.params[:logfile].given? then
+            if main.params['logfile'].given? then
                 Log.logger = main.params["logfile"].value
             end
-            Log.logger.level = ::Logger::SEV_LABEL.index(main.params[:verbosity].value)
+            Log.logger.level = ::Logger::SEV_LABEL.index(main.params['verbosity'].value)
             Log.debug "Logger initialized"
         end
     end
