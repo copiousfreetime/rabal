@@ -11,26 +11,19 @@ module Rabal
     class Usage
 
         attr_reader :app
-        attr_reader :old_usage
 
         def initialize(app)
             @app = app
-            @old_usage = {}
-            app.main.usage.each_pair do |key,value|
-                @old_usage[key] = value
-            end
         end
 
         # some of the generated usage is quite useful, others we want
         # to dump, or rename
         def to_s
             u = ::Main::Usage.new
-            # just transfer directly over these chunks
-            %w[name synopsis].each do |chunk|
-                u[chunk.dup] = old_usage[chunk].to_s
-            end
 
-            u['description'] = ::Main::Util.columnize(old_usage['description'].to_s, :indent => 6, :width => 78)
+            u['name']        = app.main.name
+            u['synopsis']    = app.main.synopsis
+            u['description'] = ::Main::Util.columnize(app.main.description, :indent => 6, :width => 78)
 
             arguments       = app.main.parameters.select{|p| p.type == :argument}
             global_options  = app.main.parameters.select{|p| p.type == :option and app.global_option_names.include?(p.name) }
@@ -68,8 +61,8 @@ module Rabal
        
             module_options.each { |k,v| u[k] = v }
 
-            u['author'] = old_usage['author']
 
+            u['author'] = app.main.author
             # fake out usage so that it allows no parameters
             u.main = OpenStruct.new( { :parameters => [] } )
             u.to_s
