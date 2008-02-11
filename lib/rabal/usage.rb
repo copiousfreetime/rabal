@@ -21,7 +21,7 @@ module Rabal
         def to_s
             u = ::Main::Usage.new
 
-            u['name']        = app.main.name
+            u['name']        = "#{app.main.name} v#{app.main.version}"
             u['synopsis']    = app.main.synopsis
             u['description'] = ::Main::Util.columnize(app.main.description, :indent => 6, :width => 78)
 

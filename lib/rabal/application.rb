@@ -101,6 +101,7 @@ module Rabal
                 # Project, the whole reason rabal exists
                 argument("project") {
                     description "The project on which rabal is executing."
+                    required
                 }
 
                 # Global Options   
@@ -145,7 +146,7 @@ module Rabal
                 u = Rabal::Usage.new(self)
                 main.usage u
                 main.run 
-            rescue ::Main::Parameter::InvalidOption, ::Main::Parameter::Error => mpe
+            rescue ::Main::Parameter::Error => mpe
                 stderr.puts "Parameter Error: #{File.basename($0)}: #{mpe.message}"
                 stderr.puts "Try `#{File.basename($0)} --help' for more information."
                 exit 1
