@@ -3,13 +3,21 @@
 #   - create a basic email template that can be used to send email to
 #     rubytalk.
 #-----------------------------------------------------------------------
-def changes
+def releases
     change_file = File.expand_path(File.join(Rabal::ROOT_DIR,"CHANGES"))
-    sections    = File.read(change_file).split(/^(?===)/)
+    releases = {}
+    File.read(change_file).split(/^(?==)/).each do |release|
+      lines = release.split("\n")
+      md = %r{Version ((\d+\.)+(\d+))}.match(lines.first)
+      next unless md
+      releases[md[1]] = lines[1..-1].join("\n")
+    end
+    puts releases.inspect
+    releases
 end
 
-def last_changeset
-    changes[1]
+def version_changeset
+    releases[Rabal::VERSION]
 end
 
 def announcement
@@ -21,7 +29,7 @@ def announcement
 
 {{ Changelog for Version #{Rabal::VERSION} }}
 
-#{last_changeset.rstrip}
+#{version_changeset}
 
 BODY
 

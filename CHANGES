@@ -1,24 +1,24 @@
-=  Changelog
-=== Version 0.2.3
+=  Release Log
+== Version 0.2.3
 
 * fix compatibility bug with main 2.8.0
 
-=== Version 0.2.2
+== Version 0.2.2
 
 * put in missing init.rb stub to avoid GemPlugin confusion
 
-=== Version 0.2.1
+== Version 0.2.1
 
 * fix bug wherein some templates get lost for subdirectories when multiple modules are in use.
 
-=== Version 0.2.0
+== Version 0.2.0
 
 * create conditional tasks based upon the availability of libraries (webby, heel, rubyforge)
 * added in site plugin and associated tasks
 * moved all rake tasks to .rake files
 * added tasks to show website and rdoc if heel is installed
 
-=== Version 0.1.0 
+== Version 0.1.0 
 
 * Support for building ruby C extensions
 * Highline prompting for arguments missed on the commandline
@@ -27,6 +27,6 @@
 * rubyforge support
 * rspec and ruby unit templates
 
-=== Version 0.0.1
+== Version 0.0.1
 
 * Initial public release

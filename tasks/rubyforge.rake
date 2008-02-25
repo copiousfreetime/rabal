@@ -18,7 +18,7 @@ if HAVE_RUBYFORGE then
         
             config = rubyforge.userconfig
             config["release_notes"]     = Rabal::SPEC.description
-            config["release_changes"]   = last_changeset
+            config["release_changes"]   = version_changeset
             config["Prefomatted"]       = true
 
 
