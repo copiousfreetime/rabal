@@ -46,7 +46,7 @@ module Rabal
             # only going to happen if run from outside a gem.  Basically
             # while Jeremy is testing. 
             if not plugin_manager.loaded?("rabal") then
-                plugin_manager.gems["rabal"] = ROOT_DIR
+                plugin_manager.gems["rabal"] = Rabal.root_dir
             end
 
 
@@ -93,9 +93,9 @@ module Rabal
         def main
             return @main if @main
             @main = Main.new(app_argv) {
-
-                description Rabal::SPEC.description
-                author      Rabal::SPEC.author
+                
+                description "Rabal is the Ruby Architecture for Building Applications and Libraries."
+                author      "Jeremy Hinegardner <jeremy@hinegardner.org>"
                 version     Rabal::VERSION
 
                 # Project, the whole reason rabal exists

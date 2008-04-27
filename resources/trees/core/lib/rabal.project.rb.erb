@@ -48,12 +48,10 @@ module <%= project_name.camelize %>
     self.sub_path("lib", *args)
   end 
 
-  private
-
   def self.sub_path(sub,*args)
     sp = ::File.join(root_dir, sub) + File::SEPARATOR
     sp = ::File.join(sp, *args) if args
   end
 
 end
-
+require '<%= project_name %>/version'

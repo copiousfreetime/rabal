@@ -1,11 +1,11 @@
 require 'rubygems'
-require '<%= project_name %>/version'
+require 'rabal/version'
 require 'tasks/config'
 
-<%= project_name.camelize %>::GEM_SPEC = Gem::Specification.new do |spec|
+Rabal::GEM_SPEC = Gem::Specification.new do |spec|
   proj = Configuration.for('project')
   spec.name         = proj.name
-  spec.version      = <%= project_name.camelize %>::VERSION
+  spec.version      = Rabal::VERSION
   
   spec.author       = proj.author
   spec.email        = proj.email
@@ -20,13 +20,12 @@ require 'tasks/config'
   spec.executables  = pkg.files.bin.collect { |b| File.basename(b) }
 
   # add dependencies here
-  # spec.add_dependency("rake", ">= 0.8.1")
   spec.add_dependency("configuration", ">= 0.0.5")
-  
-  <% if root.has_subtree?(["ext"]) then %>
-  spec.add_dependency("mkrf")
-  spec.extensions << "ext/<%= project_name %>/ext/mkrf_conf.rb"
-  <% end %> 
+  spec.add_dependency("rake", ">= 0.8.1")
+  spec.add_dependency("main", ">= 2.8.0")
+  spec.add_dependency("gem_plugin", ">= 0.2.1")
+  spec.add_dependency("highline", ">= 1.2.9")
+   
   
   if rdoc = Configuration.for_if_exist?('rdoc') then
     spec.has_rdoc         = true

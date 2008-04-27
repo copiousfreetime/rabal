@@ -1,12 +1,11 @@
 #!/usr/bin/env ruby
 
-require 'rubygems'
+#--
+# Copyright (c) 2007, 2008 Jeremy Hinegardner
+# All rights reserved.  See LICENSE and/or COPYING for details
+#++
 
-begin 
-    require 'rabal'
-rescue LoadError => e
-    $: << File.expand_path(File.join(File.dirname(__FILE__),"..","lib"))
-    retry
-end
+$: << File.expand_path(File.join(File.dirname(__FILE__),"..","lib"))
+require 'rabal'
 
 Rabal.application.run(ARGV)

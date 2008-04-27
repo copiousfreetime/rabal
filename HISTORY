@@ -1,4 +1,9 @@
-=  Release Log
+=  Release Notes
+== Version 0.3.0
+
+* rework templates to use Configuration and pull gemspec out of the project
+  code itself
+
 == Version 0.2.3
 
 * fix compatibility bug with main 2.8.0

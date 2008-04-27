@@ -1,12 +1,60 @@
-# make sure our project's ./lib directory is added to the ruby search path
-$: << File.join(File.dirname(__FILE__),"lib")
+#--
+# Copyright (c) 2008 Jeremy Hinegardner
+# All rights reserved.  See LICENSE and/or COPYING for details.
+#++
 
+#-------------------------------------------------------------------------------
+# make sure our project's top level directory and the lib directory are added to
+# the ruby search path.
+#-------------------------------------------------------------------------------
+$: << File.expand_path(File.join(File.dirname(__FILE__),"lib"))
+$: << File.expand_path(File.dirname(__FILE__))
+
+
+#-------------------------------------------------------------------------------
+# load the global project configuration and add in the top level clean and
+# clobber tasks so that other tasks can utilize those constants if necessary
+# This loads up the defaults for the whole project configuration
+#-------------------------------------------------------------------------------
 require 'rubygems'
-require 'rake/gempackagetask'
+require 'tasks/config.rb'
 require 'rake/clean'
-require 'rake/rdoctask'
-require 'rake/contrib/sshpublisher'
 
+#-------------------------------------------------------------------------------
+# Main configuration for the project, these overwrite the items that are in
+# tasks/config.rb
+#-------------------------------------------------------------------------------
 require 'rabal'
+Configuration.for("project") {
+  name      "rabal"
+  version   Rabal::VERSION
+  author    "Jeremy Hinegardner"
+  email     "jeremy@hinegardner.org"
+  homepage  "http://copiousfreetime.rubyforge.org/rabal/"
+}
 
-load 'tasks/setup.rb'
+#-------------------------------------------------------------------------------
+# load up all the project tasks and setup the default task to be the
+# test:default task.
+#-------------------------------------------------------------------------------
+Configuration.for("packaging").files.tasks.each do |tasklib|
+  import tasklib
+end
+task :default => 'test:default'
+
+#-------------------------------------------------------------------------------
+# Finalize the loading of all pending imports and update the top level clobber
+# task to depend on all possible sub-level tasks that have a name like
+# ':clobber'  in other namespaces.  This allows us to say:
+#
+#   rake clobber
+#
+# and it will get everything.
+#-------------------------------------------------------------------------------
+Rake.application.load_imports
+Rake.application.tasks.each do |t| 
+  if t.name =~ /:clobber/ then
+    task :clobber => [t.name] 
+  end 
+end
+

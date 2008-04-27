@@ -16,7 +16,7 @@ if rdoc_config = Configuration.for_if_exist?('rdoc') then
       rdoc.options    = rdoc_config.options
       rdoc.rdoc_files = rdoc_config.files
       rdoc.title      = rdoc_config.title
-      rdoc.main       = rdoc_config.main
+      rdoc.main       = rdoc_config.main_page
     end 
 
     if rubyforge_config = Configuration.for_if_exist?('rubyforge') then

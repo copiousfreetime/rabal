@@ -33,4 +33,6 @@ if pkg_config = Configuration.for_if_exist?("packaging") then
 
     desc "reinstall gem"
     task :reinstall => [:uninstall, :repackage, :install]
+
+ end
 end

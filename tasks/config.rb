@@ -16,7 +16,7 @@ Configuration.for('project') {
   summary       description.split(".").first
   history       "HISTORY"
   license       FileList["LICENSE", "COPYING"]
-  readme        "README"
+  readme        FileList["README", "README.PLUGIN"]
 }
 
 #-----------------------------------------------------------------------
@@ -79,6 +79,7 @@ Configuration.for('rcov') {
 #-----------------------------------------------------------------------
 Configuration.for('rdoc') {
   files       Configuration.for('packaging').files.rdoc
+  #puts "Files! : #{files.join("\n")}"
   main_page   files.first
   title       Configuration.for('project').name
   options     %w[ --line-numbers --inline-source ]
