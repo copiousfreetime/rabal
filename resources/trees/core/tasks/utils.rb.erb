@@ -73,7 +73,7 @@ module Utils
         :title          => "#{cfg.name} version #{<%= project_name.camelize %>::VERSION} has been released.",
         :urls           => "#{cfg.homepage}",
         :description    => "#{cfg.description.rstrip}",
-        :release_notes  => Utils.release_notes_from(cfg.history)[<%= project_name.camlize %>::VERSION].rstrip 
+        :release_notes  => Utils.release_notes_from(cfg.history)[<%= project_name.camelize %>::VERSION].rstrip 
       }
     end
   end
