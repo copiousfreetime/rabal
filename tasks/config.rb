@@ -29,7 +29,7 @@ Configuration.for('packaging') {
     bin       FileList["bin/*"]
     lib       FileList["lib/**/*.rb"]
     test      FileList["spec/**/*.rb", "test/**/*.rb"]
-    data      FileList["data/**/*"]
+    data      FileList["data/**/*", "resources/**/*"]
     tasks     FileList["tasks/**/*.r{ake,b}"]
     rdoc      FileList[proj_conf.readme, proj_conf.history,
                        proj_conf.license] + lib
