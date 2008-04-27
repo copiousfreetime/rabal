@@ -1,12 +1,11 @@
 #!/usr/bin/env ruby
 
-begin
-    require '<%= project_name %>'
-rescue LoadError 
-    path = File.expand_path(File.join(File.dirname(__FILE__),"..","lib"))
-    raise if $:.include?(path)
-    $: << path
-    retry
-end
+#--
+# Copyright (c) <%= Date.today.year %> <% author %>
+# All rights reserved.  See LICENSE and/or COPYING for details.
+#++
+
+$: << File.expand_path(File.join(File.dirname(__FILE__),"..","lib"))
+require '<%= project_name %>'
 
 puts "I am the killer app <%= project_name %> at version #{<%= project_name.camelize %>::VERSION}!"

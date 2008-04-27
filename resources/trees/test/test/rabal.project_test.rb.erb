@@ -1,10 +1,10 @@
-require File.join(File.dirname(__FILE__),"test_helper.rb")
+require File.expand_path(File.join(File.dirname(__FILE__),"test_helper.rb"))
 
 class Test<%= project_name.camelize %> < Test::Unit::TestCase
-    def setup
-    end
+  def setup
+  end
 
-    def test_has_tests
-        flunk("Oh Please test me!")
-    end
+  def test_has_tests
+    flunk("Oh Please test me!")
+  end
 end

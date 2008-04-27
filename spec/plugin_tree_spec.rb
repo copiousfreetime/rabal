@@ -8,7 +8,7 @@ describe Rabal::PluginTree do
         @tree        = ProjectTree.new('new-spec-proj', {:author => "Some Author", :email => "author@example.com"})
         @tree        << PluginTree.new({:data1 => "some_data" },resource_handle("core"))
 
-        @base_tree   = Set.new(%w(README Rakefile CHANGES lib lib/new-spec-proj lib/new_spec_proj.rb lib/new-spec-proj/version.rb lib/new-spec-proj/gemspec.rb lib/new-spec-proj/specification.rb tasks tasks/announce.rake tasks/distribution.rake tasks/documentation.rake tasks/setup.rb))
+        @base_tree   = Set.new(%w(README Rakefile HISTORY lib lib/new-spec-proj lib/new_spec_proj.rb lib/new-spec-proj/version.rb gemspec.rb tasks tasks/utils.rb tasks/announce.rake tasks/distribution.rake tasks/documentation.rake tasks/config.rb))
     
         @before = Dir.pwd
         Dir.chdir(@working_dir)
