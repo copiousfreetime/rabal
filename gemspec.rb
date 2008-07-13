@@ -22,9 +22,10 @@ Rabal::GEM_SPEC = Gem::Specification.new do |spec|
   # add dependencies here
   spec.add_dependency("configuration", ">= 0.0.5")
   spec.add_dependency("rake", ">= 0.8.1")
-  spec.add_dependency("main", ">= 2.8.0")
+  spec.add_dependency("main", ">= 2.8.1")
   spec.add_dependency("gem_plugin", ">= 0.2.1")
   spec.add_dependency("highline", ">= 1.2.9")
+  spec.add_dependency("fattr", ">= 1.0.3")
    
   
   if rdoc = Configuration.for_if_exist?('rdoc') then
