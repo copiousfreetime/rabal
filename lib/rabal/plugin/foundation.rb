@@ -35,7 +35,7 @@ module Rabal
 
                 # allows Plugin::Base to store the registration
                 # information in the class variable.
-                attribute :register_as => nil
+                fattr :register_as => nil
 
                 # part of the mini DSL for describing a Plugin
                 def parameter(pname,description,block = nil)
@@ -58,8 +58,8 @@ module Rabal
                     @use_always = d
                 end
 
-                attribute :description =>  "I Need a Description"
-                attribute :register_path
+                fattr :description =>  "I Need a Description"
+                fattr :register_path
 
                 def use_name
                     name.split("::").last.dashify
