@@ -3,6 +3,7 @@
 
 * rework templates to use Configuration and pull gemspec out of the project
   code itself
+* switch from attributes to fattr
 
 == Version 0.2.3
 

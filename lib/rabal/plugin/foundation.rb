@@ -1,6 +1,7 @@
 require 'gem_plugin'
 require 'highline/import'
 require 'rabal/logger'
+require 'fattr'
 
 module Rabal
     module Plugin

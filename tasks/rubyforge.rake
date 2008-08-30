@@ -17,7 +17,7 @@ if rf_conf = Configuration.for_if_exist?("rubyforge") then
 
       # make sure this release doesn't already exist
       releases = rubyforge.autoconfig['release_ids']
-      if releases.has_key?(Rabal::SPEC.name) and releases[Rabal::SPEC.name][Rabal::VERSION] then
+      if releases.has_key?(Rabal::GEM_SPEC.name) and releases[Rabal::GEM_SPEC.name][Rabal::VERSION] then
         abort("Release #{Rabal::VERSION} already exists! Unable to release.")
       end
 
@@ -27,9 +27,9 @@ if rf_conf = Configuration.for_if_exist?("rubyforge") then
       config["Prefomatted"]       = true
 
       puts "Uploading to rubyforge..."
-      files = FileList[File.join("pkg","#{Rabal::SPEC.name}-#{Rabal::VERSION}*.*")].to_a
+      files = FileList[File.join("pkg","#{Rabal::GEM_SPEC.name}-#{Rabal::VERSION}*.*")].to_a
       rubyforge.login
-      rubyforge.add_release(Rabal::SPEC.rubyforge_project, Rabal::SPEC.name, Rabal::VERSION, *files)
+      rubyforge.add_release(Rabal::GEM_SPEC.rubyforge_project, Rabal::GEM_SPEC.name, Rabal::VERSION, *files)
       puts "done."
     end
   end
