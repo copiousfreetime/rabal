@@ -22,11 +22,12 @@ require 'tasks/config'
   # add dependencies here
   # spec.add_dependency("rake", ">= 0.8.1")
   spec.add_dependency("configuration", ">= 0.0.5")
-  
-  <% if root.has_subtree?(["ext"]) then %>
-  spec.add_dependency("mkrf")
-  spec.extensions << "ext/<%= project_name %>/ext/mkrf_conf.rb"
-  <% end %> 
+
+  if ext_conf = Configuration.for_if_exist?("extension") then
+    spec.extensions << ext_conf.configs
+    spec.extensions.flatten!
+    spec.require_paths << "ext"
+  end
   
   if rdoc = Configuration.for_if_exist?('rdoc') then
     spec.has_rdoc         = true

@@ -1,4 +1,9 @@
 =  Release Notes
+== Version 0.3.2
+
+* fix extension templates
+* update gemspec to use extension Configuration
+
 == Version 0.3.0
 
 * rework templates to use Configuration and pull gemspec out of the project
