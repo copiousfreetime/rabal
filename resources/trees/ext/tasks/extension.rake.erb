@@ -9,7 +9,7 @@ if ext_config = Configuration.for_if_exist?('extension') then
   namespace :ext do  
     desc "Build the extension(s)"
     task :build do
-      ext_config.configs.each do |extensions|
+      ext_config.configs.each do |extension|
         path = Pathname.new(extension)
         parts = path.split
         conf = parts.last
