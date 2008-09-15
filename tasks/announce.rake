@@ -17,6 +17,8 @@ namespace :announce do
       mail.puts
       mail.puts info[:title]
       mail.puts
+      mail.puts "  gem install #{Rabal::GEM_SPEC.name}"
+      mail.puts
       mail.puts info[:urls]
       mail.puts 
       mail.puts info[:description]

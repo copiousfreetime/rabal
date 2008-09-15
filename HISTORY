@@ -1,7 +1,7 @@
 =  Release Notes
 == Version 0.3.3
 
-* update rubyforge templates to fix bugs caused by updates to rubyforge gem
+* update rubyforge templates to fix bugs 
 * update announce templates to include gem install instructions
 
 == Version 0.3.2
