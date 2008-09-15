@@ -4,7 +4,7 @@ module Rabal
   module Version
     MAJOR   = 0
     MINOR   = 3 
-    BUILD   = 2
+    BUILD   = 3
 
     def to_a
       [MAJOR, MINOR, BUILD]
