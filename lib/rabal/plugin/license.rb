@@ -7,7 +7,7 @@ module Rabal
         # BSD, GPL, LGPG, MIT and Ruby
         #
         class License < Rabal::Plugin::Base "/rabal/license"
-            TYPES = %w[BSD GPL LGPL MIT RUBY]
+            TYPES = %w[BSD GPL LGPL MIT RUBY ISC]
             parameter "flavor", "Flavor of License for your project: #{TYPES.join(', ')}", lambda { |x| TYPES.include?(x.upcase) }
             description "Indicate under what license your project is released."
             use_always
