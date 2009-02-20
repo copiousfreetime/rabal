@@ -4,15 +4,16 @@ require 'rabal'
 require 'set'
 require 'rubygems'
 require 'tmpdir'
-require 'mktemp'
 require 'fileutils'
 
 include Rabal
 
 # generate a temporary directory and create it
 
-def my_temp_dir
-    MkTemp.mktempdir(File.join(Dir.tmpdir,"rabal-spec.XXXXXXXX"))
+def my_temp_dir( unique_id = $$ )
+  dirname = File.join( Dir.tmpdir, "sst-agent-#{unique_id}" ) 
+  FileUtils.mkdir_p( dirname ) unless File.directory?( dirname )
+  return dirname
 end
 
 # return a list of all the files and directories in a location
